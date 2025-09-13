@@ -6,15 +6,10 @@ import (
 	x "github.com/bloxui/blox"
 )
 
-// ButtonArg interface for UI button arguments
-// This interface allows both UI-specific args and core blox args
+// ButtonArg describes UI-specific button options (variant, size, text, child, etc.).
+// Core blox args (x.ButtonArg) are accepted directly without adapters.
 type ButtonArg interface {
 	applyUIButton(*buttonState)
-}
-
-// Bridge interface to allow core blox args
-type CoreButtonArg interface {
-	applyButton(*x.ButtonAttrs, *[]x.Component)
 }
 
 // buttonState holds our button configuration
@@ -26,10 +21,12 @@ type buttonState struct {
 }
 
 // Variant option types
+
 type VariantOpt struct{ v string }
 type SizeOpt struct{ v string }
 
 // Variant constructors
+
 func Default() VariantOpt       { return VariantOpt{"default"} }
 func Destructive() VariantOpt   { return VariantOpt{"destructive"} }
 func Outline() VariantOpt       { return VariantOpt{"outline"} }
@@ -42,6 +39,7 @@ func Ghost() VariantOpt         { return VariantOpt{"ghost"} }
 func Link() VariantOpt          { return VariantOpt{"link"} }
 
 // Size constructors
+
 func DefaultSize() SizeOpt { return SizeOpt{"default"} }
 func Sm() SizeOpt          { return SizeOpt{"sm"} }
 func Lg() SizeOpt          { return SizeOpt{"lg"} }
@@ -52,6 +50,7 @@ func (o VariantOpt) applyUIButton(s *buttonState) { s.variant = o.v }
 func (o SizeOpt) applyUIButton(s *buttonState)    { s.size = o.v }
 
 // Wrapper for text content
+
 type TextOpt struct{ text string }
 
 func Text(text string) TextOpt { return TextOpt{text} }
@@ -60,30 +59,12 @@ func (o TextOpt) applyUIButton(s *buttonState) {
 }
 
 // Wrapper for child components
+
 type ChildOpt struct{ child x.Component }
 
 func Child(child x.Component) ChildOpt { return ChildOpt{child} }
 func (o ChildOpt) applyUIButton(s *buttonState) {
 	s.children = append(s.children, o.child)
-}
-
-// Universal adapter for any x.ButtonArg
-type ButtonArgAdapter struct{ arg x.ButtonArg }
-
-func (a ButtonArgAdapter) applyUIButton(s *buttonState) {
-	s.baseArgs = append(s.baseArgs, a.arg)
-}
-
-// Magic: make any x.ButtonArg work directly with ui.Button
-func adaptButtonArg(arg interface{}) ButtonArg {
-	if uiArg, ok := arg.(ButtonArg); ok {
-		return uiArg
-	}
-	if coreArg, ok := arg.(x.ButtonArg); ok {
-		return ButtonArgAdapter{coreArg}
-	}
-	// This should never happen in practice, but handle gracefully
-	return nil
 }
 
 // getButtonClasses generates the CSS classes for button variants and sizes
@@ -141,9 +122,13 @@ func Button(args ...interface{}) x.Component {
 		size:    "default",
 	}
 
+	// Collect UI options and core blox args in one pass
 	for _, arg := range args {
-		if adapted := adaptButtonArg(arg); adapted != nil {
-			adapted.applyUIButton(state)
+		switch a := arg.(type) {
+		case ButtonArg:
+			a.applyUIButton(state)
+		case x.ButtonArg:
+			state.baseArgs = append(state.baseArgs, a)
 		}
 	}
 
