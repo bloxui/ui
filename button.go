@@ -6,8 +6,8 @@ import (
 	x "github.com/bloxui/blox"
 )
 
-// ButtonArg describes UI-specific button options (variant, size, text, child, etc.).
-// Core blox args (x.ButtonArg) are accepted directly without adapters.
+// ButtonArg describes UI-specific button options (variant, size).
+// Core blox args (x.ButtonArg) are accepted directly — use x.Text/x.T and x.Child/x.C.
 type ButtonArg interface {
 	applyUIButton(*buttonState)
 }
@@ -16,7 +16,6 @@ type ButtonArg interface {
 type buttonState struct {
 	variant  string
 	size     string
-	children []x.Component
 	baseArgs []x.ButtonArg
 }
 
@@ -48,24 +47,6 @@ func Icon() SizeOpt        { return SizeOpt{"icon"} }
 // Apply methods for variant and size
 func (o VariantOpt) applyUIButton(s *buttonState) { s.variant = o.v }
 func (o SizeOpt) applyUIButton(s *buttonState)    { s.size = o.v }
-
-// Wrapper for text content
-
-type TextOpt struct{ text string }
-
-func Text(text string) TextOpt { return TextOpt{text} }
-func (o TextOpt) applyUIButton(s *buttonState) {
-	s.children = append(s.children, x.TextNode(o.text))
-}
-
-// Wrapper for child components
-
-type ChildOpt struct{ child x.Component }
-
-func Child(child x.Component) ChildOpt { return ChildOpt{child} }
-func (o ChildOpt) applyUIButton(s *buttonState) {
-	s.children = append(s.children, o.child)
-}
 
 // getButtonClasses generates the CSS classes for button variants and sizes
 func getButtonClasses(variant, size string) string {
@@ -135,11 +116,6 @@ func Button(args ...interface{}) x.Component {
 	// Build the final button args
 	classes := getButtonClasses(state.variant, state.size)
 	buttonArgs := append([]x.ButtonArg{x.Class(classes)}, state.baseArgs...)
-
-	// Add children
-	for _, child := range state.children {
-		buttonArgs = append(buttonArgs, x.Child(child))
-	}
 
 	return x.Button(buttonArgs...)
 }
