@@ -2,58 +2,18 @@ package ui
 
 import x "github.com/bloxui/blox"
 
-type InputArg interface {
-	applyUIInput(*inputState)
-}
+// Input renders a styled input. Pass standard input attributes via x.InputArg
+func Input(args ...any) x.Component {
+	classes := "flex h-9 w-full rounded-md border border-muted-foreground/50 bg-background dark:bg-input px-3 py-1 text-base shadow-inner transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-500 dark:focus-visible:ring-blue-400 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
 
-type inputState struct {
-	inputType string
-	baseArgs  []x.InputArg
-}
-
-type InputTypeWrapper struct{ inputType string }
-
-func (w InputTypeWrapper) applyUIInput(s *inputState) {
-	s.inputType = w.inputType
-}
-
-func InputType(inputType string) InputTypeWrapper {
-	return InputTypeWrapper{inputType}
-}
-
-type InputArgAdapter struct{ arg x.InputArg }
-
-func (a InputArgAdapter) applyUIInput(s *inputState) {
-	s.baseArgs = append(s.baseArgs, a.arg)
-}
-
-func adaptInputArg(arg interface{}) InputArg {
-	if uiArg, ok := arg.(InputArg); ok {
-		return uiArg
-	}
-	if coreArg, ok := arg.(x.InputArg); ok {
-		return InputArgAdapter{coreArg}
-	}
-	return nil
-}
-
-func Input(args ...interface{}) x.Component {
-	state := &inputState{
-		inputType: "text",
-	}
-
+	var inputArgs []x.InputArg
 	for _, arg := range args {
-		if adapted := adaptInputArg(arg); adapted != nil {
-			adapted.applyUIInput(state)
+		if a, ok := arg.(x.InputArg); ok {
+			inputArgs = append(inputArgs, a)
 		}
 	}
 
-	classes := "flex h-9 w-full rounded-md border border-muted-foreground/50 bg-background dark:bg-input px-3 py-1 text-base shadow-inner transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-500 dark:focus-visible:ring-blue-400 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-
-	inputArgs := append([]x.InputArg{
-		x.Class(classes),
-		x.InputType(state.inputType),
-	}, state.baseArgs...)
+	inputArgs = append([]x.InputArg{x.Class(classes)}, inputArgs...)
 
 	return x.Input(inputArgs...)
 }
