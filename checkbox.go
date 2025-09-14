@@ -3,7 +3,8 @@ package ui
 import x "github.com/bloxui/blox"
 
 // Checkbox renders a label-wrapped checkbox input with shadcn/ui styles.
-func Checkbox(args ...any) x.Component {
+// Strict types: pass input as []x.InputArg and label content as x.LabelArg.
+func Checkbox(input []x.InputArg, label ...x.LabelArg) x.Component {
 	// Base classes
 	containerClasses := "flex items-center gap-2 cursor-pointer text-sm select-none relative"
 	inputClasses := "absolute opacity-0 cursor-pointer h-0 w-0"
@@ -12,25 +13,11 @@ func Checkbox(args ...any) x.Component {
 	// States via sibling selectors
 	containerWithStates := containerClasses + " hover:[&>.checkmark]:bg-muted [&>input:checked~.checkmark]:bg-primary [&>input:checked~.checkmark]:border-primary [&>input:checked~.checkmark:after]:opacity-100 [&>input:focus-visible~.checkmark]:ring-[3px] [&>input:focus-visible~.checkmark]:ring-ring/50"
 
-	var inputArgs []x.InputArg
-	var labelExtras []x.LabelArg
-
-	for _, arg := range args {
-		switch a := arg.(type) {
-		case x.InputArg:
-			inputArgs = append(inputArgs, a)
-		case x.LabelArg:
-			labelExtras = append(labelExtras, a)
-		case string:
-			labelExtras = append(labelExtras, x.Text(a))
-		}
-	}
-
 	// Build input args
-	inputArgs = append([]x.InputArg{
+	inputArgs := append([]x.InputArg{
 		x.Class(inputClasses),
 		x.InputType("checkbox"),
-	}, inputArgs...)
+	}, input...)
 
 	// Compose label with input + custom checkmark + any extra label content
 	labelArgs := []x.LabelArg{x.Class(containerWithStates)}
@@ -38,7 +25,7 @@ func Checkbox(args ...any) x.Component {
 		x.Child(x.Input(inputArgs...)),
 		x.Child(x.Span(x.Class(checkmarkClasses+" checkmark"))),
 	)
-	labelArgs = append(labelArgs, labelExtras...)
+	labelArgs = append(labelArgs, label...)
 
 	return x.FormLabel(labelArgs...)
 }
