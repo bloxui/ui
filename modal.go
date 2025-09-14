@@ -2,10 +2,12 @@ package ui
 
 import x "github.com/bloxui/blox"
 
-// ModalAssets provides CSS for modal functionality
-type ModalAssets struct{}
+// ModalComponent wraps the modal div with asset registration
+type ModalComponent struct {
+	x.Component
+}
 
-func (ModalAssets) CSS() string {
+func (mc ModalComponent) CSS() string {
 	return `
 #basic-modal:target,
 #confirm-modal:target,
@@ -28,7 +30,7 @@ func (ModalAssets) CSS() string {
 }`
 }
 
-func (ModalAssets) JS() string {
+func (mc ModalComponent) JS() string {
 	return `
 (function() {
     let currentModal = null;
@@ -61,19 +63,6 @@ func (ModalAssets) JS() string {
     // Initialize on page load
     handleHashChange();
 })();`
-}
-
-// ModalComponent wraps the modal div with asset registration
-type ModalComponent struct {
-	x.Component
-}
-
-func (mc ModalComponent) CSS() string {
-	return ModalAssets{}.CSS()
-}
-
-func (mc ModalComponent) JS() string {
-	return ModalAssets{}.JS()
 }
 
 func (mc ModalComponent) Name() string {
