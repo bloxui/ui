@@ -3,7 +3,7 @@ package ui
 import x "github.com/bloxui/blox"
 
 // ModalComponent wraps the modal div with asset registration
-type ModalComponent struct{ x.Component }
+type ModalComponent struct{ x.Node }
 
 func (mc ModalComponent) CSS() string {
 	return `
@@ -89,7 +89,7 @@ func Modal(args ...x.DivArg) ModalComponent {
 		x.Aria("label", "Close modal with keyboard"),
 	))
 
-	return ModalComponent{Component: x.Div(modalArgs...)}
+	return ModalComponent{Node: x.Div(modalArgs...)}
 }
 
 // ModalNode returns only the markup Node (no asset behaviors).
