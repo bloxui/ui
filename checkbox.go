@@ -1,31 +1,32 @@
 package ui
 
-import x "github.com/bloxui/blox"
+import (
+	x "github.com/bloxui/blox"
+	"github.com/bloxui/icons/lucide"
+)
 
-// Checkbox renders a label-wrapped checkbox input with shadcn/ui styles.
-// Strict types: pass input as []x.InputArg and label content as x.LabelArg.
-func Checkbox(input []x.InputArg, label ...x.LabelArg) x.Component {
-	// Base classes
-	containerClasses := "flex items-center gap-2 cursor-pointer text-sm select-none relative"
-	inputClasses := "absolute opacity-0 cursor-pointer h-0 w-0"
-	checkmarkClasses := "size-4 shrink-0 rounded-[4px] border border-input bg-background dark:bg-input/30 shadow-xs transition-colors flex items-center justify-center after:content-[''] after:absolute after:left-[5px] after:top-[3px] after:w-[5px] after:h-[10px] after:border-solid after:border-white after:border-r-2 after:border-b-2 after:rotate-45 after:opacity-0 after:transition-opacity"
-
-	// States via sibling selectors
-	containerWithStates := containerClasses + " hover:[&>.checkmark]:bg-muted [&>input:checked~.checkmark]:bg-primary [&>input:checked~.checkmark]:border-primary [&>input:checked~.checkmark:after]:opacity-100 [&>input:focus-visible~.checkmark]:ring-[3px] [&>input:focus-visible~.checkmark]:ring-ring/50"
+// Checkbox renders an accessible, functional checkbox using a hidden native input
+// and a styled indicator controlled purely via CSS sibling selectors.
+// Pass input attributes via x.InputArg (Id, Name, Required, etc.).
+func Checkbox(args ...x.InputArg) x.Component {
+	// Container label to make the whole control clickable and tie to input
+	container := "flex items-center gap-2 cursor-pointer text-sm select-none relative"
+	// Hidden native input to drive state and accessibility
+	inputCls := "absolute left-0 top-0 size-4 opacity-0 cursor-pointer"
+	// Visual indicator box; state driven by sibling selectors
+	indicator := "indicator size-4 shrink-0 rounded-[4px] border border-input bg-background dark:bg-input/30 shadow-xs transition-colors flex items-center justify-center text-transparent"
+	// State styles: hover, checked, focus-visible
+	states := " hover:[&>.indicator]:bg-muted [&>input:checked~.indicator]:bg-primary [&>input:checked~.indicator]:border-primary [&>input:checked~.indicator]:text-primary-foreground [&>input:focus-visible~.indicator]:ring-[3px] [&>input:focus-visible~.indicator]:ring-ring/50"
 
 	// Build input args
 	inputArgs := append([]x.InputArg{
-		x.Class(inputClasses),
+		x.Class(inputCls),
 		x.InputType("checkbox"),
-	}, input...)
+	}, args...)
 
-	// Compose label with input + custom checkmark + any extra label content
-	labelArgs := []x.LabelArg{x.Class(containerWithStates)}
-	labelArgs = append(labelArgs,
+	return x.FormLabel(
+		x.Class(container+states),
 		x.Child(x.Input(inputArgs...)),
-		x.Child(x.Span(x.Class(checkmarkClasses+" checkmark"))),
+		x.Child(x.Span(x.Class(indicator), x.C(lucide.Check(lucide.Size("14")...)))),
 	)
-	labelArgs = append(labelArgs, label...)
-
-	return x.FormLabel(labelArgs...)
 }
