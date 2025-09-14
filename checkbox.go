@@ -8,7 +8,7 @@ import (
 // Checkbox renders an accessible, functional checkbox using a hidden native input
 // and a styled indicator controlled purely via CSS sibling selectors.
 // Pass input attributes via x.InputArg (Id, Name, Required, etc.).
-func Checkbox(args ...x.InputArg) x.Component {
+func Checkbox(args ...x.InputArg) x.Node {
 	// Container label to make the whole control clickable and tie to input
 	container := "flex items-center gap-2 cursor-pointer text-sm select-none relative"
 	// Hidden native input to drive state and accessibility
@@ -26,7 +26,7 @@ func Checkbox(args ...x.InputArg) x.Component {
 
 	return x.FormLabel(
 		x.Class(container+states),
-		x.Child(x.Input(inputArgs...)),
-		x.Child(x.Span(x.Class(indicator), x.C(lucide.Check(lucide.Size("14")...)))),
+		x.Input(inputArgs...),
+		x.Span(x.Class(indicator), lucide.Check(lucide.Size("14")...)),
 	)
 }
