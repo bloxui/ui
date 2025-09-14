@@ -9,47 +9,49 @@ func baseButtonClass() x.ButtonArg {
 	return x.Class("inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0")
 }
 
-// Internal wrappers embed x.Global so they are valid x.ButtonArg
-type variantArg struct{ x.Global }
-type sizeArg struct{ x.Global }
+// Internal wrappers embed x.Global so they are valid x.ButtonArg and keep their class string
+type variantArg struct{ x.Global; cls string }
+type sizeArg struct{ x.Global; cls string }
 
 // Variants
 
-func Default() x.ButtonArg {
-	return variantArg{x.Class("bg-primary text-primary-foreground shadow hover:bg-primary/90")}
-}
-func Destructive() x.ButtonArg {
-	return variantArg{x.Class("bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90")}
-}
-func Outline() x.ButtonArg {
-	return variantArg{x.Class("border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground")}
-}
-func OutlineBlue() x.ButtonArg {
-	return variantArg{x.Class("border-2 border-blue-500 text-blue-600 bg-background shadow-sm hover:bg-blue-50 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-950")}
-}
-func OutlineYellow() x.ButtonArg {
-	return variantArg{x.Class("border-2 border-yellow-500 text-yellow-600 bg-background shadow-sm hover:bg-yellow-50 dark:border-yellow-400 dark:text-yellow-400 dark:hover:bg-yellow-950")}
-}
-func OutlineRed() x.ButtonArg {
-	return variantArg{x.Class("border-2 border-red-500 text-red-600 bg-background shadow-sm hover:bg-red-50 dark:border-red-400 dark:text-red-400 dark:hover:bg-red-950")}
-}
-func OutlineMuted() x.ButtonArg {
-	return variantArg{x.Class("border-2 border-current text-current bg-background shadow-sm hover:bg-current/10")}
-}
-func Secondary() x.ButtonArg {
-	return variantArg{x.Class("bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80")}
-}
-func Ghost() x.ButtonArg { return variantArg{x.Class("hover:bg-accent hover:text-accent-foreground")} }
-func Link() x.ButtonArg {
-	return variantArg{x.Class("text-primary underline-offset-4 hover:underline")}
-}
+func Default() x.ButtonArg       { s := "bg-primary text-primary-foreground shadow hover:bg-primary/90"; return variantArg{Global: x.Class(s), cls: s} }
+func Destructive() x.ButtonArg   { s := "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90"; return variantArg{Global: x.Class(s), cls: s} }
+func Outline() x.ButtonArg       { s := "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground"; return variantArg{Global: x.Class(s), cls: s} }
+func OutlineBlue() x.ButtonArg   { s := "border-2 border-blue-500 text-blue-600 bg-background shadow-sm hover:bg-blue-50 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-950"; return variantArg{Global: x.Class(s), cls: s} }
+func OutlineYellow() x.ButtonArg { s := "border-2 border-yellow-500 text-yellow-600 bg-background shadow-sm hover:bg-yellow-50 dark:border-yellow-400 dark:text-yellow-400 dark:hover:bg-yellow-950"; return variantArg{Global: x.Class(s), cls: s} }
+func OutlineRed() x.ButtonArg    { s := "border-2 border-red-500 text-red-600 bg-background shadow-sm hover:bg-red-50 dark:border-red-400 dark:text-red-400 dark:hover:bg-red-950"; return variantArg{Global: x.Class(s), cls: s} }
+func OutlineMuted() x.ButtonArg  { s := "border-2 border-current text-current bg-background shadow-sm hover:bg-current/10"; return variantArg{Global: x.Class(s), cls: s} }
+func Secondary() x.ButtonArg     { s := "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80"; return variantArg{Global: x.Class(s), cls: s} }
+func Ghost() x.ButtonArg         { s := "hover:bg-accent hover:text-accent-foreground"; return variantArg{Global: x.Class(s), cls: s} }
+func Link() x.ButtonArg          { s := "text-primary underline-offset-4 hover:underline"; return variantArg{Global: x.Class(s), cls: s} }
 
 // Sizes
 
-func DefaultSize() x.ButtonArg { return sizeArg{x.Class("h-9 px-4 py-2")} }
-func Sm() x.ButtonArg          { return sizeArg{x.Class("h-8 rounded-md px-3 text-xs")} }
-func Lg() x.ButtonArg          { return sizeArg{x.Class("h-10 rounded-md px-8")} }
-func Icon() x.ButtonArg        { return sizeArg{x.Class("h-6 w-6")} }
+func DefaultSize() x.ButtonArg { s := "h-9 px-4 py-2"; return sizeArg{Global: x.Class(s), cls: s} }
+func Sm() x.ButtonArg          { s := "h-8 rounded-md px-3 text-xs"; return sizeArg{Global: x.Class(s), cls: s} }
+func Lg() x.ButtonArg          { s := "h-10 rounded-md px-8"; return sizeArg{Global: x.Class(s), cls: s} }
+func Icon() x.ButtonArg        { s := "h-6 w-6"; return sizeArg{Global: x.Class(s), cls: s} }
+
+// ButtonClass returns a single x.Class with base + variant + size classes; useful for asChild-like usage
+func ButtonClass(args ...x.ButtonArg) x.Global {
+    base := "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
+    var variantCls, sizeCls string
+    for _, a := range args {
+        switch v := a.(type) {
+        case variantArg:
+            if variantCls == "" { variantCls = v.cls }
+        case sizeArg:
+            if sizeCls == "" { sizeCls = v.cls }
+        }
+    }
+    if variantCls == "" { variantCls = Default().(variantArg).cls }
+    if sizeCls == "" { sizeCls = DefaultSize().(sizeArg).cls }
+    full := base
+    if variantCls != "" { full += " " + variantCls }
+    if sizeCls != "" { full += " " + sizeCls }
+    return x.Class(full)
+}
 
 // Button creates a UI button with styling. Accepts strictly x.ButtonArg values.
 func Button(args ...x.ButtonArg) x.Component {
