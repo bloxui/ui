@@ -27,6 +27,6 @@ func Checkbox(args ...x.InputArg) x.Node {
 	return x.FormLabel(
 		x.Class(container+states),
 		x.Input(inputArgs...),
-		x.Span(x.Class(indicator), lucide.Check(lucide.Size("14")...)),
+		x.Span(x.Class(indicator), lucide.Check(lucide.Size("14"))),
 	)
 }
