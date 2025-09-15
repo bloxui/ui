@@ -1,6 +1,6 @@
 package ui
 
-import x "github.com/bloxui/blox"
+import x "github.com/plainkit/blox"
 
 // Input renders a styled input. Pass standard input attributes via x.InputArg
 func Input(args ...x.InputArg) x.Node {

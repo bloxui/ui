@@ -1,7 +1,7 @@
 package ui
 
 import (
-	x "github.com/bloxui/blox"
+	x "github.com/plainkit/blox"
 )
 
 // Base button classes (shadcn/ui parity)

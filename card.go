@@ -1,7 +1,7 @@
 package ui
 
 import (
-	x "github.com/bloxui/blox"
+	x "github.com/plainkit/blox"
 )
 
 // Card creates a UI card with styling. Strictly accepts x.DivArg.

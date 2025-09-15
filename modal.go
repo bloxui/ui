@@ -1,6 +1,6 @@
 package ui
 
-import x "github.com/bloxui/blox"
+import x "github.com/plainkit/blox"
 
 // ModalComponent wraps the modal div with asset registration
 type ModalComponent struct{ x.Node }

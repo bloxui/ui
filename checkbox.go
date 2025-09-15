@@ -1,8 +1,8 @@
 package ui
 
 import (
-	x "github.com/bloxui/blox"
-	"github.com/bloxui/icons/lucide"
+	x "github.com/plainkit/blox"
+	"github.com/plainkit/icons/lucide"
 )
 
 // Checkbox renders an accessible, functional checkbox using a hidden native input
