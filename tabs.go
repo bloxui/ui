@@ -1,7 +1,7 @@
 package ui
 
 import (
-	x "github.com/plainkit/blox"
+	x "github.com/plainkit/html"
 )
 
 // Tabs JS behavior (state + keyboard) scoped by data-slot attributes.
