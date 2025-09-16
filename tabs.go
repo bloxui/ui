@@ -1,21 +1,8 @@
 package ui
 
-import (
-	x "github.com/plainkit/html"
-)
+import x "github.com/plainkit/html"
 
-// Tabs JS behavior (state + keyboard) scoped by data-slot attributes.
-// - Root:   data-slot="tabs" [data-orientation="horizontal"|"vertical"]
-// - List:   data-slot="tabs-list"
-// - Trigger:data-slot="tabs-trigger" data-value="..." role="tab"
-// - Content:data-slot="tabs-content" data-value="..." role="tabpanel"
-
-type tabsComponent struct{ x.Component }
-
-func (tabsComponent) Name() string { return "tabs" }
-
-func (tabsComponent) JS() string {
-	return `(function(){
+const tabsJS = `(function(){
   function updateGroup(root, value){
     const triggers = root.querySelectorAll('[data-slot="tabs-trigger"]');
     const contents = root.querySelectorAll('[data-slot="tabs-content"]');
@@ -84,30 +71,54 @@ func (tabsComponent) JS() string {
     document.querySelectorAll('[data-slot="tabs"]').forEach(init);
   }
 })();`
-}
 
-// Tabs root. Pass strict x.DivArg: classes, data-orientation, etc.
-func Tabs(args ...x.DivArg) x.Component {
+// Tabs creates a root tabs container with keyboard navigation and state management
+func Tabs(args ...x.DivArg) x.Node {
 	base := "flex flex-col gap-2"
-	root := x.Div(append([]x.DivArg{x.Class(base), x.Data("slot", "tabs")}, args...)...)
-	return tabsComponent{Component: root}
+	tabsArgs := append([]x.DivArg{
+		x.Class(base),
+		x.Data("slot", "tabs"),
+	}, args...)
+
+	return x.Div(tabsArgs...).WithAssets("", tabsJS, "tabs")
 }
 
-// TabsList container for triggers.
-func TabsList(args ...x.DivArg) x.Component {
+// TabsList creates a container for tab triggers with shadcn/ui styling
+func TabsList(args ...x.DivArg) x.Node {
 	base := "bg-muted text-muted-foreground inline-flex h-9 w-fit items-center justify-center rounded-lg p-[3px]"
-	return x.Div(append([]x.DivArg{x.Class(base), x.Data("slot", "tabs-list")}, args...)...)
+	listArgs := append([]x.DivArg{
+		x.Class(base),
+		x.Data("slot", "tabs-list"),
+		x.Role("tablist"),
+	}, args...)
+
+	return x.Div(listArgs...)
 }
 
-// TabsTrigger button. Set data-value (required). Optionally set data-state="active" for initial selection.
-func TabsTrigger(args ...x.ButtonArg) x.Component {
+// TabsTrigger creates a tab button trigger with shadcn/ui styling. Pass data-value (required) and optional data-state="active"
+func TabsTrigger(args ...x.ButtonArg) x.Node {
 	base := "data-[state=active]:bg-background dark:data-[state=active]:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 text-foreground dark:text-muted-foreground inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
-	trig := x.Button(append([]x.ButtonArg{x.Class(base), x.Data("slot", "tabs-trigger"), x.ButtonType("button"), x.Role("tab"), x.Aria("selected", "false")}, args...)...)
-	return trig
+
+	triggerArgs := append([]x.ButtonArg{
+		x.Class(base),
+		x.Data("slot", "tabs-trigger"),
+		x.ButtonType("button"),
+		x.Role("tab"),
+		x.Aria("selected", "false"),
+	}, args...)
+
+	return x.Button(triggerArgs...)
 }
 
-// TabsContent panel. Set data-value to match trigger.
-func TabsContent(args ...x.DivArg) x.Component {
+// TabsContent creates a tab content panel. Pass data-value to match trigger
+func TabsContent(args ...x.DivArg) x.Node {
 	base := "flex-1 outline-none"
-	return x.Div(append([]x.DivArg{x.Class(base), x.Data("slot", "tabs-content"), x.Role("tabpanel"), x.Hidden()}, args...)...)
+	contentArgs := append([]x.DivArg{
+		x.Class(base),
+		x.Data("slot", "tabs-content"),
+		x.Role("tabpanel"),
+		x.Hidden(),
+	}, args...)
+
+	return x.Div(contentArgs...)
 }
