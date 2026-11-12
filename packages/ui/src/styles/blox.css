@@ -186,6 +186,15 @@
   * {
     border-color: var(--bx-border);
   }
+  /* Tells the browser which theme is active, so native scrollbars, form controls
+     and the page background follow it, and themes the scrollbar colours. */
+  :root {
+    color-scheme: light;
+    scrollbar-color: var(--bx-border-strong) transparent;
+  }
+  .dark {
+    color-scheme: dark;
+  }
   body {
     background-color: var(--bx-bg);
     color: var(--bx-fg);
