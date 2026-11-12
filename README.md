@@ -1,4 +1,8 @@
-# Blox UI
+<p align="center">
+  <img src="apps/www/public/brand/icon.svg" width="72" height="72" alt="" />
+</p>
+
+<h1 align="center">Blox UI</h1>
 
 [![CI](https://github.com/bloxui/ui/actions/workflows/ci.yml/badge.svg)](https://github.com/bloxui/ui/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/@bloxui/cli?label=%40bloxui%2Fcli)](https://www.npmjs.com/package/@bloxui/cli)

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Coffee, Github } from "lucide-react";
 import { cn } from "@blox-ui/ui";
+import { BrandMark } from "@/components/brand-mark";
 
 const linkClass =
   "inline-flex items-center gap-1.5 rounded-sm text-muted transition-colors outline-none hover:text-fg focus-visible:ring-2 focus-visible:ring-ring";
@@ -32,7 +33,10 @@ export function SiteFooter({ className }: { className?: string }) {
     <footer className={cn("border-t border-border", className)}>
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 text-sm sm:grid-cols-[1fr_auto_auto] sm:gap-16 sm:px-6">
         <div className="grid max-w-sm content-start gap-3">
-          <p className="font-semibold">Blox UI</p>
+          <p className="flex items-center gap-2 font-semibold">
+            <BrandMark className="size-5" />
+            Blox UI
+          </p>
           <p className="text-muted">Accessible React components you copy into your project and own. Free and open source.</p>
           <a
             href="https://buymeacoffee.com/harshit187"

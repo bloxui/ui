@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Github } from "lucide-react";
 import { Button } from "@blox-ui/ui";
+import { BrandMark } from "@/components/brand-mark";
 import { DocsMobileNav, type DocsNavGroup } from "@/components/docs/docs-nav";
 import { SiteNavLinks } from "@/components/site-nav-links";
 import { SiteSearch } from "@/components/site-search";
@@ -16,12 +17,7 @@ export function SiteHeader({ navGroups }: { navGroups?: DocsNavGroup[] }) {
           href="/"
           className="mr-2 flex shrink-0 items-center gap-2 rounded-md font-semibold tracking-tight outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
-          <span aria-hidden className="grid size-6 grid-cols-2 gap-0.5 rounded-md bg-fg p-1">
-            <span className="rounded-[2px] bg-bg" />
-            <span className="rounded-[2px] bg-bg/40" />
-            <span className="rounded-[2px] bg-bg/40" />
-            <span className="rounded-[2px] bg-brand" />
-          </span>
+          <BrandMark className="size-6" />
           Blox UI
         </Link>
         <SiteNavLinks />
