@@ -9,7 +9,7 @@ import {
   packageName,
   resolveItems,
   rewriteImports,
-} from "./registry-lib.mjs";
+} from "../src/registry.mjs";
 
 const component = `"use client";
 

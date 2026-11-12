@@ -14,7 +14,7 @@ import { mkdir, rm, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildRegistry } from "./build-registry.mjs";
-import { applyAliases, collectDependencies, resolveItems } from "./registry-lib.mjs";
+import { applyAliases, collectDependencies, resolveItems } from "../packages/cli/src/registry.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const uiRoot = join(root, "packages/ui");

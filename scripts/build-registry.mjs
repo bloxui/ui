@@ -23,7 +23,7 @@ import {
   resolveItems,
   rewriteImports,
   UI_ALIAS,
-} from "./registry-lib.mjs";
+} from "../packages/cli/src/registry.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const uiRoot = join(root, "packages/ui");
