@@ -10,9 +10,13 @@
     "storybook": "pnpm --filter @blox-ui/ui storybook",
     "registry:build": "node scripts/build-registry.mjs",
     "registry:check": "node scripts/build-registry.mjs --check",
-    "registry:verify": "node scripts/verify-registry.mjs"
+    "registry:verify": "node scripts/verify-registry.mjs",
+    "changeset": "changeset",
+    "version-packages": "changeset version && pnpm registry:build",
+    "release": "changeset publish"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.31.1",
     "turbo": "^2.3.0",
     "typescript": "^5.6.0"
   }

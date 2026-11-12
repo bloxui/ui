@@ -1,5 +1,8 @@
 # Blox UI
 
+[![CI](https://github.com/bloxui/ui/actions/workflows/ci.yml/badge.svg)](https://github.com/bloxui/ui/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/@bloxui/cli?label=%40bloxui%2Fcli)](https://www.npmjs.com/package/@bloxui/cli)
+
 Crafted React components you own. Built with Tailwind CSS v4 and Radix UI.
 
 **Docs and live examples: [bloxui-kit.vercel.app](https://bloxui-kit.vercel.app)**
@@ -57,6 +60,37 @@ pnpm registry:build   # regenerate the registry JSON after changing a component
 pnpm typecheck
 pnpm build
 ```
+
+## Releasing
+
+Versions and changelogs are managed with [Changesets](https://github.com/changesets/changesets). Two packages are versioned:
+
+- `@bloxui/cli`, published to npm
+- `@blox-ui/ui`, the components; not published to npm, but its version is shown in the registry
+
+**1. Describe each change** in the pull request (or commit) that makes it:
+
+```bash
+pnpm changeset
+```
+
+Pick the packages that changed, choose patch (fix), minor (new feature) or major (breaking change), and write one line for the changelog. This adds a small file in `.changeset/`; commit it with your change.
+
+**2. When you are ready to release**, turn the collected changesets into versions and changelog entries:
+
+```bash
+pnpm version-packages
+```
+
+This bumps the versions, writes `CHANGELOG.md` in each package, rebuilds the registry, and deletes the used changeset files. Review the diff, then commit and push it.
+
+**3. Publish the CLI** to npm (needs `npm login` with two-factor authentication):
+
+```bash
+pnpm release
+```
+
+The docs site and registry update on their own when the commit reaches `main`.
 
 ## License
 

@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# A newer push to the same branch or pull request cancels the run in progress.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Typecheck, test and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        # Reads the version from "packageManager" in package.json.
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      # Component and CLI tests, then checks that the committed registry matches the
+      # source and that every registry item compiles in a separate project layout.
+      - name: Test
+        run: pnpm test
+
+      - name: Build the docs site
+        run: pnpm build
+
+      - name: Build Storybook
+        run: pnpm --filter @blox-ui/ui build-storybook
+
+      # The site build regenerates the registry; it must match what is committed.
+      - name: Check the registry was committed
+        run: git diff --exit-code -- apps/www/public/r
