@@ -21,5 +21,9 @@
       "persistent": true
     },
     "test": {}
-  }
+  },
+  "globalDependencies": [
+    "scripts/**",
+    "registry/**"
+  ]
 }
