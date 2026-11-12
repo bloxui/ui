@@ -24,5 +24,13 @@ const initial: KanbanColumn[] = [
 
 export default function KanbanExample() {
   const [columns, setColumns] = React.useState(initial);
-  return <Kanban columns={columns} onColumnsChange={setColumns} aria-label="Release board" className="w-full" />;
+  return (
+    <div className="grid w-full gap-3">
+      <Kanban columns={columns} onColumnsChange={setColumns} aria-label="Release board" />
+      <p className="text-center text-xs text-muted">
+        Drag a card with the mouse, or press and hold it on a touch screen. From the keyboard: Tab to a card, Space to
+        pick it up, arrow keys to move, Space to drop.
+      </p>
+    </div>
+  );
 }

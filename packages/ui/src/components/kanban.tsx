@@ -63,14 +63,17 @@ function slotIn(columnElement: Element, clientY: number, draggingId: string) {
   return index === -1 ? cards.length : index;
 }
 
-/** How long a finger must rest on a card before it lifts, and how far it may wander first. */
+/** Touch: how long a finger rests on a card before it lifts, and how far it may wander first. */
 const LONG_PRESS_MS = 300;
 const MOVE_TOLERANCE = 8;
+/** Mouse: how far the pointer moves with the button down before a press becomes a drag. */
+const MOUSE_DRAG_DISTANCE = 4;
 
 /**
- * A board of columns with cards that move three ways: drag and drop with a mouse,
- * press and hold then drag on touch screens, or from the keyboard (focus a card,
- * Space to pick it up, arrow keys to move, Space to drop, Escape to cancel).
+ * A board of columns with cards that move three ways: drag with a mouse, press and hold
+ * then drag on touch screens, or from the keyboard (focus a card, Space to pick it up,
+ * arrow keys to move, Space to drop, Escape to cancel). Mouse and touch share one
+ * pointer-based implementation, so they behave the same in every browser.
  */
 export function Kanban({ columns, onColumnsChange, onCardMove, className, "aria-label": ariaLabel = "Board" }: KanbanProps) {
   const [dragging, setDragging] = React.useState<string | null>(null);
@@ -79,10 +82,20 @@ export function Kanban({ columns, onColumnsChange, onCardMove, className, "aria-
   const [lifted, setLifted] = React.useState<{ id: string; origin: KanbanColumn[] } | null>(null);
   const [announcement, setAnnouncement] = React.useState("");
   const cardRefs = React.useRef(new Map<string, HTMLDivElement>());
+  const boardRef = React.useRef<HTMLDivElement>(null);
   const dropTargetRef = React.useRef(dropTarget);
   dropTargetRef.current = dropTarget;
-  // Touch drag: the pending long-press, then the active drag, and a copy of the card under the finger.
-  const touch = React.useRef<{ id: string; x: number; y: number; timer: ReturnType<typeof setTimeout> | null; active: boolean } | null>(null);
+  // Pointer drag: the pending press, then the active drag, and a copy of the card under the pointer.
+  const touch = React.useRef<{
+    id: string;
+    x: number;
+    y: number;
+    mouse: boolean;
+    pointerId: number;
+    element: HTMLDivElement;
+    timer: ReturnType<typeof setTimeout> | null;
+    active: boolean;
+  } | null>(null);
   const [ghost, setGhost] = React.useState<{ title: React.ReactNode; x: number; y: number; width: number } | null>(null);
 
   // While a touch drag is active, stop the page from scrolling under the finger.
@@ -102,37 +115,58 @@ export function Kanban({ columns, onColumnsChange, onCardMove, className, "aria-
     setDropTarget(null);
   }
 
-  function touchHandlers(card: KanbanCard) {
+  /** Lifts the card: from now on it follows the pointer. */
+  function startDrag(card: KanbanCard, x: number, y: number) {
+    const state = touch.current;
+    if (!state || state.id !== card.id) return;
+    state.active = true;
+    state.element.setPointerCapture?.(state.pointerId);
+    setDragging(card.id);
+    setGhost({ title: card.title, x, y, width: state.element.getBoundingClientRect().width });
+    if (!state.mouse) navigator.vibrate?.(15);
+  }
+
+  function pointerHandlers(card: KanbanCard) {
     return {
       onPointerDown: (event: React.PointerEvent<HTMLDivElement>) => {
-        if (event.pointerType === "mouse") return;
-        const element = event.currentTarget;
-        const pointerId = event.pointerId;
+        // Only the main button starts a drag; right-click keeps its menu.
+        if (event.pointerType === "mouse" && event.button !== 0) return;
+        const mouse = event.pointerType === "mouse";
         const start = { x: event.clientX, y: event.clientY };
         touch.current = {
           id: card.id,
           ...start,
+          mouse,
+          pointerId: event.pointerId,
+          element: event.currentTarget,
           active: false,
-          timer: setTimeout(() => {
-            if (!touch.current || touch.current.id !== card.id) return;
-            touch.current.active = true;
-            element.setPointerCapture(pointerId);
-            const rect = element.getBoundingClientRect();
-            setDragging(card.id);
-            setGhost({ title: card.title, x: start.x, y: start.y, width: rect.width });
-            navigator.vibrate?.(15);
-          }, LONG_PRESS_MS),
+          // Touch waits for a long press so a swipe can still scroll; a mouse drags as soon as it moves.
+          timer: mouse ? null : setTimeout(() => startDrag(card, start.x, start.y), LONG_PRESS_MS),
         };
       },
       onPointerMove: (event: React.PointerEvent<HTMLDivElement>) => {
         const state = touch.current;
         if (!state || state.id !== card.id) return;
         if (!state.active) {
-          // Moving before the long-press finishes means the user is scrolling.
-          if (Math.hypot(event.clientX - state.x, event.clientY - state.y) > MOVE_TOLERANCE) endTouch();
-          return;
+          const moved = Math.hypot(event.clientX - state.x, event.clientY - state.y);
+          if (state.mouse) {
+            if (moved > MOUSE_DRAG_DISTANCE) startDrag(card, event.clientX, event.clientY);
+            else return;
+          } else {
+            // Moving before the long press finishes means the user is scrolling.
+            if (moved > MOVE_TOLERANCE) endTouch();
+            return;
+          }
         }
         setGhost((current) => (current ? { ...current, x: event.clientX, y: event.clientY } : current));
+        // Near the board's left or right edge, scroll it so hidden columns can be reached.
+        const board = boardRef.current;
+        if (board) {
+          const rect = board.getBoundingClientRect();
+          const edge = 48;
+          if (event.clientX < rect.left + edge) board.scrollLeft -= 14;
+          else if (event.clientX > rect.right - edge) board.scrollLeft += 14;
+        }
         const column = document.elementFromPoint(event.clientX, event.clientY)?.closest<HTMLElement>("[data-kanban-column]");
         setDropTarget(column ? { column: column.dataset.kanbanColumn!, index: slotIn(column, event.clientY, card.id) } : null);
       },
@@ -221,7 +255,7 @@ export function Kanban({ columns, onColumnsChange, onCardMove, className, "aria-
   }
 
   return (
-    <div data-slot="kanban" role="group" aria-label={ariaLabel} className={cn("flex gap-4 overflow-x-auto pb-2", className)}>
+    <div ref={boardRef} data-slot="kanban" role="group" aria-label={ariaLabel} className={cn("flex gap-4 overflow-x-auto pb-2", className)}>
       {columns.map((column) => {
         const full = column.limit !== undefined && column.cards.length >= column.limit;
         const target = dropTarget?.column === column.id ? dropTarget.index : null;
@@ -232,23 +266,9 @@ export function Kanban({ columns, onColumnsChange, onCardMove, className, "aria-
             aria-label={`${column.title}, ${column.cards.length} ${column.cards.length === 1 ? "card" : "cards"}`}
             className={cn(
               toneClasses[column.tone ?? "neutral"],
-              "flex w-72 shrink-0 flex-col rounded-xl bg-sunken p-2",
+              "flex min-w-48 flex-1 basis-0 flex-col rounded-xl bg-sunken p-2 sm:max-w-80",
               dragging && target !== null && "ring-2 ring-ring/40",
             )}
-            onDragOver={(event) => {
-              if (!dragging) return;
-              event.preventDefault();
-              setDropTarget({ column: column.id, index: slotIn(event.currentTarget, event.clientY, dragging) });
-            }}
-            onDragLeave={(event) => {
-              if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setDropTarget(null);
-            }}
-            onDrop={(event) => {
-              event.preventDefault();
-              if (dragging && target !== null) apply(dragging, column.id, target);
-              setDragging(null);
-              setDropTarget(null);
-            }}
           >
             <header className="flex items-center gap-2 px-2 pt-1 pb-3">
               <span aria-hidden className="size-2 rounded-full bg-(--t)" />
@@ -270,27 +290,17 @@ export function Kanban({ columns, onColumnsChange, onCardMove, className, "aria-
                         else cardRefs.current.delete(card.id);
                       }}
                       data-kanban-card={card.id}
-                      draggable
                       tabIndex={0}
                       aria-roledescription="draggable card"
                       aria-pressed={isLifted}
-                      onDragStart={(event) => {
-                        event.dataTransfer.effectAllowed = "move";
-                        event.dataTransfer.setData("text/plain", card.id);
-                        setDragging(card.id);
-                      }}
-                      onDragEnd={() => {
-                        setDragging(null);
-                        setDropTarget(null);
-                      }}
                       onBlur={() => {
                         // Leaving a lifted card drops it where it is.
                         if (isLifted) setLifted(null);
                       }}
                       onKeyDown={(event) => onCardKeyDown(event, card, column, index)}
-                      {...touchHandlers(card)}
+                      {...pointerHandlers(card)}
                       className={cn(
-                        "grid cursor-grab gap-1 rounded-lg select-none [-webkit-touch-callout:none] border border-border bg-surface p-3 text-sm shadow-xs transition-[box-shadow,opacity,transform] outline-none",
+                        "grid cursor-grab touch-manipulation gap-1 rounded-lg select-none [-webkit-touch-callout:none] [-webkit-user-drag:none] border border-border bg-surface p-3 text-sm shadow-xs transition-[box-shadow,opacity,transform] outline-none",
                         "hover:border-border-strong focus-visible:ring-2 focus-visible:ring-ring active:cursor-grabbing",
                         dragging === card.id && "opacity-40",
                         isLifted && "-rotate-1 shadow-raised ring-2 ring-ring",

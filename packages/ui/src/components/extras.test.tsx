@@ -449,6 +449,34 @@ describe("Kanban touch drag", () => {
     }
   });
 
+  it("drags with the mouse as soon as it moves, without a long press", () => {
+    const onCardMove = vi.fn();
+    render(<Board onCardMove={onCardMove} />);
+    const card = screen.getByText("Fix bug").closest("[data-kanban-card]") as HTMLElement;
+    const doing = document.querySelector('[data-kanban-column="doing"]') as HTMLElement;
+    const spy = vi.spyOn(document, "elementFromPoint").mockReturnValue(doing);
+    const mouse = (type: "pointerDown" | "pointerMove" | "pointerUp", x: number, y: number) =>
+      fireEvent[type](card, { pointerType: "mouse", pointerId: 2, button: 0, clientX: x, clientY: y });
+
+    mouse("pointerDown", 10, 10);
+    mouse("pointerMove", 12, 11);
+    expect(card).not.toHaveClass("opacity-40");
+    mouse("pointerMove", 300, 40);
+    expect(card).toHaveClass("opacity-40");
+    mouse("pointerUp", 300, 40);
+
+    expect(onCardMove).toHaveBeenCalledWith({ cardId: "b", from: "todo", to: "doing", index: 1 });
+    spy.mockRestore();
+  });
+
+  it("ignores the right mouse button", () => {
+    render(<Board />);
+    const card = screen.getByText("Fix bug").closest("[data-kanban-card]") as HTMLElement;
+    fireEvent.pointerDown(card, { pointerType: "mouse", pointerId: 3, button: 2, clientX: 10, clientY: 10 });
+    fireEvent.pointerMove(card, { pointerType: "mouse", pointerId: 3, clientX: 200, clientY: 10 });
+    expect(card).not.toHaveClass("opacity-40");
+  });
+
   it("treats a quick swipe as scrolling, not dragging", () => {
     vi.useFakeTimers();
     try {
