@@ -114,6 +114,8 @@ export interface CommandDialogProps extends React.ComponentProps<typeof Dialog> 
   description?: string;
   /** A key that toggles the palette together with Ctrl (Windows/Linux) or ⌘ (macOS), e.g. "k". */
   hotkey?: string;
+  /** Width of the palette. */
+  size?: "sm" | "md" | "lg";
   className?: string;
 }
 
@@ -122,6 +124,7 @@ export function CommandDialog({
   title = "Command palette",
   description = "Search for a command to run.",
   hotkey,
+  size = "md",
   className,
   children,
   open: openProp,
@@ -155,6 +158,7 @@ export function CommandDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen} {...props}>
       <DialogContent
+        size={size}
         showClose={false}
         className={cn("top-[15%] translate-y-0 overflow-hidden p-0", className)}
       >
