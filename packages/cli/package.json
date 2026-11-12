@@ -9,7 +9,7 @@
   },
   "type": "module",
   "bin": {
-    "blox": "./bin/blox.mjs"
+    "blox": "bin/blox.mjs"
   },
   "files": [
     "bin",
