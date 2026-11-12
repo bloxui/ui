@@ -17,6 +17,18 @@ function ThemeSwitcher() {
   );
 }
 
+/*
+ * In a real app, wrap your root layout once and add the pre-paint script, so dark mode
+ * never flashes light on load (themeScript is safe to call in a server layout):
+ *
+ *   import { ThemeProvider } from "@/components/ui/theme-provider";
+ *   import { themeScript } from "@/lib/theme-script";
+ *
+ *   <html lang="en" suppressHydrationWarning>
+ *     <head><script dangerouslySetInnerHTML={{ __html: themeScript() }} /></head>
+ *     <body><ThemeProvider>{children}</ThemeProvider></body>
+ *   </html>
+ */
 export default function ThemeProviderExample() {
   return (
     <ThemeProvider>

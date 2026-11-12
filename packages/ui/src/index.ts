@@ -1,6 +1,7 @@
 export * from "./lib/cn";
 export * from "./lib/tone";
 export * from "./lib/field-context";
+export * from "./lib/theme-script";
 export type { MenuItemExtras } from "./lib/overlay";
 export * from "./components/accordion";
 export * from "./components/affix";

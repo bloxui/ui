@@ -611,6 +611,16 @@ describe("ThemeProvider", () => {
   it("produces a pre-paint script", () => {
     expect(themeScript("key")).toContain('localStorage.getItem("key")');
   });
+
+  it("keeps themeScript out of client-only files, so a server layout can call it", async () => {
+    const { readFileSync } = await import("node:fs");
+    const { join } = await import("node:path");
+    // Tests run from the package folder.
+    const source = readFileSync(join(process.cwd(), "src/lib/theme-script.ts"), "utf8");
+    expect(source).not.toMatch(/^s*["']use client["']/);
+    const provider = readFileSync(join(process.cwd(), "src/components/theme-provider.tsx"), "utf8");
+    expect(provider).not.toMatch(/export function themeScript/);
+  });
 });
 
 describe("Field integration", () => {

@@ -1,0 +1,15 @@
+{
+  "name": "theme-script",
+  "type": "lib",
+  "title": "Theme script",
+  "description": "Applies the saved theme before first paint; safe to call in a server layout.",
+  "category": "Lib",
+  "dependencies": {},
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "lib/theme-script.ts",
+      "content": "/**\n * Server-safe theme helpers. Kept out of theme-provider (a client component) so a\n * server layout can call themeScript() while rendering <head>.\n */\n\nexport type Theme = \"light\" | \"dark\" | \"system\";\n\n/** localStorage key ThemeProvider and themeScript share by default. */\nexport const DEFAULT_THEME_STORAGE_KEY = \"blox-theme\";\n\n/**\n * Inline script for <head> that applies the saved theme before the first paint,\n * so people who chose dark never see a flash of light:\n *\n *   <script dangerouslySetInnerHTML={{ __html: themeScript() }} />\n *\n * Pass the same storageKey and defaultTheme you give ThemeProvider.\n */\nexport function themeScript(storageKey = DEFAULT_THEME_STORAGE_KEY, defaultTheme: Theme = \"system\") {\n  return `try{var t=localStorage.getItem(${JSON.stringify(storageKey)})||${JSON.stringify(defaultTheme)};var d=t===\"dark\"||(t===\"system\"&&matchMedia(\"(prefers-color-scheme: dark)\").matches);document.documentElement.classList.toggle(\"dark\",d)}catch(e){}`;\n}\n"
+    }
+  ]
+}

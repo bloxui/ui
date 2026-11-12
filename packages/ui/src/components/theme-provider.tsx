@@ -1,8 +1,9 @@
 "use client";
 
 import * as React from "react";
+import { DEFAULT_THEME_STORAGE_KEY, type Theme } from "../lib/theme-script";
 
-export type Theme = "light" | "dark" | "system";
+export type { Theme };
 
 interface ThemeContextValue {
   /** What the user chose. */
@@ -18,14 +19,6 @@ export function useTheme() {
   const context = React.useContext(ThemeContext);
   if (!context) throw new Error("useTheme must be used inside <ThemeProvider>.");
   return context;
-}
-
-/**
- * Inline script for the <head> that applies the saved theme before the first paint,
- * so dark-mode users never see a flash of light. Put it in a <script> tag.
- */
-export function themeScript(storageKey = "blox-theme", defaultTheme: Theme = "system") {
-  return `try{var t=localStorage.getItem(${JSON.stringify(storageKey)})||${JSON.stringify(defaultTheme)};var d=t==="dark"||(t==="system"&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.classList.toggle("dark",d)}catch(e){}`;
 }
 
 export interface ThemeProviderProps {
@@ -47,8 +40,10 @@ function systemPrefersDark() {
 /**
  * Manages light, dark and system themes: remembers the choice, follows the operating
  * system when set to "system", and toggles the `dark` class the tokens respond to.
+ * To avoid a flash of the wrong theme on load, also render themeScript() (from
+ * lib/theme-script) in a <script> in your root layout's <head>.
  */
-export function ThemeProvider({ children, defaultTheme = "system", storageKey = "blox-theme", tokens }: ThemeProviderProps) {
+export function ThemeProvider({ children, defaultTheme = "system", storageKey = DEFAULT_THEME_STORAGE_KEY, tokens }: ThemeProviderProps) {
   const [theme, setThemeState] = React.useState<Theme>(defaultTheme);
   const [systemDark, setSystemDark] = React.useState(false);
 

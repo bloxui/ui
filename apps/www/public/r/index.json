@@ -1251,7 +1251,9 @@
       "description": "Light, dark and system themes with token overrides and no flash.",
       "category": "Layout",
       "dependencies": {},
-      "registryDependencies": [],
+      "registryDependencies": [
+        "theme-script"
+      ],
       "files": [
         "ui/theme-provider.tsx"
       ]
@@ -1610,6 +1612,18 @@
       "registryDependencies": [],
       "files": [
         "lib/overlay.tsx"
+      ]
+    },
+    {
+      "name": "theme-script",
+      "type": "lib",
+      "title": "Theme script",
+      "description": "Applies the saved theme before first paint; safe to call in a server layout.",
+      "category": "Lib",
+      "dependencies": {},
+      "registryDependencies": [],
+      "files": [
+        "lib/theme-script.ts"
       ]
     },
     {

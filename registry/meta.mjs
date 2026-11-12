@@ -117,6 +117,7 @@ export const libs = {
   icons: { file: "icons.tsx", title: "Icons", description: "The small icon set the components use internally.", category: "Lib" },
   "field-context": { file: "field-context.tsx", title: "Field context", description: "Lets a control read its label, hint and error wiring from Field.", category: "Lib" },
   overlay: { file: "overlay.tsx", title: "Overlay styles", description: "Shared styles for dialogs, popovers and menus.", category: "Lib" },
+  "theme-script": { file: "theme-script.ts", title: "Theme script", description: "Applies the saved theme before first paint; safe to call in a server layout.", category: "Lib" },
   control: { file: "control.ts", title: "Control styles", description: "Shared styles for button-like form triggers.", category: "Lib" },
 };
 
