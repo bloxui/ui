@@ -12,6 +12,8 @@ import {
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Week2Demo } from "@/components/week2-demo";
 import { Week3Demo } from "@/components/week3-demo";
+import { Week4Demo } from "@/components/week4-demo";
+import { Week4bDemo } from "@/components/week4b-demo";
 
 const variants = ["solid", "soft", "outline", "ghost", "link"] as const;
 const tones = ["brand", "neutral", "success", "warning", "danger"] as const;
@@ -32,7 +34,7 @@ export default function Page() {
       <header className="flex items-start justify-between gap-4">
         <div className="space-y-2">
           <h1 className="text-3xl font-bold tracking-tight">Blox UI</h1>
-          <p className="text-muted">Tokens, buttons, forms, feedback and overlay components.</p>
+          <p className="text-muted">Tokens, buttons, forms, feedback, overlays, navigation and data components.</p>
         </div>
         <ThemeToggle />
       </header>
@@ -145,6 +147,8 @@ export default function Page() {
       </Section>
       <Week2Demo />
       <Week3Demo />
+      <Week4Demo />
+      <Week4bDemo />
     </main>
   );
 }
