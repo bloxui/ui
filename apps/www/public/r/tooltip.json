@@ -1,0 +1,19 @@
+{
+  "name": "tooltip",
+  "type": "ui",
+  "title": "Tooltip",
+  "description": "A short label shown on hover or focus.",
+  "category": "Overlays",
+  "dependencies": {
+    "radix-ui": "^1.8.1"
+  },
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "path": "ui/tooltip.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { Tooltip as TooltipPrimitive } from \"radix-ui\";\nimport { cn } from \"~lib/cn\";\n\nconst InsideProvider = React.createContext(false);\n\n/**\n * Optional. Wrap your app (or a toolbar) to share one delay and let the pointer\n * move between neighbouring tooltips without waiting again.\n */\nexport function TooltipProvider({\n  delayDuration = 300,\n  ...props\n}: React.ComponentProps<typeof TooltipPrimitive.Provider>) {\n  return (\n    <InsideProvider.Provider value>\n      <TooltipPrimitive.Provider delayDuration={delayDuration} {...props} />\n    </InsideProvider.Provider>\n  );\n}\n\nexport interface TooltipProps\n  extends Omit<React.ComponentProps<typeof TooltipPrimitive.Content>, \"content\" | \"children\"> {\n  /** Tooltip text. Nothing is rendered when it is empty. */\n  content: React.ReactNode;\n  /** The element that triggers the tooltip. It must accept a ref and event props. */\n  children: React.ReactElement;\n  /** Keyboard hint shown after the text, e.g. \"Ctrl S\". */\n  shortcut?: React.ReactNode;\n  arrow?: boolean;\n  /** Turns the tooltip off without unwrapping the trigger. */\n  disabled?: boolean;\n  delayDuration?: number;\n  open?: boolean;\n  defaultOpen?: boolean;\n  onOpenChange?: (open: boolean) => void;\n}\n\n/** One element: `<Tooltip content=\"Save\"><Button /></Tooltip>`. No provider needed. */\nexport function Tooltip({\n  content,\n  children,\n  shortcut,\n  arrow = true,\n  disabled = false,\n  delayDuration,\n  open,\n  defaultOpen,\n  onOpenChange,\n  className,\n  side = \"top\",\n  sideOffset = 6,\n  collisionPadding = 8,\n  ...props\n}: TooltipProps) {\n  const insideProvider = React.useContext(InsideProvider);\n  if (disabled || content === null || content === undefined || content === \"\") return children;\n\n  const tooltip = (\n    <TooltipPrimitive.Root\n      open={open}\n      defaultOpen={defaultOpen}\n      onOpenChange={onOpenChange}\n      delayDuration={delayDuration}\n    >\n      <TooltipPrimitive.Trigger asChild>{children}</TooltipPrimitive.Trigger>\n      <TooltipPrimitive.Portal>\n        <TooltipPrimitive.Content\n          data-slot=\"tooltip\"\n          side={side}\n          sideOffset={sideOffset}\n          collisionPadding={collisionPadding}\n          className={cn(\n            \"z-50 flex max-w-64 items-center gap-2 rounded-md bg-neutral px-2.5 py-1.5 text-xs font-medium text-neutral-fg shadow-raised\",\n            \"origin-(--radix-tooltip-content-transform-origin) animate-pop-in data-[state=closed]:animate-pop-out\",\n            className,\n          )}\n          {...props}\n        >\n          {content}\n          {shortcut ? <span className=\"opacity-65\">{shortcut}</span> : null}\n          {arrow ? <TooltipPrimitive.Arrow width={10} height={5} className=\"fill-neutral\" /> : null}\n        </TooltipPrimitive.Content>\n      </TooltipPrimitive.Portal>\n    </TooltipPrimitive.Root>\n  );\n\n  return insideProvider ? (\n    tooltip\n  ) : (\n    <TooltipPrimitive.Provider delayDuration={delayDuration ?? 300}>{tooltip}</TooltipPrimitive.Provider>\n  );\n}\n"
+    }
+  ]
+}

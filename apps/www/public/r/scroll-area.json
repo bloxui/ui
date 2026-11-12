@@ -1,0 +1,19 @@
+{
+  "name": "scroll-area",
+  "type": "ui",
+  "title": "Scroll Area",
+  "description": "A scroll container with thin, themed scrollbars.",
+  "category": "Layout",
+  "dependencies": {
+    "radix-ui": "^1.8.1"
+  },
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "path": "ui/scroll-area.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { ScrollArea as ScrollAreaPrimitive } from \"radix-ui\";\nimport { cn } from \"~lib/cn\";\n\nfunction ScrollBar({ orientation }: { orientation: \"vertical\" | \"horizontal\" }) {\n  return (\n    <ScrollAreaPrimitive.Scrollbar\n      orientation={orientation}\n      className=\"flex touch-none p-0.5 select-none data-[orientation=horizontal]:h-2.5 data-[orientation=horizontal]:flex-col data-[orientation=vertical]:h-full data-[orientation=vertical]:w-2.5\"\n    >\n      <ScrollAreaPrimitive.Thumb className=\"relative flex-1 rounded-full bg-border-strong transition-colors hover:bg-muted\" />\n    </ScrollAreaPrimitive.Scrollbar>\n  );\n}\n\nexport interface ScrollAreaProps extends React.ComponentProps<typeof ScrollAreaPrimitive.Root> {\n  /** Which scrollbars to show. */\n  orientation?: \"vertical\" | \"horizontal\" | \"both\";\n}\n\n/** A scroll container with thin, themed scrollbars. Give it a height (or max height) with className. */\nexport function ScrollArea({ className, children, orientation = \"vertical\", ...props }: ScrollAreaProps) {\n  return (\n    <ScrollAreaPrimitive.Root data-slot=\"scroll-area\" className={cn(\"relative overflow-hidden\", className)} {...props}>\n      <ScrollAreaPrimitive.Viewport\n        // Focusable so keyboard users can scroll it.\n        tabIndex={0}\n        className=\"size-full rounded-[inherit] outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset\"\n      >\n        {children}\n      </ScrollAreaPrimitive.Viewport>\n      {orientation !== \"horizontal\" ? <ScrollBar orientation=\"vertical\" /> : null}\n      {orientation !== \"vertical\" ? <ScrollBar orientation=\"horizontal\" /> : null}\n      <ScrollAreaPrimitive.Corner />\n    </ScrollAreaPrimitive.Root>\n  );\n}\n"
+    }
+  ]
+}

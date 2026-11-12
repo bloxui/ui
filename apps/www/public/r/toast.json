@@ -1,0 +1,17 @@
+{
+  "name": "toast",
+  "type": "ui",
+  "title": "Toast",
+  "description": "Brief notifications raised from anywhere with toast().",
+  "category": "Feedback",
+  "dependencies": {
+    "sonner": "^2.0.8"
+  },
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "ui/toast.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { Toaster as Sonner, toast } from \"sonner\";\n\n/**\n * Call `toast(\"Saved\")`, `toast.success(...)`, `toast.error(...)` or `toast.promise(...)`\n * from anywhere. Render <Toaster /> once, near the root of your app.\n */\nexport { toast };\n\n// Sonner reads these variables; pointing them at Blox tokens makes toasts follow the theme.\nconst themeVariables = {\n  \"--normal-bg\": \"var(--bx-surface)\",\n  \"--normal-text\": \"var(--bx-fg)\",\n  \"--normal-border\": \"var(--bx-border)\",\n  \"--success-bg\": \"var(--bx-success-soft)\",\n  \"--success-text\": \"var(--bx-success-text)\",\n  \"--success-border\": \"transparent\",\n  \"--error-bg\": \"var(--bx-danger-soft)\",\n  \"--error-text\": \"var(--bx-danger-text)\",\n  \"--error-border\": \"transparent\",\n  \"--warning-bg\": \"var(--bx-warning-soft)\",\n  \"--warning-text\": \"var(--bx-warning-text)\",\n  \"--warning-border\": \"transparent\",\n  \"--info-bg\": \"var(--bx-brand-soft)\",\n  \"--info-text\": \"var(--bx-brand-text)\",\n  \"--info-border\": \"transparent\",\n  \"--border-radius\": \"var(--bx-radius)\",\n  fontFamily: \"inherit\",\n} as React.CSSProperties;\n\nexport type ToasterProps = React.ComponentProps<typeof Sonner>;\n\nexport function Toaster({ position = \"bottom-right\", richColors = true, style, ...props }: ToasterProps) {\n  return (\n    <Sonner\n      data-slot=\"toaster\"\n      position={position}\n      richColors={richColors}\n      style={{ ...themeVariables, ...style }}\n      {...props}\n    />\n  );\n}\n"
+    }
+  ]
+}

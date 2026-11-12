@@ -1,0 +1,15 @@
+{
+  "name": "control",
+  "type": "lib",
+  "title": "Control styles",
+  "description": "Shared styles for button-like form triggers.",
+  "category": "Lib",
+  "dependencies": {},
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "lib/control.ts",
+      "content": "/** Styles for button-like form triggers (date pickers and other custom fields), matching Input and Select. */\n\nexport const fieldTriggerSizes = {\n  sm: \"h-8 rounded-md px-2.5 text-sm\",\n  md: \"h-9 rounded-lg px-3 text-sm\",\n  lg: \"h-11 rounded-lg px-3.5 text-base\",\n} as const;\n\nexport type FieldTriggerSize = keyof typeof fieldTriggerSizes;\n\nexport const fieldTriggerClass =\n  \"flex w-full items-center gap-2 border border-border-strong bg-surface text-left text-fg shadow-xs transition-[border-color,box-shadow] duration-150 outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/25 disabled:cursor-not-allowed disabled:bg-sunken disabled:opacity-60 aria-invalid:border-danger\";\n"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "field",
+  "type": "ui",
+  "title": "Field",
+  "description": "Wires a label, hint and error to the control inside it.",
+  "category": "Forms",
+  "dependencies": {},
+  "registryDependencies": [
+    "cn",
+    "field-context",
+    "label"
+  ],
+  "files": [
+    {
+      "path": "ui/field.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { cn } from \"~lib/cn\";\nimport { FieldContext } from \"~lib/field-context\";\nimport { Label } from \"~ui/label\";\n\nexport interface FieldProps extends Omit<React.ComponentProps<\"div\">, \"id\"> {\n  label?: React.ReactNode;\n  /** Helper text shown under the control. */\n  hint?: React.ReactNode;\n  /** Error message. When set, the control is marked invalid and the hint is replaced. */\n  error?: React.ReactNode;\n  required?: boolean;\n  /** `horizontal` puts the control beside its label — use it for Checkbox, Radio and Switch. */\n  orientation?: \"vertical\" | \"horizontal\";\n  /** Id for the control. Generated when omitted. */\n  id?: string;\n}\n\n/**\n * Wires a label, hint and error to the control inside it: ids, aria-describedby,\n * aria-invalid and required are all handled, so you only write the control.\n */\nexport function Field({\n  className,\n  label,\n  hint,\n  error,\n  required,\n  orientation = \"vertical\",\n  id: idProp,\n  children,\n  ...props\n}: FieldProps) {\n  const autoId = React.useId();\n  const id = idProp ?? autoId;\n  const hasError = Boolean(error);\n  const messageId = hasError ? `${id}-error` : hint ? `${id}-hint` : undefined;\n\n  const context = React.useMemo(\n    () => ({ id, describedBy: messageId, invalid: hasError, required }),\n    [id, messageId, hasError, required],\n  );\n\n  const labelNode = label ? (\n    <Label htmlFor={id} required={required}>\n      {label}\n    </Label>\n  ) : null;\n\n  const messageNode = hasError ? (\n    <p id={messageId} data-slot=\"field-error\" className=\"text-sm text-danger-text\">\n      {error}\n    </p>\n  ) : hint ? (\n    <p id={messageId} data-slot=\"field-hint\" className=\"text-sm text-muted\">\n      {hint}\n    </p>\n  ) : null;\n\n  return (\n    <FieldContext.Provider value={context}>\n      {orientation === \"horizontal\" ? (\n        <div data-slot=\"field\" className={cn(\"flex items-start gap-3\", className)} {...props}>\n          {/* Fixed height matches the label's line so the control aligns with its first line. */}\n          <span className=\"flex h-5 shrink-0 items-center\">{children}</span>\n          <div className=\"flex min-w-0 flex-col gap-0.5\">\n            {labelNode}\n            {messageNode}\n          </div>\n        </div>\n      ) : (\n        <div data-slot=\"field\" className={cn(\"flex flex-col gap-1.5\", className)} {...props}>\n          {labelNode}\n          {children}\n          {messageNode}\n        </div>\n      )}\n    </FieldContext.Provider>\n  );\n}\n"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "drawer",
+  "type": "ui",
+  "title": "Drawer",
+  "description": "A bottom panel the user can drag down to dismiss.",
+  "category": "Overlays",
+  "dependencies": {
+    "vaul": "^1.1.2"
+  },
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "path": "ui/drawer.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { Drawer as DrawerPrimitive } from \"vaul\";\nimport { cn } from \"~lib/cn\";\n\n/** A bottom panel the user can drag down to dismiss; best for touch screens. */\nexport function Drawer(props: React.ComponentProps<typeof DrawerPrimitive.Root>) {\n  return <DrawerPrimitive.Root {...props} />;\n}\n\nexport const DrawerTrigger = DrawerPrimitive.Trigger;\nexport const DrawerClose = DrawerPrimitive.Close;\n\nexport function DrawerContent({\n  className,\n  children,\n  ...props\n}: React.ComponentProps<typeof DrawerPrimitive.Content>) {\n  return (\n    <DrawerPrimitive.Portal>\n      <DrawerPrimitive.Overlay data-slot=\"drawer-backdrop\" className=\"fixed inset-0 z-50 bg-black/45\" />\n      <DrawerPrimitive.Content\n        data-slot=\"drawer-content\"\n        className={cn(\n          \"fixed inset-x-0 bottom-0 z-50 flex max-h-[90dvh] flex-col rounded-t-2xl border border-b-0 border-border bg-surface text-fg outline-none [--dialog-pad:--spacing(6)]\",\n          className,\n        )}\n        {...props}\n      >\n        <div aria-hidden className=\"mx-auto mt-3 h-1.5 w-12 shrink-0 rounded-full bg-border-strong\" />\n        {children}\n      </DrawerPrimitive.Content>\n    </DrawerPrimitive.Portal>\n  );\n}\n\nexport function DrawerHeader({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"drawer-header\"\n      className={cn(\"flex shrink-0 flex-col gap-1.5 p-(--dialog-pad) pb-4\", className)}\n      {...props}\n    />\n  );\n}\n\nexport function DrawerTitle({ className, ...props }: React.ComponentProps<typeof DrawerPrimitive.Title>) {\n  return (\n    <DrawerPrimitive.Title\n      data-slot=\"drawer-title\"\n      className={cn(\"text-lg leading-snug font-semibold tracking-tight\", className)}\n      {...props}\n    />\n  );\n}\n\nexport function DrawerDescription({\n  className,\n  ...props\n}: React.ComponentProps<typeof DrawerPrimitive.Description>) {\n  return (\n    <DrawerPrimitive.Description\n      data-slot=\"drawer-description\"\n      className={cn(\"text-sm text-muted\", className)}\n      {...props}\n    />\n  );\n}\n\nexport function DrawerBody({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"drawer-body\"\n      className={cn(\"min-h-0 flex-1 overflow-y-auto px-(--dialog-pad) pb-(--dialog-pad)\", className)}\n      {...props}\n    />\n  );\n}\n\nexport function DrawerFooter({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"drawer-footer\"\n      className={cn(\"flex shrink-0 flex-col gap-2 px-(--dialog-pad) pb-(--dialog-pad)\", className)}\n      {...props}\n    />\n  );\n}\n"
+    }
+  ]
+}

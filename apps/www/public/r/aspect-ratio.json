@@ -1,0 +1,17 @@
+{
+  "name": "aspect-ratio",
+  "type": "ui",
+  "title": "Aspect Ratio",
+  "description": "Keeps content at a fixed width-to-height ratio.",
+  "category": "Layout",
+  "dependencies": {},
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "path": "ui/aspect-ratio.tsx",
+      "content": "import * as React from \"react\";\nimport { cn } from \"~lib/cn\";\n\nexport interface AspectRatioProps extends React.ComponentProps<\"div\"> {\n  /** Width divided by height, e.g. 16 / 9. */\n  ratio?: number;\n}\n\n/** Keeps its box at a fixed ratio; a direct <img> or <video> child fills and crops to fit. */\nexport function AspectRatio({ className, ratio = 1, style, ...props }: AspectRatioProps) {\n  return (\n    <div\n      data-slot=\"aspect-ratio\"\n      style={{ aspectRatio: ratio, ...style }}\n      className={cn(\n        \"relative w-full overflow-hidden [&>img]:size-full [&>img]:object-cover [&>video]:size-full [&>video]:object-cover\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n"
+    }
+  ]
+}

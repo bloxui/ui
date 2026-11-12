@@ -1,0 +1,15 @@
+{
+  "name": "field-context",
+  "type": "lib",
+  "title": "Field context",
+  "description": "Lets a control read its label, hint and error wiring from Field.",
+  "category": "Lib",
+  "dependencies": {},
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "lib/field-context.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\n\nexport interface FieldContextValue {\n  /** Id the control should use so the label points at it. */\n  id: string;\n  /** Id of the hint / error text describing the control. */\n  describedBy?: string;\n  invalid: boolean;\n  required?: boolean;\n}\n\nexport const FieldContext = React.createContext<FieldContextValue | null>(null);\n\ninterface ControlProps {\n  id?: string;\n  invalid?: boolean;\n  required?: boolean;\n  \"aria-describedby\"?: string;\n}\n\n/**\n * Resolves a control's accessibility wiring. Props set directly on the\n * control win; anything missing is filled in from the surrounding <Field>.\n * Use it to make your own controls Field-aware.\n */\nexport function useFieldControl(props: ControlProps) {\n  const field = React.useContext(FieldContext);\n  const describedBy = [props[\"aria-describedby\"], field?.describedBy].filter(Boolean).join(\" \");\n  return {\n    id: props.id ?? field?.id,\n    \"aria-describedby\": describedBy || undefined,\n    invalid: props.invalid ?? field?.invalid ?? false,\n    required: props.required ?? field?.required,\n  };\n}\n"
+    }
+  ]
+}

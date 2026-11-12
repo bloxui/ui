@@ -1,0 +1,20 @@
+{
+  "name": "breadcrumb",
+  "type": "ui",
+  "title": "Breadcrumb",
+  "description": "Shows where the current page sits in the hierarchy.",
+  "category": "Navigation",
+  "dependencies": {
+    "@radix-ui/react-slot": "^1.2.0"
+  },
+  "registryDependencies": [
+    "cn",
+    "icons"
+  ],
+  "files": [
+    {
+      "path": "ui/breadcrumb.tsx",
+      "content": "import * as React from \"react\";\nimport { Slot } from \"@radix-ui/react-slot\";\nimport { cn } from \"~lib/cn\";\nimport { ChevronRightIcon } from \"~lib/icons\";\n\nexport interface BreadcrumbProps extends React.ComponentProps<\"nav\"> {\n  /** Shown between items. Inserted automatically, so you only write the items. */\n  separator?: React.ReactNode;\n}\n\nexport function Breadcrumb({\n  className,\n  children,\n  separator = <ChevronRightIcon />,\n  \"aria-label\": ariaLabel = \"Breadcrumb\",\n  ...props\n}: BreadcrumbProps) {\n  const items = React.Children.toArray(children).filter(React.isValidElement);\n  return (\n    <nav data-slot=\"breadcrumb\" aria-label={ariaLabel} {...props}>\n      <ol className={cn(\"flex flex-wrap items-center gap-1.5 text-sm text-muted\", className)}>\n        {items.map((item, index) => (\n          <React.Fragment key={item.key ?? index}>\n            {item}\n            {index < items.length - 1 ? (\n              <li role=\"presentation\" aria-hidden className=\"flex items-center [&_svg]:size-3.5\">\n                {separator}\n              </li>\n            ) : null}\n          </React.Fragment>\n        ))}\n      </ol>\n    </nav>\n  );\n}\n\nexport function BreadcrumbItem({ className, ...props }: React.ComponentProps<\"li\">) {\n  return (\n    <li data-slot=\"breadcrumb-item\" className={cn(\"inline-flex items-center gap-1.5\", className)} {...props} />\n  );\n}\n\nexport interface BreadcrumbLinkProps extends React.ComponentProps<\"a\"> {\n  /** Render your router's link component instead of an <a>. */\n  asChild?: boolean;\n}\n\nexport function BreadcrumbLink({ className, asChild, ...props }: BreadcrumbLinkProps) {\n  const Comp = asChild ? Slot : \"a\";\n  return (\n    <Comp\n      data-slot=\"breadcrumb-link\"\n      className={cn(\n        \"rounded-sm transition-colors outline-none hover:text-fg focus-visible:ring-2 focus-visible:ring-ring\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\n/** The current page: not a link, announced as the current location. */\nexport function BreadcrumbPage({ className, ...props }: React.ComponentProps<\"span\">) {\n  return (\n    <span\n      data-slot=\"breadcrumb-page\"\n      aria-current=\"page\"\n      className={cn(\"font-medium text-fg\", className)}\n      {...props}\n    />\n  );\n}\n\n/** Stands in for collapsed middle items. */\nexport function BreadcrumbEllipsis({ className, ...props }: React.ComponentProps<\"span\">) {\n  return (\n    <span data-slot=\"breadcrumb-ellipsis\" className={cn(\"flex items-center\", className)} {...props}>\n      <span aria-hidden>…</span>\n      <span className=\"sr-only\">More pages</span>\n    </span>\n  );\n}\n"
+    }
+  ]
+}

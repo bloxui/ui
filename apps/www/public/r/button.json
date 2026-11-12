@@ -1,0 +1,22 @@
+{
+  "name": "button",
+  "type": "ui",
+  "title": "Button",
+  "description": "Triggers an action, in any tone and variant, with loading and icons.",
+  "category": "Forms",
+  "dependencies": {
+    "@radix-ui/react-slot": "^1.2.0",
+    "class-variance-authority": "^0.7.1"
+  },
+  "registryDependencies": [
+    "cn",
+    "tone",
+    "spinner"
+  ],
+  "files": [
+    {
+      "path": "ui/button.tsx",
+      "content": "import * as React from \"react\";\nimport { Slot, Slottable } from \"@radix-ui/react-slot\";\nimport { cva, type VariantProps } from \"class-variance-authority\";\nimport { cn } from \"~lib/cn\";\nimport { toneClasses, type Tone } from \"~lib/tone\";\nimport { Spinner } from \"~ui/spinner\";\n\nexport const buttonVariants = cva(\n  [\n    \"inline-flex items-center justify-center whitespace-nowrap font-medium select-none\",\n    \"transition-[background-color,border-color,color,box-shadow,transform] duration-150\",\n    \"outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg\",\n    \"active:scale-[0.98]\",\n    \"disabled:pointer-events-none disabled:opacity-50\",\n    \"aria-disabled:pointer-events-none aria-disabled:opacity-50\",\n    \"[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-[1.15em]\",\n  ],\n  {\n    variants: {\n      variant: {\n        solid: \"bg-(--t) text-(color:--t-fg) shadow-xs hover:bg-(--t-hover)\",\n        soft: \"bg-(--t-soft) text-(color:--t-text) hover:bg-[color-mix(in_oklab,var(--t-soft),var(--t)_16%)]\",\n        outline:\n          \"border border-border-strong bg-surface text-(color:--t-text) hover:border-(color:--t) hover:bg-(--t-soft)\",\n        ghost: \"text-(color:--t-text) hover:bg-(--t-soft)\",\n        link: \"text-(color:--t-text) underline-offset-4 hover:underline\",\n      },\n      size: {\n        xs: \"h-7 gap-1 rounded-md px-2.5 text-xs\",\n        sm: \"h-8 gap-1.5 rounded-md px-3 text-sm\",\n        md: \"h-9 gap-2 rounded-lg px-4 text-sm\",\n        lg: \"h-11 gap-2 rounded-lg px-5 text-base\",\n      },\n      iconOnly: { true: \"aspect-square px-0\" },\n      fullWidth: { true: \"w-full\" },\n    },\n    compoundVariants: [{ variant: \"link\", className: \"h-auto px-0 active:scale-100\" }],\n    defaultVariants: { variant: \"solid\", size: \"md\" },\n  },\n);\n\nexport interface ButtonProps\n  extends React.ComponentProps<\"button\">,\n    VariantProps<typeof buttonVariants> {\n  /** Colour intent. Works with every variant. */\n  tone?: Tone;\n  /** Shows a spinner and blocks interaction while keeping the button's width. */\n  loading?: boolean;\n  /** Icon rendered before the label. Replaced by the spinner while loading. */\n  leftIcon?: React.ReactNode;\n  /** Icon rendered after the label. */\n  rightIcon?: React.ReactNode;\n  /** Render the child element (e.g. a link) with button styles instead of a <button>. */\n  asChild?: boolean;\n}\n\nexport function Button({\n  className,\n  variant,\n  size,\n  tone = \"brand\",\n  iconOnly,\n  fullWidth,\n  loading = false,\n  leftIcon,\n  rightIcon,\n  asChild = false,\n  disabled,\n  type,\n  children,\n  ...props\n}: ButtonProps) {\n  const Comp = asChild ? Slot : \"button\";\n  const inactive = disabled || loading;\n\n  return (\n    <Comp\n      data-slot=\"button\"\n      // Native buttons default to type=\"submit\", which submits forms by accident.\n      type={asChild ? undefined : (type ?? \"button\")}\n      disabled={asChild ? undefined : inactive}\n      aria-disabled={asChild && inactive ? true : undefined}\n      aria-busy={loading || undefined}\n      className={cn(\n        toneClasses[tone],\n        buttonVariants({ variant, size, iconOnly, fullWidth }),\n        className,\n      )}\n      {...props}\n    >\n      {loading ? <Spinner label=\"\" /> : leftIcon}\n      {/* An icon-only button swaps its icon for the spinner instead of showing both. */}\n      {loading && iconOnly && !asChild ? null : <Slottable>{children}</Slottable>}\n      {rightIcon}\n    </Comp>\n  );\n}\n"
+    }
+  ]
+}

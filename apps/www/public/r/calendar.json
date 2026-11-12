@@ -1,0 +1,20 @@
+{
+  "name": "calendar",
+  "type": "ui",
+  "title": "Calendar",
+  "description": "A month grid for picking a day, several days or a range.",
+  "category": "Forms",
+  "dependencies": {
+    "react-day-picker": "^10.0.2"
+  },
+  "registryDependencies": [
+    "cn",
+    "icons"
+  ],
+  "files": [
+    {
+      "path": "ui/calendar.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { DayPicker } from \"react-day-picker\";\nimport { cn } from \"~lib/cn\";\nimport { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from \"~lib/icons\";\n\nexport type CalendarProps = React.ComponentProps<typeof DayPicker>;\n\nconst navButton =\n  \"pointer-events-auto inline-flex size-8 items-center justify-center rounded-md text-muted transition-colors outline-none hover:bg-neutral-soft hover:text-fg focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-40 aria-disabled:pointer-events-none aria-disabled:opacity-40\";\n\n/**\n * A month grid for picking dates. Takes every react-day-picker prop:\n * mode=\"single\" | \"multiple\" | \"range\", `selected`, `onSelect`, `disabled`, `numberOfMonths`…\n */\nexport function Calendar({ className, classNames, showOutsideDays = true, components, ...props }: CalendarProps) {\n  return (\n    <DayPicker\n      data-slot=\"calendar\"\n      showOutsideDays={showOutsideDays}\n      className={cn(\"w-fit p-3\", className)}\n      classNames={{\n        months: \"relative flex flex-col gap-4 sm:flex-row\",\n        month: \"flex flex-col gap-3\",\n        month_caption: \"flex h-8 items-center justify-center px-9\",\n        caption_label: \"text-sm font-medium\",\n        // The bar spans the caption, so only its buttons take pointer events.\n        nav: \"pointer-events-none absolute inset-x-0 top-0 z-[1] flex items-center justify-between\",\n        button_previous: navButton,\n        button_next: navButton,\n        dropdowns: \"flex items-center gap-1.5 text-sm font-medium\",\n        dropdown_root:\n          \"relative inline-flex h-8 items-center gap-1 rounded-md border border-border-strong px-2 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring\",\n        dropdown: \"absolute inset-0 cursor-pointer opacity-0\",\n        month_grid: \"border-collapse\",\n        weekdays: \"flex\",\n        weekday: \"w-9 text-xs font-normal text-muted\",\n        week: \"mt-1 flex\",\n        day: \"relative size-9 p-0 text-center text-sm\",\n        day_button:\n          \"inline-flex size-9 items-center justify-center rounded-md transition-colors outline-none hover:bg-neutral-soft focus-visible:ring-2 focus-visible:ring-ring\",\n        today: \"[&>button]:ring-1 [&>button]:ring-border-strong [&>button]:ring-inset\",\n        selected: \"[&>button]:bg-brand [&>button]:font-medium [&>button]:text-brand-fg [&>button]:hover:bg-brand-hover\",\n        range_start: \"rounded-l-md bg-brand-soft\",\n        range_end: \"rounded-r-md bg-brand-soft\",\n        // Middle days carry `selected` too, so these need to win over it.\n        range_middle:\n          \"bg-brand-soft [&>button]:rounded-none [&>button]:bg-transparent! [&>button]:font-normal! [&>button]:text-brand-text!\",\n        outside: \"[&>button]:opacity-45\",\n        disabled: \"[&>button]:pointer-events-none [&>button]:opacity-35\",\n        hidden: \"invisible\",\n        chevron: \"size-4\",\n        ...classNames,\n      }}\n      components={{\n        Chevron: ({ orientation, className: chevronClass }) => {\n          const Icon =\n            orientation === \"left\" ? ChevronLeftIcon : orientation === \"right\" ? ChevronRightIcon : ChevronDownIcon;\n          return <Icon className={cn(\"size-4\", chevronClass)} />;\n        },\n        ...components,\n      }}\n      {...props}\n    />\n  );\n}\n"
+    }
+  ]
+}

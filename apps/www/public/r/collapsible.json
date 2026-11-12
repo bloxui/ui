@@ -1,0 +1,20 @@
+{
+  "name": "collapsible",
+  "type": "ui",
+  "title": "Collapsible",
+  "description": "A single region that shows and hides with an animation.",
+  "category": "Disclosure",
+  "dependencies": {
+    "radix-ui": "^1.8.1"
+  },
+  "registryDependencies": [
+    "cn",
+    "accordion"
+  ],
+  "files": [
+    {
+      "path": "ui/collapsible.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { Collapsible as CollapsiblePrimitive } from \"radix-ui\";\nimport { cn } from \"~lib/cn\";\nimport { collapseAnimation } from \"~ui/accordion\";\n\n/** A single show/hide region. Bring your own trigger with <CollapsibleTrigger asChild>. */\nexport const Collapsible = CollapsiblePrimitive.Root;\nexport const CollapsibleTrigger = CollapsiblePrimitive.Trigger;\n\nexport function CollapsibleContent({\n  className,\n  ...props\n}: React.ComponentProps<typeof CollapsiblePrimitive.Content>) {\n  return (\n    <CollapsiblePrimitive.Content\n      data-slot=\"collapsible-content\"\n      className={cn(collapseAnimation, className)}\n      {...props}\n    />\n  );\n}\n"
+    }
+  ]
+}

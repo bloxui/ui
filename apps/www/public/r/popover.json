@@ -1,0 +1,20 @@
+{
+  "name": "popover",
+  "type": "ui",
+  "title": "Popover",
+  "description": "Floating content anchored to a trigger.",
+  "category": "Overlays",
+  "dependencies": {
+    "radix-ui": "^1.8.1"
+  },
+  "registryDependencies": [
+    "cn",
+    "overlay"
+  ],
+  "files": [
+    {
+      "path": "ui/popover.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { Popover as PopoverPrimitive } from \"radix-ui\";\nimport { cn } from \"~lib/cn\";\nimport { popupClass } from \"~lib/overlay\";\n\nexport const Popover = PopoverPrimitive.Root;\nexport const PopoverTrigger = PopoverPrimitive.Trigger;\nexport const PopoverAnchor = PopoverPrimitive.Anchor;\nexport const PopoverClose = PopoverPrimitive.Close;\n\nexport function PopoverContent({\n  className,\n  align = \"center\",\n  sideOffset = 8,\n  collisionPadding = 8,\n  ...props\n}: React.ComponentProps<typeof PopoverPrimitive.Content>) {\n  return (\n    <PopoverPrimitive.Portal>\n      <PopoverPrimitive.Content\n        data-slot=\"popover-content\"\n        align={align}\n        sideOffset={sideOffset}\n        collisionPadding={collisionPadding}\n        className={cn(\n          popupClass,\n          \"max-h-(--radix-popover-content-available-height) w-72 origin-(--radix-popover-content-transform-origin) overflow-y-auto p-4 text-sm\",\n          className,\n        )}\n        {...props}\n      />\n    </PopoverPrimitive.Portal>\n  );\n}\n"
+    }
+  ]
+}

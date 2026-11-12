@@ -1,0 +1,19 @@
+{
+  "name": "separator",
+  "type": "ui",
+  "title": "Separator",
+  "description": "A dividing line, optionally with a label.",
+  "category": "Layout",
+  "dependencies": {
+    "radix-ui": "^1.8.1"
+  },
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "path": "ui/separator.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { Separator as SeparatorPrimitive } from \"radix-ui\";\nimport { cn } from \"~lib/cn\";\n\n/** Pass children to render a labelled divider, e.g. <Separator>or</Separator>. */\nexport function Separator({\n  className,\n  orientation = \"horizontal\",\n  decorative = true,\n  children,\n  ...props\n}: React.ComponentProps<typeof SeparatorPrimitive.Root>) {\n  if (children && orientation === \"horizontal\") {\n    return (\n      <div\n        data-slot=\"separator\"\n        role={decorative ? undefined : \"separator\"}\n        className={cn(\"flex w-full items-center gap-3 text-xs text-muted\", className)}\n      >\n        <span className=\"h-px flex-1 bg-border\" />\n        {children}\n        <span className=\"h-px flex-1 bg-border\" />\n      </div>\n    );\n  }\n  return (\n    <SeparatorPrimitive.Root\n      data-slot=\"separator\"\n      orientation={orientation}\n      decorative={decorative}\n      className={cn(\n        \"shrink-0 bg-border data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:w-px data-[orientation=vertical]:self-stretch\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "name": "sheet",
+  "type": "ui",
+  "title": "Sheet",
+  "description": "A panel that slides in from any screen edge.",
+  "category": "Overlays",
+  "dependencies": {
+    "radix-ui": "^1.8.1"
+  },
+  "registryDependencies": [
+    "cn",
+    "icons",
+    "overlay",
+    "dialog"
+  ],
+  "files": [
+    {
+      "path": "ui/sheet.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { Dialog as DialogPrimitive } from \"radix-ui\";\nimport { cn } from \"~lib/cn\";\nimport { XIcon } from \"~lib/icons\";\nimport { backdropClass, closeButtonClass } from \"~lib/overlay\";\nimport { DialogBody, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from \"~ui/dialog\";\n\n/** A panel that slides in from a screen edge. Shares its parts with Dialog. */\nexport const Sheet = DialogPrimitive.Root;\nexport const SheetTrigger = DialogPrimitive.Trigger;\nexport const SheetClose = DialogPrimitive.Close;\nexport const SheetHeader = DialogHeader;\nexport const SheetTitle = DialogTitle;\nexport const SheetDescription = DialogDescription;\nexport const SheetBody = DialogBody;\nexport const SheetFooter = DialogFooter;\n\nconst sides = {\n  right: \"inset-y-0 right-0 h-full w-[min(100vw_-_3rem,var(--sheet-size))] border-l [--bx-slide-x:100%]\",\n  left: \"inset-y-0 left-0 h-full w-[min(100vw_-_3rem,var(--sheet-size))] border-r [--bx-slide-x:-100%]\",\n  top: \"inset-x-0 top-0 max-h-[min(100dvh_-_3rem,var(--sheet-size))] border-b [--bx-slide-y:-100%]\",\n  bottom: \"inset-x-0 bottom-0 max-h-[min(100dvh_-_3rem,var(--sheet-size))] border-t [--bx-slide-y:100%]\",\n} as const;\n\nconst sizes = {\n  sm: \"[--sheet-size:20rem]\",\n  md: \"[--sheet-size:24rem]\",\n  lg: \"[--sheet-size:32rem]\",\n  xl: \"[--sheet-size:42rem]\",\n} as const;\n\nexport interface SheetContentProps extends React.ComponentProps<typeof DialogPrimitive.Content> {\n  side?: keyof typeof sides;\n  /** Width for left/right sheets, maximum height for top/bottom sheets. */\n  size?: keyof typeof sizes;\n  showClose?: boolean;\n  closeLabel?: string;\n}\n\nexport function SheetContent({\n  className,\n  children,\n  side = \"right\",\n  size = \"md\",\n  showClose = true,\n  closeLabel = \"Close\",\n  ...props\n}: SheetContentProps) {\n  return (\n    <DialogPrimitive.Portal>\n      <DialogPrimitive.Overlay data-slot=\"sheet-backdrop\" className={backdropClass} />\n      <DialogPrimitive.Content\n        data-slot=\"sheet-content\"\n        data-side={side}\n        className={cn(\n          \"fixed z-50 flex flex-col border-border bg-surface text-fg shadow-raised outline-none [--dialog-pad:--spacing(6)]\",\n          \"data-[state=open]:animate-slide-in data-[state=closed]:animate-slide-out\",\n          sizes[size],\n          sides[side],\n          className,\n        )}\n        {...props}\n      >\n        {children}\n        {showClose ? (\n          <DialogPrimitive.Close aria-label={closeLabel} className={closeButtonClass}>\n            <XIcon className=\"size-4\" />\n          </DialogPrimitive.Close>\n        ) : null}\n      </DialogPrimitive.Content>\n    </DialogPrimitive.Portal>\n  );\n}\n"
+    }
+  ]
+}

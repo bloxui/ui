@@ -1,0 +1,20 @@
+{
+  "name": "accordion",
+  "type": "ui",
+  "title": "Accordion",
+  "description": "Stacked headings that expand to show their content.",
+  "category": "Disclosure",
+  "dependencies": {
+    "radix-ui": "^1.8.1"
+  },
+  "registryDependencies": [
+    "cn",
+    "icons"
+  ],
+  "files": [
+    {
+      "path": "ui/accordion.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { Accordion as AccordionPrimitive } from \"radix-ui\";\nimport { cn } from \"~lib/cn\";\nimport { ChevronDownIcon } from \"~lib/icons\";\n\nexport const collapseAnimation =\n  \"overflow-hidden data-[state=open]:animate-collapse-down data-[state=closed]:animate-collapse-up\";\n\nexport type AccordionProps = React.ComponentProps<typeof AccordionPrimitive.Root> & {\n  /** `divided` separates items with lines; `card` gives each item its own bordered box. */\n  variant?: \"divided\" | \"card\";\n};\n\n/** Use type=\"single\" (add `collapsible` to allow closing) or type=\"multiple\". */\nexport function Accordion({ className, variant = \"divided\", ...props }: AccordionProps) {\n  return (\n    <AccordionPrimitive.Root\n      data-slot=\"accordion\"\n      data-variant={variant}\n      className={cn(\"group/accordion flex w-full flex-col\", variant === \"card\" && \"gap-2\", className)}\n      {...props}\n    />\n  );\n}\n\nexport function AccordionItem({ className, ...props }: React.ComponentProps<typeof AccordionPrimitive.Item>) {\n  return (\n    <AccordionPrimitive.Item\n      data-slot=\"accordion-item\"\n      className={cn(\n        \"group-data-[variant=divided]/accordion:border-b group-data-[variant=divided]/accordion:border-border group-data-[variant=divided]/accordion:last:border-b-0\",\n        \"group-data-[variant=card]/accordion:rounded-lg group-data-[variant=card]/accordion:border group-data-[variant=card]/accordion:border-border group-data-[variant=card]/accordion:bg-surface group-data-[variant=card]/accordion:px-4\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport interface AccordionTriggerProps extends React.ComponentProps<typeof AccordionPrimitive.Trigger> {\n  /** Heading level wrapping the trigger, so the accordion fits the page outline. */\n  headingLevel?: \"h2\" | \"h3\" | \"h4\" | \"h5\" | \"h6\";\n}\n\nexport function AccordionTrigger({\n  className,\n  children,\n  headingLevel: Heading = \"h3\",\n  ...props\n}: AccordionTriggerProps) {\n  return (\n    <AccordionPrimitive.Header asChild>\n      <Heading className=\"flex\">\n        <AccordionPrimitive.Trigger\n          data-slot=\"accordion-trigger\"\n          className={cn(\n            \"group flex flex-1 items-center justify-between gap-4 rounded-md py-4 text-left text-sm font-medium transition-colors outline-none\",\n            \"hover:text-brand-text focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50\",\n            className,\n          )}\n          {...props}\n        >\n          {children}\n          <ChevronDownIcon className=\"size-4 shrink-0 text-muted transition-transform duration-200 group-data-[state=open]:rotate-180\" />\n        </AccordionPrimitive.Trigger>\n      </Heading>\n    </AccordionPrimitive.Header>\n  );\n}\n\nexport function AccordionContent({\n  className,\n  children,\n  ...props\n}: React.ComponentProps<typeof AccordionPrimitive.Content>) {\n  return (\n    <AccordionPrimitive.Content data-slot=\"accordion-content\" className={collapseAnimation} {...props}>\n      {/* Padding lives on the inner element so the height animation stays smooth. */}\n      <div className={cn(\"pb-4 text-sm text-muted\", className)}>{children}</div>\n    </AccordionPrimitive.Content>\n  );\n}\n"
+    }
+  ]
+}

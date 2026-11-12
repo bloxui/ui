@@ -1,0 +1,17 @@
+{
+  "name": "button-group",
+  "type": "ui",
+  "title": "Button Group",
+  "description": "Joins related buttons into one segmented control.",
+  "category": "Forms",
+  "dependencies": {},
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "path": "ui/button-group.tsx",
+      "content": "import * as React from \"react\";\nimport { cn } from \"~lib/cn\";\n\nexport interface ButtonGroupProps extends React.ComponentProps<\"div\"> {\n  orientation?: \"horizontal\" | \"vertical\";\n}\n\n/** Joins the buttons (or inputs and selects) inside it into one segmented control. */\nexport function ButtonGroup({ className, orientation = \"horizontal\", ...props }: ButtonGroupProps) {\n  return (\n    <div\n      data-slot=\"button-group\"\n      role=\"group\"\n      className={cn(\n        \"inline-flex w-fit [&>*]:relative [&>*:focus-visible]:z-[1] [&>*:focus-within]:z-[1]\",\n        // The two-class selectors outrank each child's own radius.\n        orientation === \"horizontal\"\n          ? \"[&>*:not(:first-child)]:-ml-px [&>*:not(:first-child)]:rounded-l-none [&>*:not(:last-child)]:rounded-r-none\"\n          : \"flex-col [&>*:not(:first-child)]:-mt-px [&>*:not(:first-child)]:rounded-t-none [&>*:not(:last-child)]:rounded-b-none\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n"
+    }
+  ]
+}

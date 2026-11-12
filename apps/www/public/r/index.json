@@ -1,0 +1,1058 @@
+{
+  "name": "blox-ui",
+  "version": "0.0.1",
+  "aliases": {
+    "ui": "~ui",
+    "lib": "~lib"
+  },
+  "init": [
+    "theme",
+    "cn"
+  ],
+  "items": [
+    {
+      "name": "accordion",
+      "type": "ui",
+      "title": "Accordion",
+      "description": "Stacked headings that expand to show their content.",
+      "category": "Disclosure",
+      "dependencies": {
+        "radix-ui": "^1.8.1"
+      },
+      "registryDependencies": [
+        "cn",
+        "icons"
+      ],
+      "files": [
+        "ui/accordion.tsx"
+      ]
+    },
+    {
+      "name": "alert-dialog",
+      "type": "ui",
+      "title": "Alert Dialog",
+      "description": "A dialog that interrupts the user and requires a decision.",
+      "category": "Overlays",
+      "dependencies": {
+        "radix-ui": "^1.8.1"
+      },
+      "registryDependencies": [
+        "cn",
+        "overlay",
+        "button"
+      ],
+      "files": [
+        "ui/alert-dialog.tsx"
+      ]
+    },
+    {
+      "name": "alert",
+      "type": "ui",
+      "title": "Alert",
+      "description": "An inline message with a tone, icon, actions and optional dismiss.",
+      "category": "Feedback",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "icons",
+        "tone"
+      ],
+      "files": [
+        "ui/alert.tsx"
+      ]
+    },
+    {
+      "name": "aspect-ratio",
+      "type": "ui",
+      "title": "Aspect Ratio",
+      "description": "Keeps content at a fixed width-to-height ratio.",
+      "category": "Layout",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn"
+      ],
+      "files": [
+        "ui/aspect-ratio.tsx"
+      ]
+    },
+    {
+      "name": "avatar",
+      "type": "ui",
+      "title": "Avatar",
+      "description": "A user image that falls back to initials, with status and grouping.",
+      "category": "Display",
+      "dependencies": {
+        "radix-ui": "^1.8.1"
+      },
+      "registryDependencies": [
+        "cn",
+        "icons"
+      ],
+      "files": [
+        "ui/avatar.tsx"
+      ]
+    },
+    {
+      "name": "badge",
+      "type": "ui",
+      "title": "Badge",
+      "description": "A small label for status, counts or categories.",
+      "category": "Display",
+      "dependencies": {
+        "class-variance-authority": "^0.7.1"
+      },
+      "registryDependencies": [
+        "cn",
+        "tone"
+      ],
+      "files": [
+        "ui/badge.tsx"
+      ]
+    },
+    {
+      "name": "breadcrumb",
+      "type": "ui",
+      "title": "Breadcrumb",
+      "description": "Shows where the current page sits in the hierarchy.",
+      "category": "Navigation",
+      "dependencies": {
+        "@radix-ui/react-slot": "^1.2.0"
+      },
+      "registryDependencies": [
+        "cn",
+        "icons"
+      ],
+      "files": [
+        "ui/breadcrumb.tsx"
+      ]
+    },
+    {
+      "name": "button-group",
+      "type": "ui",
+      "title": "Button Group",
+      "description": "Joins related buttons into one segmented control.",
+      "category": "Forms",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn"
+      ],
+      "files": [
+        "ui/button-group.tsx"
+      ]
+    },
+    {
+      "name": "button",
+      "type": "ui",
+      "title": "Button",
+      "description": "Triggers an action, in any tone and variant, with loading and icons.",
+      "category": "Forms",
+      "dependencies": {
+        "@radix-ui/react-slot": "^1.2.0",
+        "class-variance-authority": "^0.7.1"
+      },
+      "registryDependencies": [
+        "cn",
+        "tone",
+        "spinner"
+      ],
+      "files": [
+        "ui/button.tsx"
+      ]
+    },
+    {
+      "name": "calendar",
+      "type": "ui",
+      "title": "Calendar",
+      "description": "A month grid for picking a day, several days or a range.",
+      "category": "Forms",
+      "dependencies": {
+        "react-day-picker": "^10.0.2"
+      },
+      "registryDependencies": [
+        "cn",
+        "icons"
+      ],
+      "files": [
+        "ui/calendar.tsx"
+      ]
+    },
+    {
+      "name": "card",
+      "type": "ui",
+      "title": "Card",
+      "description": "A container that groups related content and actions.",
+      "category": "Display",
+      "dependencies": {
+        "class-variance-authority": "^0.7.1"
+      },
+      "registryDependencies": [
+        "cn"
+      ],
+      "files": [
+        "ui/card.tsx"
+      ]
+    },
+    {
+      "name": "carousel",
+      "type": "ui",
+      "title": "Carousel",
+      "description": "Swipeable slides with arrows, dots and keyboard support.",
+      "category": "Display",
+      "dependencies": {
+        "embla-carousel-react": "^8.6.0"
+      },
+      "registryDependencies": [
+        "cn",
+        "icons",
+        "button"
+      ],
+      "files": [
+        "ui/carousel.tsx"
+      ]
+    },
+    {
+      "name": "chart",
+      "type": "ui",
+      "title": "Chart",
+      "description": "Themed Recharts wrapper with tooltip, legend and a validated palette.",
+      "category": "Data",
+      "dependencies": {
+        "recharts": "^3.10.1"
+      },
+      "registryDependencies": [
+        "cn"
+      ],
+      "files": [
+        "ui/chart.tsx"
+      ]
+    },
+    {
+      "name": "checkbox",
+      "type": "ui",
+      "title": "Checkbox",
+      "description": "A box the user can tick, with an indeterminate state.",
+      "category": "Forms",
+      "dependencies": {
+        "radix-ui": "^1.8.1"
+      },
+      "registryDependencies": [
+        "cn",
+        "field-context",
+        "icons",
+        "tone"
+      ],
+      "files": [
+        "ui/checkbox.tsx"
+      ]
+    },
+    {
+      "name": "collapsible",
+      "type": "ui",
+      "title": "Collapsible",
+      "description": "A single region that shows and hides with an animation.",
+      "category": "Disclosure",
+      "dependencies": {
+        "radix-ui": "^1.8.1"
+      },
+      "registryDependencies": [
+        "cn",
+        "accordion"
+      ],
+      "files": [
+        "ui/collapsible.tsx"
+      ]
+    },
+    {
+      "name": "combobox",
+      "type": "ui",
+      "title": "Combobox",
+      "description": "A searchable select driven by an options array.",
+      "category": "Forms",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "field-context",
+        "icons",
+        "command",
+        "popover"
+      ],
+      "files": [
+        "ui/combobox.tsx"
+      ]
+    },
+    {
+      "name": "command",
+      "type": "ui",
+      "title": "Command",
+      "description": "A searchable list of actions and a Ctrl/Cmd+K palette.",
+      "category": "Overlays",
+      "dependencies": {
+        "cmdk": "^1.1.1"
+      },
+      "registryDependencies": [
+        "cn",
+        "icons",
+        "overlay",
+        "dialog"
+      ],
+      "files": [
+        "ui/command.tsx"
+      ]
+    },
+    {
+      "name": "context-menu",
+      "type": "ui",
+      "title": "Context Menu",
+      "description": "A menu opened by right-click or long-press.",
+      "category": "Overlays",
+      "dependencies": {
+        "radix-ui": "^1.8.1"
+      },
+      "registryDependencies": [
+        "cn",
+        "icons",
+        "overlay"
+      ],
+      "files": [
+        "ui/context-menu.tsx"
+      ]
+    },
+    {
+      "name": "data-table",
+      "type": "ui",
+      "title": "Data Table",
+      "description": "A table with sorting, search, pagination and row selection.",
+      "category": "Data",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "icons",
+        "checkbox",
+        "input",
+        "pagination",
+        "table"
+      ],
+      "files": [
+        "ui/data-table.tsx"
+      ]
+    },
+    {
+      "name": "date-picker",
+      "type": "ui",
+      "title": "Date Picker",
+      "description": "A field that opens a calendar to pick a date or a range.",
+      "category": "Forms",
+      "dependencies": {
+        "react-day-picker": "^10.0.2"
+      },
+      "registryDependencies": [
+        "cn",
+        "control",
+        "field-context",
+        "icons",
+        "calendar",
+        "popover"
+      ],
+      "files": [
+        "ui/date-picker.tsx"
+      ]
+    },
+    {
+      "name": "dialog",
+      "type": "ui",
+      "title": "Dialog",
+      "description": "A window over the page, in five sizes with a scrollable body.",
+      "category": "Overlays",
+      "dependencies": {
+        "radix-ui": "^1.8.1"
+      },
+      "registryDependencies": [
+        "cn",
+        "icons",
+        "overlay"
+      ],
+      "files": [
+        "ui/dialog.tsx"
+      ]
+    },
+    {
+      "name": "drawer",
+      "type": "ui",
+      "title": "Drawer",
+      "description": "A bottom panel the user can drag down to dismiss.",
+      "category": "Overlays",
+      "dependencies": {
+        "vaul": "^1.1.2"
+      },
+      "registryDependencies": [
+        "cn"
+      ],
+      "files": [
+        "ui/drawer.tsx"
+      ]
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "ui",
+      "title": "Dropdown Menu",
+      "description": "A menu of actions opened from a button.",
+      "category": "Overlays",
+      "dependencies": {
+        "radix-ui": "^1.8.1"
+      },
+      "registryDependencies": [
+        "cn",
+        "icons",
+        "overlay"
+      ],
+      "files": [
+        "ui/dropdown-menu.tsx"
+      ]
+    },
+    {
+      "name": "empty",
+      "type": "ui",
+      "title": "Empty",
+      "description": "An empty state with an icon, message and next steps.",
+      "category": "Feedback",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn"
+      ],
+      "files": [
+        "ui/empty.tsx"
+      ]
+    },
+    {
+      "name": "field",
+      "type": "ui",
+      "title": "Field",
+      "description": "Wires a label, hint and error to the control inside it.",
+      "category": "Forms",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "field-context",
+        "label"
+      ],
+      "files": [
+        "ui/field.tsx"
+      ]
+    },
+    {
+      "name": "hover-card",
+      "type": "ui",
+      "title": "Hover Card",
+      "description": "A preview shown when hovering or focusing a link.",
+      "category": "Overlays",
+      "dependencies": {
+        "radix-ui": "^1.8.1"
+      },
+      "registryDependencies": [
+        "cn",
+        "overlay"
+      ],
+      "files": [
+        "ui/hover-card.tsx"
+      ]
+    },
+    {
+      "name": "input-otp",
+      "type": "ui",
+      "title": "Input OTP",
+      "description": "A one-time-code field with grouped boxes.",
+      "category": "Forms",
+      "dependencies": {
+        "input-otp": "^1.5.0"
+      },
+      "registryDependencies": [
+        "cn",
+        "field-context"
+      ],
+      "files": [
+        "ui/input-otp.tsx"
+      ]
+    },
+    {
+      "name": "input",
+      "type": "ui",
+      "title": "Input",
+      "description": "A text field with leading and trailing slots.",
+      "category": "Forms",
+      "dependencies": {
+        "class-variance-authority": "^0.7.1"
+      },
+      "registryDependencies": [
+        "cn",
+        "field-context"
+      ],
+      "files": [
+        "ui/input.tsx"
+      ]
+    },
+    {
+      "name": "kbd",
+      "type": "ui",
+      "title": "Kbd",
+      "description": "Displays a keyboard key or shortcut.",
+      "category": "Display",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn"
+      ],
+      "files": [
+        "ui/kbd.tsx"
+      ]
+    },
+    {
+      "name": "label",
+      "type": "ui",
+      "title": "Label",
+      "description": "An accessible label for a form control.",
+      "category": "Forms",
+      "dependencies": {
+        "radix-ui": "^1.8.1"
+      },
+      "registryDependencies": [
+        "cn"
+      ],
+      "files": [
+        "ui/label.tsx"
+      ]
+    },
+    {
+      "name": "menubar",
+      "type": "ui",
+      "title": "Menubar",
+      "description": "A desktop-style row of menus.",
+      "category": "Overlays",
+      "dependencies": {
+        "radix-ui": "^1.8.1"
+      },
+      "registryDependencies": [
+        "cn",
+        "icons",
+        "overlay"
+      ],
+      "files": [
+        "ui/menubar.tsx"
+      ]
+    },
+    {
+      "name": "navigation-menu",
+      "type": "ui",
+      "title": "Navigation Menu",
+      "description": "A site header menu whose items open panels of links.",
+      "category": "Navigation",
+      "dependencies": {
+        "radix-ui": "^1.8.1"
+      },
+      "registryDependencies": [
+        "cn",
+        "icons"
+      ],
+      "files": [
+        "ui/navigation-menu.tsx"
+      ]
+    },
+    {
+      "name": "pagination",
+      "type": "ui",
+      "title": "Pagination",
+      "description": "Page navigation that works out its own page list.",
+      "category": "Navigation",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "icons",
+        "button"
+      ],
+      "files": [
+        "ui/pagination.tsx"
+      ]
+    },
+    {
+      "name": "popover",
+      "type": "ui",
+      "title": "Popover",
+      "description": "Floating content anchored to a trigger.",
+      "category": "Overlays",
+      "dependencies": {
+        "radix-ui": "^1.8.1"
+      },
+      "registryDependencies": [
+        "cn",
+        "overlay"
+      ],
+      "files": [
+        "ui/popover.tsx"
+      ]
+    },
+    {
+      "name": "progress",
+      "type": "ui",
+      "title": "Progress",
+      "description": "A progress bar, with an indeterminate mode.",
+      "category": "Feedback",
+      "dependencies": {
+        "radix-ui": "^1.8.1"
+      },
+      "registryDependencies": [
+        "cn",
+        "tone"
+      ],
+      "files": [
+        "ui/progress.tsx"
+      ]
+    },
+    {
+      "name": "radio-group",
+      "type": "ui",
+      "title": "Radio Group",
+      "description": "A set of options where only one can be chosen.",
+      "category": "Forms",
+      "dependencies": {
+        "radix-ui": "^1.8.1"
+      },
+      "registryDependencies": [
+        "cn",
+        "tone"
+      ],
+      "files": [
+        "ui/radio-group.tsx"
+      ]
+    },
+    {
+      "name": "resizable",
+      "type": "ui",
+      "title": "Resizable",
+      "description": "Panels the user can resize by dragging a handle.",
+      "category": "Layout",
+      "dependencies": {
+        "react-resizable-panels": "^3.0.6"
+      },
+      "registryDependencies": [
+        "cn",
+        "icons"
+      ],
+      "files": [
+        "ui/resizable.tsx"
+      ]
+    },
+    {
+      "name": "scroll-area",
+      "type": "ui",
+      "title": "Scroll Area",
+      "description": "A scroll container with thin, themed scrollbars.",
+      "category": "Layout",
+      "dependencies": {
+        "radix-ui": "^1.8.1"
+      },
+      "registryDependencies": [
+        "cn"
+      ],
+      "files": [
+        "ui/scroll-area.tsx"
+      ]
+    },
+    {
+      "name": "select",
+      "type": "ui",
+      "title": "Select",
+      "description": "A list of options opened from a trigger.",
+      "category": "Forms",
+      "dependencies": {
+        "radix-ui": "^1.8.1"
+      },
+      "registryDependencies": [
+        "cn",
+        "field-context",
+        "icons"
+      ],
+      "files": [
+        "ui/select.tsx"
+      ]
+    },
+    {
+      "name": "separator",
+      "type": "ui",
+      "title": "Separator",
+      "description": "A dividing line, optionally with a label.",
+      "category": "Layout",
+      "dependencies": {
+        "radix-ui": "^1.8.1"
+      },
+      "registryDependencies": [
+        "cn"
+      ],
+      "files": [
+        "ui/separator.tsx"
+      ]
+    },
+    {
+      "name": "sheet",
+      "type": "ui",
+      "title": "Sheet",
+      "description": "A panel that slides in from any screen edge.",
+      "category": "Overlays",
+      "dependencies": {
+        "radix-ui": "^1.8.1"
+      },
+      "registryDependencies": [
+        "cn",
+        "icons",
+        "overlay",
+        "dialog"
+      ],
+      "files": [
+        "ui/sheet.tsx"
+      ]
+    },
+    {
+      "name": "sidebar",
+      "type": "ui",
+      "title": "Sidebar",
+      "description": "A collapsible app sidebar that becomes a sheet on mobile.",
+      "category": "Navigation",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "icons",
+        "button",
+        "sheet",
+        "tooltip"
+      ],
+      "files": [
+        "ui/sidebar.tsx"
+      ]
+    },
+    {
+      "name": "skeleton",
+      "type": "ui",
+      "title": "Skeleton",
+      "description": "A shimmering placeholder shown while content loads.",
+      "category": "Feedback",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn"
+      ],
+      "files": [
+        "ui/skeleton.tsx"
+      ]
+    },
+    {
+      "name": "slider",
+      "type": "ui",
+      "title": "Slider",
+      "description": "Picks a value or a range by dragging a thumb.",
+      "category": "Forms",
+      "dependencies": {
+        "radix-ui": "^1.8.1"
+      },
+      "registryDependencies": [
+        "cn",
+        "tone"
+      ],
+      "files": [
+        "ui/slider.tsx"
+      ]
+    },
+    {
+      "name": "spinner",
+      "type": "ui",
+      "title": "Spinner",
+      "description": "An animated loading indicator.",
+      "category": "Feedback",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn"
+      ],
+      "files": [
+        "ui/spinner.tsx"
+      ]
+    },
+    {
+      "name": "switch",
+      "type": "ui",
+      "title": "Switch",
+      "description": "An on/off toggle.",
+      "category": "Forms",
+      "dependencies": {
+        "radix-ui": "^1.8.1"
+      },
+      "registryDependencies": [
+        "cn",
+        "field-context",
+        "tone"
+      ],
+      "files": [
+        "ui/switch.tsx"
+      ]
+    },
+    {
+      "name": "table",
+      "type": "ui",
+      "title": "Table",
+      "description": "A styled table with striped, dense and sticky-header modes.",
+      "category": "Data",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn"
+      ],
+      "files": [
+        "ui/table.tsx"
+      ]
+    },
+    {
+      "name": "tabs",
+      "type": "ui",
+      "title": "Tabs",
+      "description": "Switches between panels, as underline tabs or pills.",
+      "category": "Navigation",
+      "dependencies": {
+        "radix-ui": "^1.8.1"
+      },
+      "registryDependencies": [
+        "cn"
+      ],
+      "files": [
+        "ui/tabs.tsx"
+      ]
+    },
+    {
+      "name": "textarea",
+      "type": "ui",
+      "title": "Textarea",
+      "description": "A multi-line text field that can grow with its content.",
+      "category": "Forms",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "field-context"
+      ],
+      "files": [
+        "ui/textarea.tsx"
+      ]
+    },
+    {
+      "name": "toast",
+      "type": "ui",
+      "title": "Toast",
+      "description": "Brief notifications raised from anywhere with toast().",
+      "category": "Feedback",
+      "dependencies": {
+        "sonner": "^2.0.8"
+      },
+      "registryDependencies": [],
+      "files": [
+        "ui/toast.tsx"
+      ]
+    },
+    {
+      "name": "toggle",
+      "type": "ui",
+      "title": "Toggle",
+      "description": "A two-state button, alone or in a group.",
+      "category": "Forms",
+      "dependencies": {
+        "class-variance-authority": "^0.7.1",
+        "radix-ui": "^1.8.1"
+      },
+      "registryDependencies": [
+        "cn",
+        "tone"
+      ],
+      "files": [
+        "ui/toggle.tsx"
+      ]
+    },
+    {
+      "name": "tooltip",
+      "type": "ui",
+      "title": "Tooltip",
+      "description": "A short label shown on hover or focus.",
+      "category": "Overlays",
+      "dependencies": {
+        "radix-ui": "^1.8.1"
+      },
+      "registryDependencies": [
+        "cn"
+      ],
+      "files": [
+        "ui/tooltip.tsx"
+      ]
+    },
+    {
+      "name": "block-dashboard",
+      "type": "block",
+      "title": "Dashboard",
+      "description": "An app shell with a sidebar, stat cards, a chart and an orders table.",
+      "category": "Blocks",
+      "dependencies": {
+        "recharts": "^3.10.1"
+      },
+      "registryDependencies": [
+        "icons",
+        "avatar",
+        "badge",
+        "breadcrumb",
+        "card",
+        "chart",
+        "data-table",
+        "dropdown-menu",
+        "sidebar"
+      ],
+      "files": [
+        "blocks/dashboard.tsx"
+      ]
+    },
+    {
+      "name": "block-login",
+      "type": "block",
+      "title": "Login",
+      "description": "A sign-in card with validation, a loading state and an error message.",
+      "category": "Blocks",
+      "dependencies": {},
+      "registryDependencies": [
+        "alert",
+        "button",
+        "card",
+        "checkbox",
+        "field",
+        "input",
+        "separator"
+      ],
+      "files": [
+        "blocks/login.tsx"
+      ]
+    },
+    {
+      "name": "block-settings",
+      "type": "block",
+      "title": "Settings",
+      "description": "An account settings page with profile, notifications and delete account.",
+      "category": "Blocks",
+      "dependencies": {},
+      "registryDependencies": [
+        "alert-dialog",
+        "avatar",
+        "button",
+        "card",
+        "field",
+        "input",
+        "switch",
+        "tabs",
+        "textarea"
+      ],
+      "files": [
+        "blocks/settings.tsx"
+      ]
+    },
+    {
+      "name": "block-signup",
+      "type": "block",
+      "title": "Signup",
+      "description": "A sign-up card with a password strength meter and a terms checkbox.",
+      "category": "Blocks",
+      "dependencies": {},
+      "registryDependencies": [
+        "button",
+        "card",
+        "checkbox",
+        "field",
+        "input",
+        "progress"
+      ],
+      "files": [
+        "blocks/signup.tsx"
+      ]
+    },
+    {
+      "name": "cn",
+      "type": "lib",
+      "title": "cn",
+      "description": "Merges class names, resolving Tailwind conflicts.",
+      "category": "Lib",
+      "dependencies": {
+        "clsx": "^2.1.1",
+        "tailwind-merge": "^3.0.0"
+      },
+      "registryDependencies": [],
+      "files": [
+        "lib/cn.ts"
+      ]
+    },
+    {
+      "name": "tone",
+      "type": "lib",
+      "title": "Tone",
+      "description": "Maps the five tones onto local CSS variables.",
+      "category": "Lib",
+      "dependencies": {},
+      "registryDependencies": [],
+      "files": [
+        "lib/tone.ts"
+      ]
+    },
+    {
+      "name": "icons",
+      "type": "lib",
+      "title": "Icons",
+      "description": "The small icon set the components use internally.",
+      "category": "Lib",
+      "dependencies": {},
+      "registryDependencies": [],
+      "files": [
+        "lib/icons.tsx"
+      ]
+    },
+    {
+      "name": "field-context",
+      "type": "lib",
+      "title": "Field context",
+      "description": "Lets a control read its label, hint and error wiring from Field.",
+      "category": "Lib",
+      "dependencies": {},
+      "registryDependencies": [],
+      "files": [
+        "lib/field-context.tsx"
+      ]
+    },
+    {
+      "name": "overlay",
+      "type": "lib",
+      "title": "Overlay styles",
+      "description": "Shared styles for dialogs, popovers and menus.",
+      "category": "Lib",
+      "dependencies": {},
+      "registryDependencies": [],
+      "files": [
+        "lib/overlay.tsx"
+      ]
+    },
+    {
+      "name": "control",
+      "type": "lib",
+      "title": "Control styles",
+      "description": "Shared styles for button-like form triggers.",
+      "category": "Lib",
+      "dependencies": {},
+      "registryDependencies": [],
+      "files": [
+        "lib/control.ts"
+      ]
+    },
+    {
+      "name": "theme",
+      "type": "style",
+      "title": "Theme",
+      "description": "Design tokens for light and dark themes, exposed as Tailwind utilities.",
+      "category": "Style",
+      "dependencies": {},
+      "registryDependencies": [],
+      "files": [
+        "blox.css"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "empty",
+  "type": "ui",
+  "title": "Empty",
+  "description": "An empty state with an icon, message and next steps.",
+  "category": "Feedback",
+  "dependencies": {},
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "path": "ui/empty.tsx",
+      "content": "import * as React from \"react\";\nimport { cn } from \"~lib/cn\";\n\nexport interface EmptyProps extends Omit<React.ComponentProps<\"div\">, \"title\"> {\n  icon?: React.ReactNode;\n  title: React.ReactNode;\n  description?: React.ReactNode;\n  /** Buttons or links that help the user fill the empty space. */\n  actions?: React.ReactNode;\n  /** Heading level for the title. */\n  headingLevel?: \"h2\" | \"h3\" | \"h4\" | \"h5\" | \"h6\";\n  /** Draw the dashed outline. */\n  bordered?: boolean;\n}\n\n/** An empty state: what is missing, why, and what to do next. */\nexport function Empty({\n  className,\n  icon,\n  title,\n  description,\n  actions,\n  headingLevel: Heading = \"h3\",\n  bordered = true,\n  children,\n  ...props\n}: EmptyProps) {\n  return (\n    <div\n      data-slot=\"empty\"\n      className={cn(\n        \"flex flex-col items-center justify-center gap-4 rounded-xl p-8 text-center\",\n        bordered && \"border border-dashed border-border-strong\",\n        className,\n      )}\n      {...props}\n    >\n      {icon ? (\n        <div className=\"flex size-12 items-center justify-center rounded-full bg-neutral-soft text-muted [&_svg]:size-6\">\n          {icon}\n        </div>\n      ) : null}\n      <div className=\"flex max-w-sm flex-col gap-1\">\n        <Heading className=\"text-base font-semibold\">{title}</Heading>\n        {description ? <p className=\"text-sm text-muted\">{description}</p> : null}\n      </div>\n      {actions ? <div className=\"flex flex-wrap items-center justify-center gap-2\">{actions}</div> : null}\n      {children}\n    </div>\n  );\n}\n"
+    }
+  ]
+}

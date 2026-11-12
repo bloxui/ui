@@ -1,0 +1,21 @@
+{
+  "name": "toggle",
+  "type": "ui",
+  "title": "Toggle",
+  "description": "A two-state button, alone or in a group.",
+  "category": "Forms",
+  "dependencies": {
+    "class-variance-authority": "^0.7.1",
+    "radix-ui": "^1.8.1"
+  },
+  "registryDependencies": [
+    "cn",
+    "tone"
+  ],
+  "files": [
+    {
+      "path": "ui/toggle.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { cva, type VariantProps } from \"class-variance-authority\";\nimport { Toggle as TogglePrimitive, ToggleGroup as ToggleGroupPrimitive } from \"radix-ui\";\nimport { cn } from \"~lib/cn\";\nimport { toneClasses, type Tone } from \"~lib/tone\";\n\nexport const toggleVariants = cva(\n  [\n    \"inline-flex items-center justify-center gap-2 font-medium whitespace-nowrap text-fg transition-colors outline-none select-none\",\n    \"hover:bg-neutral-soft focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-ring\",\n    \"disabled:pointer-events-none disabled:opacity-50\",\n    \"data-[state=on]:bg-(--t-soft) data-[state=on]:text-(color:--t-text)\",\n    \"[&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4\",\n  ],\n  {\n    variants: {\n      variant: {\n        ghost: \"\",\n        outline: \"border border-border-strong bg-surface shadow-xs data-[state=on]:border-(color:--t)\",\n      },\n      size: {\n        sm: \"h-8 min-w-8 rounded-md px-2 text-sm\",\n        md: \"h-9 min-w-9 rounded-lg px-2.5 text-sm\",\n        lg: \"h-11 min-w-11 rounded-lg px-3 text-base\",\n      },\n    },\n    defaultVariants: { variant: \"ghost\", size: \"md\" },\n  },\n);\n\ntype ToggleStyleProps = VariantProps<typeof toggleVariants> & {\n  /** Colour used when the toggle is on. */\n  tone?: Tone;\n};\n\n/** A two-state button (e.g. Bold). Give icon-only toggles an aria-label. */\nexport function Toggle({\n  className,\n  variant,\n  size,\n  tone = \"brand\",\n  ...props\n}: React.ComponentProps<typeof TogglePrimitive.Root> & ToggleStyleProps) {\n  return (\n    <TogglePrimitive.Root\n      data-slot=\"toggle\"\n      className={cn(toneClasses[tone], toggleVariants({ variant, size }), className)}\n      {...props}\n    />\n  );\n}\n\nconst ToggleGroupContext = React.createContext<ToggleStyleProps>({});\n\n/** A set of toggles: type=\"single\" behaves like radio buttons, type=\"multiple\" like checkboxes. */\nexport function ToggleGroup({\n  className,\n  variant,\n  size,\n  tone,\n  children,\n  ...props\n}: React.ComponentProps<typeof ToggleGroupPrimitive.Root> & ToggleStyleProps) {\n  const context = React.useMemo(() => ({ variant, size, tone }), [variant, size, tone]);\n  return (\n    <ToggleGroupPrimitive.Root\n      data-slot=\"toggle-group\"\n      className={cn(\n        \"inline-flex w-fit items-center\",\n        variant === \"outline\"\n          ? // Joined segments: the two-class selectors outrank each item's own radius.\n            \"[&>*:not(:first-child)]:-ml-px [&>*:not(:first-child)]:rounded-l-none [&>*:not(:last-child)]:rounded-r-none [&>[data-state=on]]:z-[1]\"\n          : \"gap-1\",\n        className,\n      )}\n      {...props}\n    >\n      <ToggleGroupContext.Provider value={context}>{children}</ToggleGroupContext.Provider>\n    </ToggleGroupPrimitive.Root>\n  );\n}\n\nexport function ToggleGroupItem({\n  className,\n  variant,\n  size,\n  tone,\n  ...props\n}: React.ComponentProps<typeof ToggleGroupPrimitive.Item> & ToggleStyleProps) {\n  const group = React.useContext(ToggleGroupContext);\n  return (\n    <ToggleGroupPrimitive.Item\n      data-slot=\"toggle-group-item\"\n      className={cn(\n        toneClasses[tone ?? group.tone ?? \"brand\"],\n        toggleVariants({ variant: variant ?? group.variant, size: size ?? group.size }),\n        \"relative\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n"
+    }
+  ]
+}

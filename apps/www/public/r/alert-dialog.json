@@ -1,0 +1,21 @@
+{
+  "name": "alert-dialog",
+  "type": "ui",
+  "title": "Alert Dialog",
+  "description": "A dialog that interrupts the user and requires a decision.",
+  "category": "Overlays",
+  "dependencies": {
+    "radix-ui": "^1.8.1"
+  },
+  "registryDependencies": [
+    "cn",
+    "overlay",
+    "button"
+  ],
+  "files": [
+    {
+      "path": "ui/alert-dialog.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { AlertDialog as AlertDialogPrimitive } from \"radix-ui\";\nimport { cn } from \"~lib/cn\";\nimport { backdropClass } from \"~lib/overlay\";\nimport { Button, type ButtonProps } from \"~ui/button\";\n\n/** A dialog that interrupts the user and requires a decision; it cannot be dismissed by clicking outside. */\nexport const AlertDialog = AlertDialogPrimitive.Root;\nexport const AlertDialogTrigger = AlertDialogPrimitive.Trigger;\n\nexport function AlertDialogContent({\n  className,\n  ...props\n}: React.ComponentProps<typeof AlertDialogPrimitive.Content>) {\n  return (\n    <AlertDialogPrimitive.Portal>\n      <AlertDialogPrimitive.Overlay data-slot=\"alert-dialog-backdrop\" className={backdropClass} />\n      <AlertDialogPrimitive.Content\n        data-slot=\"alert-dialog-content\"\n        className={cn(\n          \"fixed top-1/2 left-1/2 z-50 flex max-h-[calc(100dvh-2rem)] w-[calc(100vw-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 flex-col gap-5 overflow-y-auto\",\n          \"rounded-xl border border-border bg-surface p-6 text-fg shadow-raised outline-none\",\n          \"data-[state=open]:animate-dialog-in data-[state=closed]:animate-dialog-out\",\n          className,\n        )}\n        {...props}\n      />\n    </AlertDialogPrimitive.Portal>\n  );\n}\n\nexport function AlertDialogHeader({ className, ...props }: React.ComponentProps<\"div\">) {\n  return <div data-slot=\"alert-dialog-header\" className={cn(\"flex flex-col gap-1.5\", className)} {...props} />;\n}\n\nexport function AlertDialogTitle({\n  className,\n  ...props\n}: React.ComponentProps<typeof AlertDialogPrimitive.Title>) {\n  return (\n    <AlertDialogPrimitive.Title\n      data-slot=\"alert-dialog-title\"\n      className={cn(\"text-lg leading-snug font-semibold tracking-tight\", className)}\n      {...props}\n    />\n  );\n}\n\nexport function AlertDialogDescription({\n  className,\n  ...props\n}: React.ComponentProps<typeof AlertDialogPrimitive.Description>) {\n  return (\n    <AlertDialogPrimitive.Description\n      data-slot=\"alert-dialog-description\"\n      className={cn(\"text-sm text-muted\", className)}\n      {...props}\n    />\n  );\n}\n\nexport function AlertDialogFooter({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"alert-dialog-footer\"\n      className={cn(\"flex flex-col-reverse gap-2 sm:flex-row sm:justify-end\", className)}\n      {...props}\n    />\n  );\n}\n\n/** The confirming button. Takes every Button prop, e.g. tone=\"danger\" for destructive actions. */\nexport function AlertDialogAction(props: ButtonProps) {\n  return (\n    <AlertDialogPrimitive.Action asChild>\n      <Button {...props} />\n    </AlertDialogPrimitive.Action>\n  );\n}\n\n/** The safe way out. Receives focus first, so Enter never triggers the destructive action by accident. */\nexport function AlertDialogCancel({ variant = \"outline\", tone = \"neutral\", ...props }: ButtonProps) {\n  return (\n    <AlertDialogPrimitive.Cancel asChild>\n      <Button variant={variant} tone={tone} {...props} />\n    </AlertDialogPrimitive.Cancel>\n  );\n}\n"
+    }
+  ]
+}

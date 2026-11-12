@@ -1,0 +1,19 @@
+{
+  "name": "alert",
+  "type": "ui",
+  "title": "Alert",
+  "description": "An inline message with a tone, icon, actions and optional dismiss.",
+  "category": "Feedback",
+  "dependencies": {},
+  "registryDependencies": [
+    "cn",
+    "icons",
+    "tone"
+  ],
+  "files": [
+    {
+      "path": "ui/alert.tsx",
+      "content": "import * as React from \"react\";\nimport { cn } from \"~lib/cn\";\nimport { CheckCircleIcon, CircleAlertIcon, InfoIcon, TriangleAlertIcon, XIcon } from \"~lib/icons\";\nimport { toneClasses, type Tone } from \"~lib/tone\";\n\nconst defaultIcons: Record<Tone, React.ReactNode> = {\n  brand: <InfoIcon />,\n  neutral: <InfoIcon />,\n  success: <CheckCircleIcon />,\n  warning: <TriangleAlertIcon />,\n  danger: <CircleAlertIcon />,\n};\n\nexport interface AlertProps extends Omit<React.ComponentProps<\"div\">, \"title\"> {\n  tone?: Tone;\n  variant?: \"soft\" | \"outline\";\n  title?: React.ReactNode;\n  /** Custom icon, or `false` to hide it. Each tone has a default. */\n  icon?: React.ReactNode | false;\n  /** Buttons or links shown under the text. */\n  actions?: React.ReactNode;\n  /** Renders a close button that calls this handler. */\n  onDismiss?: () => void;\n  dismissLabel?: string;\n}\n\n/** Children are the description. Danger and warning announce immediately; other tones politely. */\nexport function Alert({\n  className,\n  tone = \"brand\",\n  variant = \"soft\",\n  title,\n  icon,\n  actions,\n  onDismiss,\n  dismissLabel = \"Dismiss\",\n  role,\n  children,\n  ...props\n}: AlertProps) {\n  const iconNode = icon === false ? null : (icon ?? defaultIcons[tone]);\n  return (\n    <div\n      data-slot=\"alert\"\n      role={role ?? (tone === \"danger\" || tone === \"warning\" ? \"alert\" : \"status\")}\n      className={cn(\n        toneClasses[tone],\n        \"flex gap-3 rounded-lg border p-4 text-sm text-fg\",\n        variant === \"soft\" ? \"border-transparent bg-(--t-soft)\" : \"border-border bg-surface\",\n        className,\n      )}\n      {...props}\n    >\n      {iconNode ? (\n        <span className=\"flex h-5 shrink-0 items-center text-(color:--t-text) [&_svg]:size-[1.125rem]\">\n          {iconNode}\n        </span>\n      ) : null}\n      <div className=\"flex min-w-0 flex-1 flex-col gap-1\">\n        {title ? <div className=\"leading-5 font-medium\">{title}</div> : null}\n        {children ? (\n          <div className={cn(\"leading-5\", title ? \"text-fg/75\" : undefined)}>{children}</div>\n        ) : null}\n        {actions ? <div className=\"mt-2 flex flex-wrap items-center gap-2\">{actions}</div> : null}\n      </div>\n      {onDismiss ? (\n        <button\n          type=\"button\"\n          aria-label={dismissLabel}\n          onClick={onDismiss}\n          className=\"-m-1 flex size-7 shrink-0 items-center justify-center rounded-md text-fg/60 transition-colors outline-none hover:bg-fg/10 hover:text-fg focus-visible:ring-2 focus-visible:ring-ring\"\n        >\n          <XIcon className=\"size-4\" />\n        </button>\n      ) : null}\n    </div>\n  );\n}\n"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "hover-card",
+  "type": "ui",
+  "title": "Hover Card",
+  "description": "A preview shown when hovering or focusing a link.",
+  "category": "Overlays",
+  "dependencies": {
+    "radix-ui": "^1.8.1"
+  },
+  "registryDependencies": [
+    "cn",
+    "overlay"
+  ],
+  "files": [
+    {
+      "path": "ui/hover-card.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { HoverCard as HoverCardPrimitive } from \"radix-ui\";\nimport { cn } from \"~lib/cn\";\nimport { popupClass } from \"~lib/overlay\";\n\n/** A preview shown when hovering or focusing a link. For sighted pointer users only: never put essential content here. */\nexport function HoverCard({\n  openDelay = 400,\n  closeDelay = 150,\n  ...props\n}: React.ComponentProps<typeof HoverCardPrimitive.Root>) {\n  return <HoverCardPrimitive.Root openDelay={openDelay} closeDelay={closeDelay} {...props} />;\n}\n\nexport const HoverCardTrigger = HoverCardPrimitive.Trigger;\n\nexport function HoverCardContent({\n  className,\n  align = \"center\",\n  sideOffset = 8,\n  collisionPadding = 8,\n  ...props\n}: React.ComponentProps<typeof HoverCardPrimitive.Content>) {\n  return (\n    <HoverCardPrimitive.Portal>\n      <HoverCardPrimitive.Content\n        data-slot=\"hover-card-content\"\n        align={align}\n        sideOffset={sideOffset}\n        collisionPadding={collisionPadding}\n        className={cn(\n          popupClass,\n          \"w-72 origin-(--radix-hover-card-content-transform-origin) p-4 text-sm\",\n          className,\n        )}\n        {...props}\n      />\n    </HoverCardPrimitive.Portal>\n  );\n}\n"
+    }
+  ]
+}

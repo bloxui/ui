@@ -1,0 +1,20 @@
+{
+  "name": "input-otp",
+  "type": "ui",
+  "title": "Input OTP",
+  "description": "A one-time-code field with grouped boxes.",
+  "category": "Forms",
+  "dependencies": {
+    "input-otp": "^1.5.0"
+  },
+  "registryDependencies": [
+    "cn",
+    "field-context"
+  ],
+  "files": [
+    {
+      "path": "ui/input-otp.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { OTPInput, REGEXP_ONLY_DIGITS, REGEXP_ONLY_DIGITS_AND_CHARS } from \"input-otp\";\nimport { cn } from \"~lib/cn\";\nimport { useFieldControl } from \"~lib/field-context\";\n\nexport { REGEXP_ONLY_DIGITS, REGEXP_ONLY_DIGITS_AND_CHARS };\n\nexport interface InputOTPProps {\n  /** Number of characters in the code. */\n  length?: number;\n  /** Split the boxes into groups of this size, e.g. 3 for \"123 – 456\". */\n  groupSize?: number;\n  value?: string;\n  defaultValue?: string;\n  onChange?: (value: string) => void;\n  /** Called once every box is filled. */\n  onComplete?: (value: string) => void;\n  /** Allowed characters as a regex source. Digits only by default. */\n  pattern?: string;\n  invalid?: boolean;\n  disabled?: boolean;\n  autoFocus?: boolean;\n  name?: string;\n  id?: string;\n  className?: string;\n  \"aria-label\"?: string;\n  \"aria-describedby\"?: string;\n}\n\n/** A one-time-code field. It is a single real input, so paste and SMS autofill work. */\nexport function InputOTP({\n  length = 6,\n  groupSize,\n  pattern = REGEXP_ONLY_DIGITS,\n  invalid,\n  id,\n  className,\n  \"aria-describedby\": describedBy,\n  ...props\n}: InputOTPProps) {\n  const control = useFieldControl({ id, invalid, \"aria-describedby\": describedBy });\n  const perGroup = groupSize && groupSize > 0 ? groupSize : length;\n\n  return (\n    <OTPInput\n      data-slot=\"input-otp\"\n      maxLength={length}\n      pattern={pattern}\n      inputMode={pattern === REGEXP_ONLY_DIGITS ? \"numeric\" : \"text\"}\n      autoComplete=\"one-time-code\"\n      id={control.id}\n      aria-describedby={control[\"aria-describedby\"]}\n      aria-invalid={control.invalid || undefined}\n      containerClassName={cn(\"flex w-fit items-center gap-2 has-[:disabled]:opacity-50\", className)}\n      className=\"disabled:cursor-not-allowed\"\n      {...props}\n      render={({ slots }) => {\n        const groups: (typeof slots)[] = [];\n        for (let start = 0; start < slots.length; start += perGroup) {\n          groups.push(slots.slice(start, start + perGroup));\n        }\n        return groups.map((group, groupIndex) => (\n          <React.Fragment key={groupIndex}>\n            {groupIndex > 0 ? (\n              <span aria-hidden className=\"text-muted\">\n                –\n              </span>\n            ) : null}\n            <div className=\"flex\">\n              {group.map((slot, index) => (\n                <div\n                  key={index}\n                  data-slot=\"input-otp-slot\"\n                  data-active={slot.isActive ? \"\" : undefined}\n                  className={cn(\n                    \"relative -ml-px flex size-10 items-center justify-center border bg-surface text-base font-medium tabular-nums shadow-xs\",\n                    \"transition-[border-color,box-shadow] duration-150 first:ml-0 first:rounded-l-lg last:rounded-r-lg\",\n                    \"data-[active]:z-[1] data-[active]:border-ring data-[active]:ring-3 data-[active]:ring-ring/25\",\n                    control.invalid ? \"border-danger\" : \"border-border-strong\",\n                  )}\n                >\n                  {slot.char}\n                  {slot.hasFakeCaret ? (\n                    <span className=\"pointer-events-none absolute inset-0 flex items-center justify-center\">\n                      <span className=\"h-5 w-px animate-pulse bg-fg\" />\n                    </span>\n                  ) : null}\n                </div>\n              ))}\n            </div>\n          </React.Fragment>\n        ));\n      }}\n    />\n  );\n}\n"
+    }
+  ]
+}

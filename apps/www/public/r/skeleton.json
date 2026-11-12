@@ -1,0 +1,17 @@
+{
+  "name": "skeleton",
+  "type": "ui",
+  "title": "Skeleton",
+  "description": "A shimmering placeholder shown while content loads.",
+  "category": "Feedback",
+  "dependencies": {},
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "path": "ui/skeleton.tsx",
+      "content": "import * as React from \"react\";\nimport { cn } from \"~lib/cn\";\n\n/** Placeholder block with a shimmer; size it with className (e.g. \"h-4 w-32\"). */\nexport function Skeleton({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"skeleton\"\n      aria-hidden\n      className={cn(\n        \"relative overflow-hidden rounded-md bg-neutral-soft\",\n        \"before:absolute before:inset-0 before:animate-shimmer before:bg-linear-to-r before:from-transparent before:via-surface/70 before:to-transparent\",\n        \"motion-reduce:before:hidden\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport interface SkeletonTextProps extends React.ComponentProps<\"div\"> {\n  lines?: number;\n}\n\n/** Paragraph placeholder; the last line is shorter, like real text. */\nexport function SkeletonText({ className, lines = 3, ...props }: SkeletonTextProps) {\n  return (\n    <div data-slot=\"skeleton-text\" aria-hidden className={cn(\"flex flex-col gap-2\", className)} {...props}>\n      {Array.from({ length: lines }, (_, index) => (\n        <Skeleton\n          key={index}\n          className={cn(\"h-3.5\", index === lines - 1 && lines > 1 ? \"w-3/5\" : \"w-full\")}\n        />\n      ))}\n    </div>\n  );\n}\n"
+    }
+  ]
+}

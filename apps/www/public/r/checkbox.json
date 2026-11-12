@@ -1,0 +1,22 @@
+{
+  "name": "checkbox",
+  "type": "ui",
+  "title": "Checkbox",
+  "description": "A box the user can tick, with an indeterminate state.",
+  "category": "Forms",
+  "dependencies": {
+    "radix-ui": "^1.8.1"
+  },
+  "registryDependencies": [
+    "cn",
+    "field-context",
+    "icons",
+    "tone"
+  ],
+  "files": [
+    {
+      "path": "ui/checkbox.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { Checkbox as CheckboxPrimitive } from \"radix-ui\";\nimport { cn } from \"~lib/cn\";\nimport { useFieldControl } from \"~lib/field-context\";\nimport { CheckIcon, MinusIcon } from \"~lib/icons\";\nimport { toneClasses, type Tone } from \"~lib/tone\";\n\nexport interface CheckboxProps extends React.ComponentProps<typeof CheckboxPrimitive.Root> {\n  size?: \"sm\" | \"md\";\n  tone?: Tone;\n  invalid?: boolean;\n}\n\n/** Supports `checked=\"indeterminate\"` for \"some selected\" states. */\nexport function Checkbox({\n  className,\n  size = \"md\",\n  tone = \"brand\",\n  invalid,\n  id,\n  required,\n  \"aria-describedby\": describedBy,\n  ...props\n}: CheckboxProps) {\n  const control = useFieldControl({ id, invalid, required, \"aria-describedby\": describedBy });\n  return (\n    <CheckboxPrimitive.Root\n      data-slot=\"checkbox\"\n      id={control.id}\n      required={control.required}\n      aria-describedby={control[\"aria-describedby\"]}\n      aria-invalid={control.invalid || undefined}\n      className={cn(\n        toneClasses[tone],\n        \"group inline-flex shrink-0 items-center justify-center rounded-[5px] border border-border-strong bg-surface text-(color:--t-fg) shadow-xs\",\n        \"transition-[background-color,border-color,box-shadow] duration-150 outline-none\",\n        \"focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30\",\n        \"disabled:cursor-not-allowed disabled:opacity-50\",\n        \"data-[state=checked]:border-(color:--t) data-[state=checked]:bg-(--t)\",\n        \"data-[state=indeterminate]:border-(color:--t) data-[state=indeterminate]:bg-(--t)\",\n        \"aria-invalid:border-danger\",\n        size === \"sm\" ? \"size-4\" : \"size-[1.125rem]\",\n        className,\n      )}\n      {...props}\n    >\n      <CheckboxPrimitive.Indicator className=\"flex items-center justify-center\">\n        <CheckIcon strokeWidth={3} className=\"size-3.5 group-data-[state=indeterminate]:hidden\" />\n        <MinusIcon strokeWidth={3} className=\"hidden size-3.5 group-data-[state=indeterminate]:block\" />\n      </CheckboxPrimitive.Indicator>\n    </CheckboxPrimitive.Root>\n  );\n}\n"
+    }
+  ]
+}

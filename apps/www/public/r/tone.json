@@ -1,0 +1,15 @@
+{
+  "name": "tone",
+  "type": "lib",
+  "title": "Tone",
+  "description": "Maps the five tones onto local CSS variables.",
+  "category": "Lib",
+  "dependencies": {},
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "lib/tone.ts",
+      "content": "/**\n * Tones map the shared token roles onto local `--t-*` variables, so a\n * component writes its styles once (`bg-(--t)`) and works in every tone.\n */\nexport type Tone = \"brand\" | \"neutral\" | \"danger\" | \"success\" | \"warning\";\n\nexport const toneClasses: Record<Tone, string> = {\n  brand:\n    \"[--t:var(--bx-brand)] [--t-hover:var(--bx-brand-hover)] [--t-fg:var(--bx-brand-fg)] [--t-soft:var(--bx-brand-soft)] [--t-text:var(--bx-brand-text)]\",\n  neutral:\n    \"[--t:var(--bx-neutral)] [--t-hover:var(--bx-neutral-hover)] [--t-fg:var(--bx-neutral-fg)] [--t-soft:var(--bx-neutral-soft)] [--t-text:var(--bx-neutral-text)]\",\n  danger:\n    \"[--t:var(--bx-danger)] [--t-hover:var(--bx-danger-hover)] [--t-fg:var(--bx-danger-fg)] [--t-soft:var(--bx-danger-soft)] [--t-text:var(--bx-danger-text)]\",\n  success:\n    \"[--t:var(--bx-success)] [--t-hover:var(--bx-success-hover)] [--t-fg:var(--bx-success-fg)] [--t-soft:var(--bx-success-soft)] [--t-text:var(--bx-success-text)]\",\n  warning:\n    \"[--t:var(--bx-warning)] [--t-hover:var(--bx-warning-hover)] [--t-fg:var(--bx-warning-fg)] [--t-soft:var(--bx-warning-soft)] [--t-text:var(--bx-warning-text)]\",\n};\n"
+    }
+  ]
+}

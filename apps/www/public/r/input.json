@@ -1,0 +1,20 @@
+{
+  "name": "input",
+  "type": "ui",
+  "title": "Input",
+  "description": "A text field with leading and trailing slots.",
+  "category": "Forms",
+  "dependencies": {
+    "class-variance-authority": "^0.7.1"
+  },
+  "registryDependencies": [
+    "cn",
+    "field-context"
+  ],
+  "files": [
+    {
+      "path": "ui/input.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { cva, type VariantProps } from \"class-variance-authority\";\nimport { cn } from \"~lib/cn\";\nimport { useFieldControl } from \"~lib/field-context\";\n\nconst inputWrapperVariants = cva(\n  [\n    \"flex w-full items-center border border-border-strong bg-surface text-fg shadow-xs\",\n    \"transition-[border-color,box-shadow] duration-150\",\n    \"focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/25\",\n    \"has-[input:disabled]:cursor-not-allowed has-[input:disabled]:bg-sunken has-[input:disabled]:opacity-60\",\n    \"has-[input[aria-invalid=true]]:border-danger has-[input[aria-invalid=true]]:focus-within:ring-danger/25\",\n    \"[&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-[1.15em]\",\n  ],\n  {\n    variants: {\n      size: {\n        sm: \"h-8 gap-1.5 rounded-md px-2.5 text-sm\",\n        md: \"h-9 gap-2 rounded-lg px-3 text-sm\",\n        lg: \"h-11 gap-2.5 rounded-lg px-3.5 text-base\",\n      },\n    },\n    defaultVariants: { size: \"md\" },\n  },\n);\n\nexport interface InputProps\n  extends Omit<React.ComponentProps<\"input\">, \"size\">,\n    VariantProps<typeof inputWrapperVariants> {\n  /** Marks the field as invalid (sets aria-invalid and the danger styling). */\n  invalid?: boolean;\n  /** Content before the text, e.g. an icon or a \"https://\" prefix. */\n  leading?: React.ReactNode;\n  /** Content after the text, e.g. a unit, a shortcut hint or a button. */\n  trailing?: React.ReactNode;\n  /** Class for the outer wrapper; `className` targets the <input> itself. */\n  wrapperClassName?: string;\n}\n\nexport function Input({\n  className,\n  wrapperClassName,\n  size,\n  invalid,\n  leading,\n  trailing,\n  type = \"text\",\n  id,\n  required,\n  \"aria-describedby\": describedBy,\n  ...props\n}: InputProps) {\n  const control = useFieldControl({ id, invalid, required, \"aria-describedby\": describedBy });\n  return (\n    <div data-slot=\"input-wrapper\" className={cn(inputWrapperVariants({ size }), wrapperClassName)}>\n      {leading ? (\n        <span data-slot=\"input-leading\" className=\"flex shrink-0 items-center text-muted\">\n          {leading}\n        </span>\n      ) : null}\n      <input\n        data-slot=\"input\"\n        type={type}\n        id={control.id}\n        required={control.required}\n        aria-describedby={control[\"aria-describedby\"]}\n        aria-invalid={control.invalid || undefined}\n        className={cn(\n          \"h-full min-w-0 flex-1 bg-transparent outline-none placeholder:text-muted/70\",\n          \"disabled:cursor-not-allowed\",\n          \"file:mr-2 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-fg\",\n          className,\n        )}\n        {...props}\n      />\n      {trailing ? (\n        <span data-slot=\"input-trailing\" className=\"flex shrink-0 items-center text-muted\">\n          {trailing}\n        </span>\n      ) : null}\n    </div>\n  );\n}\n"
+    }
+  ]
+}

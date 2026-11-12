@@ -1,0 +1,20 @@
+{
+  "name": "resizable",
+  "type": "ui",
+  "title": "Resizable",
+  "description": "Panels the user can resize by dragging a handle.",
+  "category": "Layout",
+  "dependencies": {
+    "react-resizable-panels": "^3.0.6"
+  },
+  "registryDependencies": [
+    "cn",
+    "icons"
+  ],
+  "files": [
+    {
+      "path": "ui/resizable.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { Panel, PanelGroup, PanelResizeHandle } from \"react-resizable-panels\";\nimport { cn } from \"~lib/cn\";\nimport { GripVerticalIcon } from \"~lib/icons\";\n\ntype Orientation = \"horizontal\" | \"vertical\";\n\nconst OrientationContext = React.createContext<Orientation>(\"horizontal\");\n\nexport interface ResizablePanelGroupProps\n  extends Omit<React.ComponentProps<typeof PanelGroup>, \"direction\"> {\n  /** `horizontal` places panels side by side, `vertical` stacks them. */\n  orientation?: Orientation;\n}\n\n/** Panels the user can resize by dragging the handle between them, or with the arrow keys. */\nexport function ResizablePanelGroup({ className, orientation = \"horizontal\", ...props }: ResizablePanelGroupProps) {\n  return (\n    <OrientationContext.Provider value={orientation}>\n      <PanelGroup\n        data-slot=\"resizable-panel-group\"\n        direction={orientation}\n        className={cn(\"flex size-full\", orientation === \"vertical\" && \"flex-col\", className)}\n        {...props}\n      />\n    </OrientationContext.Provider>\n  );\n}\n\n/** Sizes (`defaultSize`, `minSize`, `maxSize`) are percentages of the group, from 0 to 100. */\nexport const ResizablePanel = Panel;\n\nexport interface ResizableHandleProps extends React.ComponentProps<typeof PanelResizeHandle> {\n  /** Show a visible grip in the middle of the handle. */\n  withHandle?: boolean;\n}\n\nexport function ResizableHandle({ className, withHandle, ...props }: ResizableHandleProps) {\n  const orientation = React.useContext(OrientationContext);\n  return (\n    <PanelResizeHandle\n      data-slot=\"resizable-handle\"\n      className={cn(\n        \"relative flex shrink-0 items-center justify-center bg-border transition-colors outline-none\",\n        \"focus-visible:bg-ring data-[resize-handle-state=drag]:bg-ring data-[resize-handle-state=hover]:bg-border-strong\",\n        // The pseudo-element widens the hit area without widening the line.\n        \"after:absolute after:content-['']\",\n        orientation === \"horizontal\" ? \"w-px after:inset-y-0 after:-inset-x-1.5\" : \"h-px after:inset-x-0 after:-inset-y-1.5\",\n        className,\n      )}\n      {...props}\n    >\n      {withHandle ? (\n        <div\n          className={cn(\n            \"z-[1] flex items-center justify-center rounded-sm border border-border bg-surface text-muted\",\n            orientation === \"horizontal\" ? \"h-6 w-3\" : \"h-3 w-6 [&_svg]:rotate-90\",\n          )}\n        >\n          <GripVerticalIcon className=\"size-2.5\" />\n        </div>\n      ) : null}\n    </PanelResizeHandle>\n  );\n}\n"
+    }
+  ]
+}

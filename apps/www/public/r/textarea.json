@@ -1,0 +1,18 @@
+{
+  "name": "textarea",
+  "type": "ui",
+  "title": "Textarea",
+  "description": "A multi-line text field that can grow with its content.",
+  "category": "Forms",
+  "dependencies": {},
+  "registryDependencies": [
+    "cn",
+    "field-context"
+  ],
+  "files": [
+    {
+      "path": "ui/textarea.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { cn } from \"~lib/cn\";\nimport { useFieldControl } from \"~lib/field-context\";\n\nexport interface TextareaProps extends React.ComponentProps<\"textarea\"> {\n  invalid?: boolean;\n  /** Grows with its content instead of scrolling. */\n  autoResize?: boolean;\n}\n\nexport function Textarea({\n  className,\n  invalid,\n  autoResize = false,\n  id,\n  required,\n  onInput,\n  ref,\n  \"aria-describedby\": describedBy,\n  ...props\n}: TextareaProps) {\n  const control = useFieldControl({ id, invalid, required, \"aria-describedby\": describedBy });\n  const innerRef = React.useRef<HTMLTextAreaElement | null>(null);\n\n  const resize = React.useCallback(() => {\n    const el = innerRef.current;\n    if (!el) return;\n    el.style.height = \"auto\";\n    // scrollHeight excludes borders, which a border-box height must include.\n    el.style.height = `${el.scrollHeight + (el.offsetHeight - el.clientHeight)}px`;\n  }, []);\n\n  React.useLayoutEffect(() => {\n    if (autoResize) resize();\n  }, [autoResize, resize, props.value]);\n\n  const setRef = React.useCallback(\n    (node: HTMLTextAreaElement | null) => {\n      innerRef.current = node;\n      if (typeof ref === \"function\") ref(node);\n      else if (ref) ref.current = node;\n    },\n    [ref],\n  );\n\n  return (\n    <textarea\n      data-slot=\"textarea\"\n      ref={setRef}\n      id={control.id}\n      required={control.required}\n      aria-describedby={control[\"aria-describedby\"]}\n      aria-invalid={control.invalid || undefined}\n      onInput={(event) => {\n        onInput?.(event);\n        if (autoResize) resize();\n      }}\n      className={cn(\n        \"block min-h-20 w-full rounded-lg border border-border-strong bg-surface px-3 py-2 text-sm text-fg shadow-xs\",\n        \"transition-[border-color,box-shadow] duration-150 outline-none placeholder:text-muted/70\",\n        \"focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/25\",\n        \"disabled:cursor-not-allowed disabled:bg-sunken disabled:opacity-60\",\n        \"aria-invalid:border-danger aria-invalid:focus-visible:ring-danger/25\",\n        autoResize ? \"resize-none overflow-hidden\" : \"resize-y\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "switch",
+  "type": "ui",
+  "title": "Switch",
+  "description": "An on/off toggle.",
+  "category": "Forms",
+  "dependencies": {
+    "radix-ui": "^1.8.1"
+  },
+  "registryDependencies": [
+    "cn",
+    "field-context",
+    "tone"
+  ],
+  "files": [
+    {
+      "path": "ui/switch.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { Switch as SwitchPrimitive } from \"radix-ui\";\nimport { cn } from \"~lib/cn\";\nimport { useFieldControl } from \"~lib/field-context\";\nimport { toneClasses, type Tone } from \"~lib/tone\";\n\nexport interface SwitchProps extends React.ComponentProps<typeof SwitchPrimitive.Root> {\n  size?: \"sm\" | \"md\";\n  tone?: Tone;\n}\n\nexport function Switch({\n  className,\n  size = \"md\",\n  tone = \"brand\",\n  id,\n  required,\n  \"aria-describedby\": describedBy,\n  ...props\n}: SwitchProps) {\n  const control = useFieldControl({ id, required, \"aria-describedby\": describedBy });\n  return (\n    <SwitchPrimitive.Root\n      data-slot=\"switch\"\n      id={control.id}\n      required={control.required}\n      aria-describedby={control[\"aria-describedby\"]}\n      className={cn(\n        toneClasses[tone],\n        \"inline-flex shrink-0 items-center rounded-full bg-border-strong p-0.5\",\n        \"transition-[background-color,box-shadow] duration-200 outline-none\",\n        \"focus-visible:ring-3 focus-visible:ring-ring/30\",\n        \"disabled:cursor-not-allowed disabled:opacity-50\",\n        \"data-[state=checked]:bg-(--t)\",\n        size === \"sm\" ? \"h-4 w-7\" : \"h-5 w-9\",\n        className,\n      )}\n      {...props}\n    >\n      <SwitchPrimitive.Thumb\n        className={cn(\n          \"block rounded-full bg-white shadow-sm transition-transform duration-200\",\n          size === \"sm\"\n            ? \"size-3 data-[state=checked]:translate-x-3\"\n            : \"size-4 data-[state=checked]:translate-x-4\",\n        )}\n      />\n    </SwitchPrimitive.Root>\n  );\n}\n"
+    }
+  ]
+}
