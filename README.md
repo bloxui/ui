@@ -17,7 +17,7 @@ The CLI copies each component's source into your project, with everything it nee
 
 - `packages/ui` — the components, blocks, design tokens, tests and Storybook
 - `packages/cli` — the `blox` command that installs components from the registry
-- `apps/www` — a Next.js preview site that shows every component and serves the registry
+- `apps/www` — the docs website: a page per component with a live example, its code and an API table, guides, a theme builder, blocks, and the registry it serves
 - `registry` and `scripts` — build the registry JSON the CLI installs from ([details](registry/README.md))
 
 ## Components
@@ -46,7 +46,7 @@ Requires Node 22 and pnpm 9.
 
 ```bash
 pnpm install
-pnpm dev          # preview site on http://localhost:3000
+pnpm dev          # docs site on http://localhost:3000
 pnpm storybook    # Storybook on http://localhost:6006
 pnpm test         # component, CLI and registry tests
 pnpm registry:build   # regenerate the registry JSON after changing a component

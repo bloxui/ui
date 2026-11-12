@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Badge, Card, CardDescription, CardHeader, CardTitle } from "@blox-ui/ui";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { SiteHeader } from "@/components/site-header";
 import { blocks } from "@/lib/blocks";
 
 export const metadata: Metadata = {
@@ -14,19 +14,14 @@ const linkFocus = "rounded-xl outline-none focus-visible:ring-2 focus-visible:ri
 
 export default function BlocksPage() {
   return (
+    <>
+    <SiteHeader />
     <main className="mx-auto max-w-4xl space-y-10 px-4 py-12 sm:px-6">
       <header className="flex items-start justify-between gap-4">
         <div className="space-y-2">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-1.5 rounded-sm text-sm text-muted outline-none hover:text-fg focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            <ArrowLeft className="size-4" /> Components
-          </Link>
           <h1 className="text-3xl font-bold tracking-tight">Blocks</h1>
           <p className="text-muted">Ready-made screens composed from the components. Open one to try it.</p>
         </div>
-        <ThemeToggle />
       </header>
 
       <ul className="grid gap-4 sm:grid-cols-2">
@@ -50,5 +45,6 @@ export default function BlocksPage() {
         ))}
       </ul>
     </main>
+    </>
   );
 }
