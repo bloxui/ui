@@ -1,0 +1,5 @@
+@import "tailwindcss";
+@import "../../../packages/ui/src/styles/blox.css";
+
+/* Scan the UI package so its classes are generated. */
+@source "../../../packages/ui/src";
