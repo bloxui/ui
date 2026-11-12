@@ -1,5 +1,11 @@
 # @blox-ui/ui
 
+## 0.0.2
+
+### Patch Changes
+
+- Fix two problems found when installing every component into a fresh Next.js 16 app: `themeScript` now lives in `lib/theme-script` so a server layout can call it without breaking the build, and `init` makes the create-next-app starter colours follow the Blox theme instead of hiding it.
+
 ## 0.0.1
 
 First public release: 86 components, 6 blocks and the theme.

@@ -1,6 +1,6 @@
 {
   "name": "@bloxui/cli",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Add Blox UI components to your project.",
   "license": "MIT",
   "homepage": "https://bloxui-kit.vercel.app",
