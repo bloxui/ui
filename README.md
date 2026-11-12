@@ -4,9 +4,19 @@ Crafted React components you own. Built with Tailwind CSS v4 and Radix UI.
 
 > Early development. APIs can change until the first release.
 
+## Use it in your project
+
+```bash
+npx @bloxui/cli init
+npx @bloxui/cli add button dialog
+```
+
+The CLI copies each component's source into your project, with everything it needs. See [packages/cli](packages/cli/README.md) for options. (Not on npm yet; until then run `node packages/cli/bin/blox.mjs` from a clone.)
+
 ## What is inside
 
-- `packages/ui` — the components, design tokens, tests and Storybook
+- `packages/ui` — the components, blocks, design tokens, tests and Storybook
+- `packages/cli` — the `blox` command that installs components from the registry
 - `apps/www` — a Next.js preview site that shows every component and serves the registry
 - `registry` and `scripts` — build the registry JSON the CLI installs from ([details](registry/README.md))
 
@@ -38,7 +48,7 @@ Requires Node 22 and pnpm 9.
 pnpm install
 pnpm dev          # preview site on http://localhost:3000
 pnpm storybook    # Storybook on http://localhost:6006
-pnpm test         # component tests, registry tests and registry validation
+pnpm test         # component, CLI and registry tests
 pnpm registry:build   # regenerate the registry JSON after changing a component
 pnpm typecheck
 pnpm build

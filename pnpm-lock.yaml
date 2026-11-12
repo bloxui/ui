@@ -55,6 +55,8 @@ importers:
         specifier: ^5.6.0
         version: 5.9.3
 
+  packages/cli: {}
+
   packages/ui:
     dependencies:
       '@radix-ui/react-slot':

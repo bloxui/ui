@@ -1,0 +1,32 @@
+{
+  "name": "@bloxui/cli",
+  "version": "0.0.1",
+  "description": "Add Blox UI components to your project.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "blox": "./bin/blox.mjs"
+  },
+  "files": [
+    "bin",
+    "src"
+  ],
+  "engines": {
+    "node": ">=18.17"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bloxui/ui.git",
+    "directory": "packages/cli"
+  },
+  "keywords": [
+    "blox-ui",
+    "react",
+    "tailwindcss",
+    "components",
+    "cli"
+  ],
+  "scripts": {
+    "test": "node --test \"test/*.test.mjs\""
+  }
+}

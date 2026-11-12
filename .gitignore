@@ -7,3 +7,4 @@ dist
 storybook-static
 next-env.d.ts
 .registry-check
+.cli-e2e

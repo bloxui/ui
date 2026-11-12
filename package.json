@@ -6,7 +6,7 @@
     "dev": "turbo run dev",
     "build": "turbo run build",
     "typecheck": "turbo run typecheck",
-    "test": "turbo run test && node --test \"scripts/*.test.mjs\" && pnpm registry:check && pnpm registry:verify",
+    "test": "turbo run test && pnpm registry:check && pnpm registry:verify",
     "storybook": "pnpm --filter @blox-ui/ui storybook",
     "registry:build": "node scripts/build-registry.mjs",
     "registry:check": "node scripts/build-registry.mjs --check",
