@@ -54,6 +54,16 @@
   --bx-warning-soft: oklch(0.96 0.05 85);
   --bx-warning-text: oklch(0.48 0.11 70);
 
+  /* Chart series: use in this order, never cycled. Validated for colour-blind separation. */
+  --bx-chart-1: #2a78d6;
+  --bx-chart-2: #eb6834;
+  --bx-chart-3: #1baf7a;
+  --bx-chart-4: #eda100;
+  --bx-chart-5: #e87ba4;
+  --bx-chart-6: #008300;
+  --bx-chart-7: #6250d6;
+  --bx-chart-8: #e34948;
+
   /* Shape, focus, elevation */
   --bx-ring: var(--bx-brand);
   --bx-radius: 0.625rem;
@@ -100,6 +110,16 @@
   --bx-warning-soft: oklch(0.3 0.06 80);
   --bx-warning-text: oklch(0.86 0.12 85);
 
+  /* Chart series: use in this order, never cycled. Validated for colour-blind separation. */
+  --bx-chart-1: #3987e5;
+  --bx-chart-2: #d95926;
+  --bx-chart-3: #199e70;
+  --bx-chart-4: #c98500;
+  --bx-chart-5: #d55181;
+  --bx-chart-6: #008300;
+  --bx-chart-7: #9085e9;
+  --bx-chart-8: #e66767;
+
   --bx-shadow-raised: 0 1px 2px oklch(0 0 0 / 0.4),
     0 8px 24px -8px oklch(0 0 0 / 0.6);
 }
@@ -145,6 +165,15 @@
   --color-warning-soft: var(--bx-warning-soft);
   --color-warning-text: var(--bx-warning-text);
 
+  --color-chart-1: var(--bx-chart-1);
+  --color-chart-2: var(--bx-chart-2);
+  --color-chart-3: var(--bx-chart-3);
+  --color-chart-4: var(--bx-chart-4);
+  --color-chart-5: var(--bx-chart-5);
+  --color-chart-6: var(--bx-chart-6);
+  --color-chart-7: var(--bx-chart-7);
+  --color-chart-8: var(--bx-chart-8);
+
   --radius-sm: calc(var(--bx-radius) - 4px);
   --radius-md: calc(var(--bx-radius) - 2px);
   --radius-lg: var(--bx-radius);
@@ -178,6 +207,26 @@
   --animate-slide-in: bx-slide-in 260ms cubic-bezier(0.16, 1, 0.3, 1);
   --animate-slide-out: bx-slide-out 180ms ease-in forwards;
 
+  --animate-collapse-down: bx-collapse-down 200ms ease-out;
+  --animate-collapse-up: bx-collapse-up 180ms ease-out;
+
+  /* Height comes from Radix: Accordion and Collapsible each set their own variable. */
+  @keyframes bx-collapse-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height, var(--radix-collapsible-content-height, auto));
+    }
+  }
+  @keyframes bx-collapse-up {
+    from {
+      height: var(--radix-accordion-content-height, var(--radix-collapsible-content-height, auto));
+    }
+    to {
+      height: 0;
+    }
+  }
   @keyframes bx-pop-out {
     to {
       opacity: 0;
