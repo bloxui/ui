@@ -419,6 +419,57 @@ describe("Kanban", () => {
   });
 });
 
+describe("Kanban touch drag", () => {
+  function pointer(type: "pointerDown" | "pointerMove" | "pointerUp", element: Element, x: number, y: number) {
+    fireEvent[type](element, { pointerType: "touch", pointerId: 1, clientX: x, clientY: y });
+  }
+
+  it("lifts a card after a long press and drops it where the finger lets go", () => {
+    vi.useFakeTimers();
+    try {
+      const onCardMove = vi.fn();
+      render(<Board onCardMove={onCardMove} />);
+      const card = screen.getByText("Write docs").closest("[data-kanban-card]") as HTMLElement;
+      const done = document.querySelector('[data-kanban-column="done"]') as HTMLElement;
+      const spy = vi.spyOn(document, "elementFromPoint").mockReturnValue(done);
+
+      pointer("pointerDown", card, 10, 10);
+      act(() => {
+        vi.advanceTimersByTime(350);
+      });
+      expect(card).toHaveClass("opacity-40");
+      pointer("pointerMove", card, 600, 40);
+      pointer("pointerUp", card, 600, 40);
+
+      expect(onCardMove).toHaveBeenCalledWith({ cardId: "a", from: "todo", to: "done", index: 0 });
+      expect(cardsIn("Done")).toEqual(["Write docs"]);
+      spy.mockRestore();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("treats a quick swipe as scrolling, not dragging", () => {
+    vi.useFakeTimers();
+    try {
+      const onCardMove = vi.fn();
+      render(<Board onCardMove={onCardMove} />);
+      const card = screen.getByText("Write docs").closest("[data-kanban-card]") as HTMLElement;
+
+      pointer("pointerDown", card, 10, 10);
+      pointer("pointerMove", card, 10, 60);
+      act(() => {
+        vi.advanceTimersByTime(350);
+      });
+      expect(card).not.toHaveClass("opacity-40");
+      pointer("pointerUp", card, 10, 60);
+      expect(onCardMove).not.toHaveBeenCalled();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+});
+
 describe("Chat", () => {
   it("sends on Enter, adds a line on Shift+Enter, and clears", async () => {
     const user = userEvent.setup();

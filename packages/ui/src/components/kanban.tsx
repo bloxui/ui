@@ -51,9 +51,26 @@ export function moveCard(columns: KanbanColumn[], cardId: string, toColumn: stri
 
 const cardText = (card: KanbanCard) => card.textValue ?? (typeof card.title === "string" ? card.title : "Card");
 
+/** Where a card would land in a column, from the pointer's height against each other card's middle. */
+function slotIn(columnElement: Element, clientY: number, draggingId: string) {
+  const cards = [...columnElement.querySelectorAll<HTMLElement>("[data-kanban-card]")].filter(
+    (element) => element.dataset.kanbanCard !== draggingId,
+  );
+  const index = cards.findIndex((element) => {
+    const rect = element.getBoundingClientRect();
+    return clientY < rect.top + rect.height / 2;
+  });
+  return index === -1 ? cards.length : index;
+}
+
+/** How long a finger must rest on a card before it lifts, and how far it may wander first. */
+const LONG_PRESS_MS = 300;
+const MOVE_TOLERANCE = 8;
+
 /**
- * A board of columns with cards that move by drag and drop or from the keyboard:
- * focus a card, press Space to pick it up, arrow keys to move, Space to drop, Escape to cancel.
+ * A board of columns with cards that move three ways: drag and drop with a mouse,
+ * press and hold then drag on touch screens, or from the keyboard (focus a card,
+ * Space to pick it up, arrow keys to move, Space to drop, Escape to cancel).
  */
 export function Kanban({ columns, onColumnsChange, onCardMove, className, "aria-label": ariaLabel = "Board" }: KanbanProps) {
   const [dragging, setDragging] = React.useState<string | null>(null);
@@ -62,6 +79,76 @@ export function Kanban({ columns, onColumnsChange, onCardMove, className, "aria-
   const [lifted, setLifted] = React.useState<{ id: string; origin: KanbanColumn[] } | null>(null);
   const [announcement, setAnnouncement] = React.useState("");
   const cardRefs = React.useRef(new Map<string, HTMLDivElement>());
+  const dropTargetRef = React.useRef(dropTarget);
+  dropTargetRef.current = dropTarget;
+  // Touch drag: the pending long-press, then the active drag, and a copy of the card under the finger.
+  const touch = React.useRef<{ id: string; x: number; y: number; timer: ReturnType<typeof setTimeout> | null; active: boolean } | null>(null);
+  const [ghost, setGhost] = React.useState<{ title: React.ReactNode; x: number; y: number; width: number } | null>(null);
+
+  // While a touch drag is active, stop the page from scrolling under the finger.
+  React.useEffect(() => {
+    const block = (event: TouchEvent) => {
+      if (touch.current?.active) event.preventDefault();
+    };
+    document.addEventListener("touchmove", block, { passive: false });
+    return () => document.removeEventListener("touchmove", block);
+  }, []);
+
+  function endTouch() {
+    if (touch.current?.timer) clearTimeout(touch.current.timer);
+    touch.current = null;
+    setGhost(null);
+    setDragging(null);
+    setDropTarget(null);
+  }
+
+  function touchHandlers(card: KanbanCard) {
+    return {
+      onPointerDown: (event: React.PointerEvent<HTMLDivElement>) => {
+        if (event.pointerType === "mouse") return;
+        const element = event.currentTarget;
+        const pointerId = event.pointerId;
+        const start = { x: event.clientX, y: event.clientY };
+        touch.current = {
+          id: card.id,
+          ...start,
+          active: false,
+          timer: setTimeout(() => {
+            if (!touch.current || touch.current.id !== card.id) return;
+            touch.current.active = true;
+            element.setPointerCapture(pointerId);
+            const rect = element.getBoundingClientRect();
+            setDragging(card.id);
+            setGhost({ title: card.title, x: start.x, y: start.y, width: rect.width });
+            navigator.vibrate?.(15);
+          }, LONG_PRESS_MS),
+        };
+      },
+      onPointerMove: (event: React.PointerEvent<HTMLDivElement>) => {
+        const state = touch.current;
+        if (!state || state.id !== card.id) return;
+        if (!state.active) {
+          // Moving before the long-press finishes means the user is scrolling.
+          if (Math.hypot(event.clientX - state.x, event.clientY - state.y) > MOVE_TOLERANCE) endTouch();
+          return;
+        }
+        setGhost((current) => (current ? { ...current, x: event.clientX, y: event.clientY } : current));
+        const column = document.elementFromPoint(event.clientX, event.clientY)?.closest<HTMLElement>("[data-kanban-column]");
+        setDropTarget(column ? { column: column.dataset.kanbanColumn!, index: slotIn(column, event.clientY, card.id) } : null);
+      },
+      onPointerUp: () => {
+        const state = touch.current;
+        const target = dropTargetRef.current;
+        if (state?.active && target) apply(card.id, target.column, target.index);
+        endTouch();
+      },
+      onPointerCancel: endTouch,
+      // A long press would otherwise open the browser's own menu.
+      onContextMenu: (event: React.MouseEvent) => {
+        if (touch.current) event.preventDefault();
+      },
+    };
+  }
 
   const columnOf = (cardId: string, board = columns) => board.find((column) => column.cards.some((card) => card.id === cardId));
   const isFull = (column: KanbanColumn, cardId: string) =>
@@ -141,6 +228,7 @@ export function Kanban({ columns, onColumnsChange, onCardMove, className, "aria-
         return (
           <section
             key={column.id}
+            data-kanban-column={column.id}
             aria-label={`${column.title}, ${column.cards.length} ${column.cards.length === 1 ? "card" : "cards"}`}
             className={cn(
               toneClasses[column.tone ?? "neutral"],
@@ -150,15 +238,7 @@ export function Kanban({ columns, onColumnsChange, onCardMove, className, "aria-
             onDragOver={(event) => {
               if (!dragging) return;
               event.preventDefault();
-              // Work out the slot from the pointer's position against each card's middle.
-              const cards = [...event.currentTarget.querySelectorAll<HTMLElement>("[data-kanban-card]")].filter(
-                (element) => element.dataset.kanbanCard !== dragging,
-              );
-              const index = cards.findIndex((element) => {
-                const rect = element.getBoundingClientRect();
-                return event.clientY < rect.top + rect.height / 2;
-              });
-              setDropTarget({ column: column.id, index: index === -1 ? cards.length : index });
+              setDropTarget({ column: column.id, index: slotIn(event.currentTarget, event.clientY, dragging) });
             }}
             onDragLeave={(event) => {
               if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setDropTarget(null);
@@ -208,8 +288,9 @@ export function Kanban({ columns, onColumnsChange, onCardMove, className, "aria-
                         if (isLifted) setLifted(null);
                       }}
                       onKeyDown={(event) => onCardKeyDown(event, card, column, index)}
+                      {...touchHandlers(card)}
                       className={cn(
-                        "grid cursor-grab gap-1 rounded-lg border border-border bg-surface p-3 text-sm shadow-xs transition-[box-shadow,opacity,transform] outline-none",
+                        "grid cursor-grab gap-1 rounded-lg select-none [-webkit-touch-callout:none] border border-border bg-surface p-3 text-sm shadow-xs transition-[box-shadow,opacity,transform] outline-none",
                         "hover:border-border-strong focus-visible:ring-2 focus-visible:ring-ring active:cursor-grabbing",
                         dragging === card.id && "opacity-40",
                         isLifted && "-rotate-1 shadow-raised ring-2 ring-ring",
@@ -236,6 +317,15 @@ export function Kanban({ columns, onColumnsChange, onCardMove, className, "aria-
           </section>
         );
       })}
+      {ghost ? (
+        <div
+          aria-hidden
+          className="pointer-events-none fixed z-50 -translate-x-1/2 -translate-y-1/2 rotate-2 rounded-lg border border-border bg-surface p-3 text-sm font-medium shadow-raised ring-2 ring-ring"
+          style={{ left: ghost.x, top: ghost.y, width: ghost.width }}
+        >
+          {ghost.title}
+        </div>
+      ) : null}
       <p aria-live="assertive" className="sr-only">
         {announcement}
       </p>
