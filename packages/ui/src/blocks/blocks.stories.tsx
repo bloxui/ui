@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { DashboardBlock } from "./dashboard";
+import { ErrorPageBlock } from "./error-page";
+import { NotFoundBlock } from "./not-found";
 import { LoginBlock } from "./login";
 import { SettingsBlock } from "./settings";
 import { SignupBlock } from "./signup";
@@ -35,4 +37,12 @@ export const Settings: Story = {
 
 export const Dashboard: Story = {
   render: () => <DashboardBlock />,
+};
+
+export const NotFound: Story = {
+  render: () => <NotFoundBlock links={[{ href: "#", label: "Docs" }, { href: "#", label: "Pricing" }]} />,
+};
+
+export const ErrorPage: Story = {
+  render: () => <ErrorPageBlock status={500} error={Object.assign(new Error("boom"), { digest: "a1b2c3" })} />,
 };

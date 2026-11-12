@@ -2,6 +2,8 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { DashboardBlock } from "./dashboard";
+import { ErrorPageBlock } from "./error-page";
+import { NotFoundBlock } from "./not-found";
 import { LoginBlock } from "./login";
 import { SettingsBlock } from "./settings";
 import { passwordStrength, SignupBlock } from "./signup";
@@ -157,5 +159,34 @@ describe("DashboardBlock", () => {
     await user.click(screen.getByRole("button", { name: "Account menu" }));
     await user.click(screen.getByRole("menuitem", { name: "Sign out" }));
     expect(onSignOut).toHaveBeenCalledOnce();
+  });
+});
+
+describe("NotFoundBlock", () => {
+  it("explains the 404 and offers a way back and other pages", () => {
+    render(<NotFoundBlock links={[{ href: "/docs", label: "Docs" }]} />);
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Page not found");
+    expect(screen.getByRole("link", { name: "Go home" })).toHaveAttribute("href", "/");
+    expect(within(screen.getByRole("navigation", { name: "Popular pages" })).getByRole("link", { name: "Docs" })).toBeInTheDocument();
+  });
+});
+
+describe("ErrorPageBlock", () => {
+  it("offers a retry for server errors and shows the support reference, not the message", async () => {
+    const user = userEvent.setup();
+    const reset = vi.fn();
+    const error = Object.assign(new Error("db password is hunter2"), { digest: "abc123" });
+    render(<ErrorPageBlock status={503} error={error} reset={reset} />);
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Down for maintenance");
+    expect(screen.getByText("abc123")).toBeInTheDocument();
+    expect(screen.queryByText(/hunter2/)).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Try again" }));
+    expect(reset).toHaveBeenCalledOnce();
+  });
+
+  it("does not offer a retry for a forbidden page", () => {
+    render(<ErrorPageBlock status={403} />);
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Access denied");
+    expect(screen.queryByRole("button", { name: "Try again" })).not.toBeInTheDocument();
   });
 });
