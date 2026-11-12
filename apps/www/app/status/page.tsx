@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Badge, Card, CardDescription, CardHeader, CardTitle, statusMessages } from "@blox-ui/ui";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
 export const metadata: Metadata = {
@@ -59,6 +60,7 @@ export default function StatusPages() {
           </section>
         ))}
       </main>
+      <SiteFooter />
     </>
   );
 }

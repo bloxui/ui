@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft, BookOpen, Blocks, Component } from "lucide-react";
 import { Button, Kbd, Result } from "@blox-ui/ui";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
 const suggestions = [
@@ -44,6 +45,7 @@ export default function NotFound() {
           </p>
         </Result>
       </main>
+      <SiteFooter />
     </>
   );
 }

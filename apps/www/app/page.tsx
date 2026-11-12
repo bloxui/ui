@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@blox-ui/ui";
 import { ExampleCards } from "@/components/home/example-cards";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { getComponentList } from "@/lib/docs";
 
@@ -42,16 +43,7 @@ export default function HomePage() {
         </section>
       </main>
 
-      <footer className="border-t border-border py-8 text-center text-sm text-muted">
-        Built with Blox UI. The source code is on{" "}
-        <a
-          href="https://github.com/bloxui/ui"
-          className="font-medium text-fg underline underline-offset-4 outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        >
-          GitHub
-        </a>
-        .
-      </footer>
+      <SiteFooter />
     </>
   );
 }

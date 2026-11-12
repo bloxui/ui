@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Badge, Card, CardDescription, CardHeader, CardTitle } from "@blox-ui/ui";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { blocks } from "@/lib/blocks";
 
@@ -45,6 +46,7 @@ export default function BlocksPage() {
         ))}
       </ul>
     </main>
+    <SiteFooter />
     </>
   );
 }

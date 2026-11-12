@@ -5,7 +5,9 @@ import type { PropsTable as PropsTableData } from "@/lib/docs";
 export function PropsTable({ table }: { table: PropsTableData }) {
   return (
     <div className="space-y-3">
-      <h3 className="font-mono text-sm font-semibold">{table.component}</h3>
+      <h3 id={`api-${table.component.toLowerCase()}`} className="scroll-mt-20 font-mono text-sm font-semibold">
+        {table.component}
+      </h3>
       {table.props.length > 0 ? (
         <div className="overflow-x-auto rounded-lg border border-border">
           <table className="w-full min-w-[36rem] border-collapse text-left text-sm">

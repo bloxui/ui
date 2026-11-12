@@ -1,4 +1,6 @@
 import { DocsSidebar, type DocsNavGroup } from "@/components/docs/docs-nav";
+import { DocsToc } from "@/components/docs/docs-toc";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { getNavigation } from "@/lib/docs";
 
@@ -25,7 +27,11 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
         <main id="content" className="min-w-0 flex-1 py-10 lg:py-12">
           <div className="mx-auto max-w-3xl">{children}</div>
         </main>
+        <aside className="sticky top-14 hidden h-[calc(100dvh-3.5rem)] w-52 shrink-0 overflow-y-auto py-12 xl:block">
+          <DocsToc />
+        </aside>
       </div>
+      <SiteFooter />
     </>
   );
 }

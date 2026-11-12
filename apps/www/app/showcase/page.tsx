@@ -4,6 +4,7 @@ import { DataDemo } from "@/components/data-demo";
 import { FormsDemo } from "@/components/forms-demo";
 import { NavigationDemo } from "@/components/navigation-demo";
 import { OverlaysDemo } from "@/components/overlays-demo";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
 export const metadata: Metadata = {
@@ -28,6 +29,7 @@ export default function ShowcasePage() {
       <NavigationDemo />
       <DataDemo />
     </main>
+    <SiteFooter />
     </>
   );
 }

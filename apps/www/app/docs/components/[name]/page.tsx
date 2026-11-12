@@ -42,7 +42,10 @@ export default async function ComponentPage({ params }: PageProps) {
         <Badge size="sm">{item.category}</Badge>
       </DocsHeader>
 
-      <ComponentPreview name={item.name} html={doc.exampleHtml} code={doc.exampleCode} />
+      <Section>
+        <H2 id="usage">Usage</H2>
+        <ComponentPreview name={item.name} html={doc.exampleHtml} code={doc.exampleCode} />
+      </Section>
 
       <Section>
         <H2 id="installation">Installation</H2>
