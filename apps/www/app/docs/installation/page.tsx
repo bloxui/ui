@@ -4,7 +4,7 @@ import { Code, DocsHeader, H2, P, Section } from "@/components/docs/prose";
 import { highlight } from "@/lib/highlight";
 
 export const metadata: Metadata = {
-  title: "Installation — Blox UI",
+  title: "Installation",
   description: "Add Blox UI to a React project that uses Tailwind CSS v4.",
 };
 

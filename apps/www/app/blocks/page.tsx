@@ -7,7 +7,7 @@ import { SiteHeader } from "@/components/site-header";
 import { blocks } from "@/lib/blocks";
 
 export const metadata: Metadata = {
-  title: "Blocks — Blox UI",
+  title: "Blocks",
   description: "Ready-made screens composed from Blox UI components.",
 };
 

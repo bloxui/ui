@@ -8,7 +8,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
 export const metadata: Metadata = {
-  title: "Showcase — Blox UI",
+  title: "Showcase",
   description: "Every component on one page.",
 };
 

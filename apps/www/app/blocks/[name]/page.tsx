@@ -15,7 +15,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { name } = await params;
   const block = blocks[name];
-  return block ? { title: `${block.title} block — Blox UI`, description: block.description } : {};
+  return block ? { title: `${block.title} block`, description: block.description } : {};
 }
 
 /** Renders one block on its own page, full screen, the way it would appear in an app. */

@@ -5,7 +5,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
 export const metadata: Metadata = {
-  title: "Status pages — Blox UI",
+  title: "Status pages",
   description: "Error pages for every common HTTP status code, built with the Result component.",
 };
 

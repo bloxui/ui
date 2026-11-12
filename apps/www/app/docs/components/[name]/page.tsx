@@ -23,7 +23,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { name } = await params;
   const item = getComponentList().find((entry) => entry.name === name);
-  return item ? { title: `${item.title} — Blox UI`, description: item.description } : {};
+  return item ? { title: `${item.title}`, description: item.description } : {};
 }
 
 export default async function ComponentPage({ params }: PageProps) {

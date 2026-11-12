@@ -16,7 +16,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { code } = await params;
   const message = statusMessages[Number(code)];
-  return message ? { title: `${code} ${message.title} — Blox UI`, robots: { index: false } } : {};
+  return message ? { title: `${code} ${message.title}`, robots: { index: false } } : {};
 }
 
 /**

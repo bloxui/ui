@@ -1,8 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Blocks, BookOpen, Component } from "lucide-react";
 import { Button, Kbd, Result } from "@blox-ui/ui";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+
+export const metadata: Metadata = { title: "Page not found" };
 
 const suggestions = [
   { href: "/docs", label: "Read the docs", description: "Install Blox UI and learn the basics.", icon: BookOpen },

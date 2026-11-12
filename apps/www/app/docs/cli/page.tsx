@@ -4,7 +4,7 @@ import { Code, DocsHeader, H2, List, P, Section } from "@/components/docs/prose"
 import { highlight } from "@/lib/highlight";
 
 export const metadata: Metadata = {
-  title: "CLI — Blox UI",
+  title: "CLI",
   description: "Commands and options of the blox command-line tool.",
 };
 

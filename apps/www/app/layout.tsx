@@ -3,7 +3,11 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://bloxui-kit.vercel.app"),
-  title: "Blox UI",
+  title: {
+    default: "Blox UI - Accessible React components you own",
+    // Every page sets just its own name, e.g. "Checkbox" → "Checkbox - Blox UI".
+    template: "%s - Blox UI",
+  },
   description: "Accessible React components you copy into your project and own. Built on Tailwind CSS v4 and Radix.",
   openGraph: {
     type: "website",

@@ -6,7 +6,7 @@ import { Code, DocsHeader, H2, List, P, Section } from "@/components/docs/prose"
 import { getComponentList } from "@/lib/docs";
 
 export const metadata: Metadata = {
-  title: "Introduction — Blox UI",
+  title: "Introduction",
   description: "React components you copy into your project and own.",
 };
 

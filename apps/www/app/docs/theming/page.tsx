@@ -5,7 +5,7 @@ import { ThemeCustomizer } from "@/components/docs/theme-customizer";
 import { highlight } from "@/lib/highlight";
 
 export const metadata: Metadata = {
-  title: "Theming — Blox UI",
+  title: "Theming",
   description: "Change colours, corners and dark mode with CSS variables.",
 };
 
