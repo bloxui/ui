@@ -10,7 +10,8 @@
     ".": "./src/index.ts",
     "./styles/*": "./src/styles/*",
     "./lib/*": "./src/lib/*.ts",
-    "./components/*": "./src/components/*.tsx"
+    "./components/*": "./src/components/*.tsx",
+    "./blocks/*": "./src/blocks/*.tsx"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",

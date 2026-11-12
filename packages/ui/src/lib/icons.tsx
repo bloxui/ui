@@ -121,3 +121,25 @@ export const GripVerticalIcon = (p: IconProps) => (
     <circle cx="15" cy="18" r="1.5" />
   </Svg>
 );
+export const HomeIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z" />
+  </Svg>
+);
+export const BarChartIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M5 20V10M12 20V4M19 20v-7" />
+  </Svg>
+);
+export const SlidersIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M4 7h9M17 7h3M4 17h3M11 17h9" />
+    <circle cx="15" cy="7" r="2" />
+    <circle cx="9" cy="17" r="2" />
+  </Svg>
+);
+export const LogOutIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M9 20H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h3M16 16l4-4-4-4M20 12H10" />
+  </Svg>
+);
