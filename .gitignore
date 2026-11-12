@@ -8,3 +8,6 @@ storybook-static
 next-env.d.ts
 .registry-check
 .cli-e2e
+
+# Personal maintainer notes; stays on this machine
+MAINTAINER-NOTES.md
