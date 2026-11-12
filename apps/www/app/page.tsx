@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { Button } from "@blox-ui/ui";
 import { BasicsDemo } from "@/components/basics-demo";
 import { DataDemo } from "@/components/data-demo";
 import { FormsDemo } from "@/components/forms-demo";
@@ -13,7 +15,12 @@ export default function Page() {
           <h1 className="text-3xl font-bold tracking-tight">Blox UI</h1>
           <p className="text-muted">Every component in the library, in light and dark themes.</p>
         </div>
-        <ThemeToggle />
+        <div className="flex items-center gap-2">
+          <Button asChild variant="outline" tone="neutral" size="sm">
+            <Link href="/blocks">Blocks</Link>
+          </Button>
+          <ThemeToggle />
+        </div>
       </header>
       <BasicsDemo />
       <FormsDemo />
