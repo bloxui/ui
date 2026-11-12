@@ -116,7 +116,7 @@ function StatCard({ label, value, change, riseIsGood }: Stat) {
   const good = rose === riseIsGood;
   const Arrow = rose ? ArrowUpIcon : ArrowDownIcon;
   return (
-    <Card padding="sm">
+    <Card padding="sm" className="min-w-0">
       <CardHeader>
         <CardDescription>{label}</CardDescription>
         <p className="text-2xl font-semibold tracking-tight tabular-nums">{value}</p>
@@ -228,7 +228,7 @@ export function DashboardBlock({
           </div>
 
           <div className="grid gap-6 xl:grid-cols-5">
-            <Card className="xl:col-span-2">
+            <Card className="min-w-0 xl:col-span-2">
               <CardHeader>
                 <CardTitle as="h2">Revenue</CardTitle>
                 <CardDescription>Monthly revenue, January to June</CardDescription>
@@ -253,7 +253,7 @@ export function DashboardBlock({
               </CardContent>
             </Card>
 
-            <Card className="xl:col-span-3">
+            <Card className="min-w-0 xl:col-span-3">
               <CardHeader>
                 <CardTitle as="h2">Recent orders</CardTitle>
                 <CardDescription>Sort by any column or search by customer.</CardDescription>
