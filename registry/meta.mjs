@@ -64,6 +64,15 @@ export const components = {
   tooltip: { title: "Tooltip", description: "A short label shown on hover or focus.", category: "Overlays" },
 };
 
+/** Ready-made screens composed from the components. Published as "block-<name>". */
+/** @type {Record<string, ItemMeta>} */
+export const blocks = {
+  login: { title: "Login", description: "A sign-in card with validation, a loading state and an error message.", category: "Blocks" },
+  signup: { title: "Signup", description: "A sign-up card with a password strength meter and a terms checkbox.", category: "Blocks" },
+  settings: { title: "Settings", description: "An account settings page with profile, notifications and delete account.", category: "Blocks" },
+  dashboard: { title: "Dashboard", description: "An app shell with a sidebar, stat cards, a chart and an orders table.", category: "Blocks" },
+};
+
 /** Shared helpers that components import. Installed automatically when a component needs them. */
 /** @type {Record<string, ItemMeta & { file: string }>} */
 export const libs = {

@@ -6,10 +6,11 @@
     "dev": "turbo run dev",
     "build": "turbo run build",
     "typecheck": "turbo run typecheck",
-    "test": "turbo run test && node --test \"scripts/*.test.mjs\" && node scripts/build-registry.mjs --check",
+    "test": "turbo run test && node --test \"scripts/*.test.mjs\" && pnpm registry:check && pnpm registry:verify",
     "storybook": "pnpm --filter @blox-ui/ui storybook",
     "registry:build": "node scripts/build-registry.mjs",
-    "registry:check": "node scripts/build-registry.mjs --check"
+    "registry:check": "node scripts/build-registry.mjs --check",
+    "registry:verify": "node scripts/verify-registry.mjs"
   },
   "devDependencies": {
     "turbo": "^2.3.0",

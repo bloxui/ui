@@ -5,19 +5,22 @@ The registry is how Blox UI components reach a project. Each component, shared h
 ## Build it
 
 ```bash
-pnpm registry:build   # writes apps/www/public/r/*.json
-pnpm registry:check   # validates without writing
+pnpm registry:build    # regenerate apps/www/public/r/*.json
+pnpm registry:check    # fail if the committed files are out of date
+pnpm registry:verify   # install every item into a scratch project and type-check it
 ```
 
-The preview site builds the registry before `dev` and `build`, so it is served at `/r/index.json` and `/r/<name>.json`. The output folder is generated and not committed.
+The generated files are committed, so the registry has a stable URL as soon as the repo or the site is public, and changes to it show up in review. `pnpm test` runs the check and the verification, and the preview site rebuilds the registry before `dev` and `build`. It is served at `/r/index.json` and `/r/<name>.json`.
+
+After changing a component, run `pnpm registry:build` and commit the result.
 
 ## How it is made
 
 `scripts/build-registry.mjs` reads the real source in `packages/ui/src`, so the registry cannot drift from the components:
 
-- **Files:** every `.tsx` in `src/components` (tests and stories excluded) becomes a `ui` item. The helpers listed in `meta.mjs` become `lib` items, and `blox.css` becomes the `theme` item.
+- **Files:** every `.tsx` in `src/components` (tests and stories excluded) becomes a `ui` item, and every `.tsx` in `src/blocks` becomes a `block` item named `block-<name>`. The helpers listed in `meta.mjs` become `lib` items, and `blox.css` becomes the `theme` item.
 - **npm dependencies:** worked out from each file's imports and pinned to the version range in `packages/ui/package.json`. React is left out because every project has it.
-- **Registry dependencies:** `./button` and `../lib/cn` imports become the names of the other items to install.
+- **Registry dependencies:** `./button`, `../components/button` and `../lib/cn` imports become the names of the other items to install.
 - **Titles, descriptions, categories:** written by hand in `meta.mjs`. This is the only part to edit when adding a component.
 
 The build fails when a component has no `meta.mjs` entry, an entry has no file, a dependency is unknown or circular, or a package is imported without being in `package.json`.
@@ -27,7 +30,7 @@ The build fails when a component has no `meta.mjs` entry, an entry has no file, 
 ```jsonc
 {
   "name": "dialog",
-  "type": "ui",                      // "ui" | "lib" | "style"
+  "type": "ui",                      // "ui" | "block" | "lib" | "style"
   "title": "Dialog",
   "description": "A window over the page, in five sizes with a scrollable body.",
   "category": "Overlays",
@@ -60,5 +63,10 @@ The CLI replaces `~ui` and `~lib` with the paths from the user's configuration (
 | Type | Path | Typical destination |
 |---|---|---|
 | `ui` | `ui/dialog.tsx` | `components/ui/dialog.tsx` |
+| `block` | `blocks/login.tsx` | `components/blocks/login.tsx` |
 | `lib` | `lib/cn.ts` | `lib/cn.ts` |
 | `style` | `blox.css` | `styles/blox.css` |
+
+## Verification
+
+`scripts/verify-registry.mjs` installs all items into a temporary project that uses a different layout from this repo (`components/ui`, `components/blocks`, `lib`, with `@/…` imports) and runs TypeScript over it. It catches a file that imports something the registry does not ship, and aliases that do not resolve.

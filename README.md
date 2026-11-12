@@ -22,6 +22,8 @@ Crafted React components you own. Built with Tailwind CSS v4 and Radix UI.
 
 **Data and layout:** Table, Data Table, Chart, Scroll Area, Aspect Ratio, Resizable
 
+**Blocks:** Login, Signup, Settings, Dashboard
+
 ## Highlights
 
 - **Tone × variant:** every component takes the same five tones (`brand`, `neutral`, `success`, `warning`, `danger`).
@@ -37,7 +39,7 @@ pnpm install
 pnpm dev          # preview site on http://localhost:3000
 pnpm storybook    # Storybook on http://localhost:6006
 pnpm test         # component tests, registry tests and registry validation
-pnpm registry:build   # generate the registry JSON
+pnpm registry:build   # regenerate the registry JSON after changing a component
 pnpm typecheck
 pnpm build
 ```

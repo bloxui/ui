@@ -1,5 +1,6 @@
 /**
- * Pure helpers for building the registry. Kept free of file access so they can be unit-tested.
+ * Pure helpers for building and consuming the registry. Kept free of file access
+ * so they can be unit-tested and reused by the CLI.
  */
 
 /** Import aliases written into registry files. The CLI swaps them for the user's own paths. */
@@ -7,6 +8,11 @@ export const UI_ALIAS = "~ui";
 export const LIB_ALIAS = "~lib";
 
 const IMPORT_PATTERN = /(?:^|\n)\s*(?:import|export)\s+(?:[^"';]*?\sfrom\s+)?["']([^"']+)["']/g;
+
+/** Git may check files out with CRLF on Windows; the registry must be identical on every machine. */
+export function normalizeNewlines(source) {
+  return source.replace(/\r\n/g, "\n");
+}
 
 /** Every module specifier a file imports or re-exports from, in order, without duplicates. */
 export function findImports(source) {
@@ -24,23 +30,34 @@ export function packageName(specifier) {
 const stripExtension = (path) => path.replace(/\.(tsx?|mjs|js)$/, "");
 
 /**
- * Sorts a file's imports into npm packages, sibling components and shared lib files.
- * `kind` is where the file itself lives: components import "../lib/x" and "./sibling",
- * lib files import "./other-lib".
+ * Where a relative import points, given the kind of file it is in:
+ *   ui     components import "./sibling" and "../lib/x"
+ *   lib    helpers import "./other-helper"
+ *   block  blocks import "../components/x" and "../lib/x"
+ * Returns null for package imports.
  */
+function resolveRelative(specifier, kind) {
+  if (!specifier.startsWith(".")) return null;
+  if (specifier.startsWith("../lib/")) return { group: "lib", name: specifier.slice("../lib/".length) };
+  if (kind === "block" && specifier.startsWith("../components/")) {
+    return { group: "ui", name: specifier.slice("../components/".length) };
+  }
+  if (kind !== "block" && specifier.startsWith("./")) {
+    return { group: kind === "lib" ? "lib" : "ui", name: specifier.slice(2) };
+  }
+  throw new Error(`Unsupported relative import "${specifier}" in a ${kind} file.`);
+}
+
+/** Sorts a file's imports into npm packages, components and shared lib files. */
 export function classifyImports(source, kind) {
   const packages = new Set();
   const components = new Set();
   const libs = new Set();
 
   for (const specifier of findImports(source)) {
-    if (specifier.startsWith("../lib/")) {
-      libs.add(stripExtension(specifier.slice("../lib/".length)));
-    } else if (specifier.startsWith("./")) {
-      const name = stripExtension(specifier.slice(2));
-      (kind === "lib" ? libs : components).add(name);
-    } else if (specifier.startsWith(".")) {
-      throw new Error(`Unsupported relative import "${specifier}". Use "./name" or "../lib/name".`);
+    const relative = resolveRelative(specifier, kind);
+    if (relative) {
+      (relative.group === "lib" ? libs : components).add(stripExtension(relative.name));
     } else {
       const name = packageName(specifier);
       // React is a peer dependency every project already has.
@@ -54,11 +71,20 @@ export function classifyImports(source, kind) {
 /** Rewrites relative imports to the registry aliases so files work from any folder layout. */
 export function rewriteImports(source, kind) {
   return source.replace(/(from\s+|import\s+)(["'])(\.{1,2}\/[^"']+)\2/g, (whole, lead, quote, specifier) => {
-    let target;
-    if (specifier.startsWith("../lib/")) target = `${LIB_ALIAS}/${specifier.slice("../lib/".length)}`;
-    else if (specifier.startsWith("./")) target = `${kind === "lib" ? LIB_ALIAS : UI_ALIAS}/${specifier.slice(2)}`;
-    else return whole;
-    return `${lead}${quote}${target}${quote}`;
+    const relative = resolveRelative(specifier, kind);
+    if (!relative) return whole;
+    const alias = relative.group === "lib" ? LIB_ALIAS : UI_ALIAS;
+    return `${lead}${quote}${alias}/${relative.name}${quote}`;
+  });
+}
+
+/**
+ * Replaces the registry aliases with a project's own import paths,
+ * e.g. { ui: "@/components/ui", lib: "@/lib" }. This is what the CLI does on install.
+ */
+export function applyAliases(source, aliases) {
+  return source.replace(/(from\s+|import\s+)(["'])(~ui|~lib)\//g, (_whole, lead, quote, alias) => {
+    return `${lead}${quote}${alias === UI_ALIAS ? aliases.ui : aliases.lib}/`;
   });
 }
 
@@ -85,4 +111,11 @@ export function resolveItems(names, itemsByName) {
 
   for (const name of names) visit(name, []);
   return ordered;
+}
+
+/** Every npm package a set of items needs, merged into one { name: range } map. */
+export function collectDependencies(names, itemsByName) {
+  const merged = {};
+  for (const name of names) Object.assign(merged, itemsByName[name].dependencies);
+  return Object.fromEntries(Object.entries(merged).sort(([a], [b]) => a.localeCompare(b)));
 }
