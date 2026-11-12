@@ -1,0 +1,20 @@
+{
+  "name": "grid",
+  "type": "ui",
+  "title": "Grid",
+  "description": "A responsive grid with columns per breakpoint.",
+  "category": "Layout",
+  "dependencies": {
+    "@radix-ui/react-slot": "^1.2.0"
+  },
+  "registryDependencies": [
+    "cn",
+    "flex"
+  ],
+  "files": [
+    {
+      "path": "ui/grid.tsx",
+      "content": "import * as React from \"react\";\nimport { Slot } from \"@radix-ui/react-slot\";\nimport { cn } from \"~lib/cn\";\nimport { flexGapClasses, type Gap } from \"~ui/flex\";\n\ntype Columns = 1 | 2 | 3 | 4 | 5 | 6 | 12;\n\n// Every class written out so Tailwind generates it.\nconst columns = {\n  base: { 1: \"grid-cols-1\", 2: \"grid-cols-2\", 3: \"grid-cols-3\", 4: \"grid-cols-4\", 5: \"grid-cols-5\", 6: \"grid-cols-6\", 12: \"grid-cols-12\" },\n  sm: { 1: \"sm:grid-cols-1\", 2: \"sm:grid-cols-2\", 3: \"sm:grid-cols-3\", 4: \"sm:grid-cols-4\", 5: \"sm:grid-cols-5\", 6: \"sm:grid-cols-6\", 12: \"sm:grid-cols-12\" },\n  md: { 1: \"md:grid-cols-1\", 2: \"md:grid-cols-2\", 3: \"md:grid-cols-3\", 4: \"md:grid-cols-4\", 5: \"md:grid-cols-5\", 6: \"md:grid-cols-6\", 12: \"md:grid-cols-12\" },\n  lg: { 1: \"lg:grid-cols-1\", 2: \"lg:grid-cols-2\", 3: \"lg:grid-cols-3\", 4: \"lg:grid-cols-4\", 5: \"lg:grid-cols-5\", 6: \"lg:grid-cols-6\", 12: \"lg:grid-cols-12\" },\n  xl: { 1: \"xl:grid-cols-1\", 2: \"xl:grid-cols-2\", 3: \"xl:grid-cols-3\", 4: \"xl:grid-cols-4\", 5: \"xl:grid-cols-5\", 6: \"xl:grid-cols-6\", 12: \"xl:grid-cols-12\" },\n} as const;\n\nexport type ResponsiveColumns = Columns | Partial<Record<keyof typeof columns, Columns>>;\n\nexport interface GridProps extends React.ComponentProps<\"div\"> {\n  /** A number, or one per breakpoint: { base: 1, md: 2, lg: 4 }. */\n  columns?: ResponsiveColumns;\n  gap?: Gap;\n  asChild?: boolean;\n}\n\nexport function gridColumnClasses(value: ResponsiveColumns) {\n  if (typeof value === \"number\") return columns.base[value];\n  return (Object.keys(value) as (keyof typeof columns)[]).map((breakpoint) => columns[breakpoint][value[breakpoint]!]).join(\" \");\n}\n\n/** A responsive grid: give it columns per breakpoint and a gap. */\nexport function Grid({ columns: cols = 1, gap = 4, asChild, className, ...props }: GridProps) {\n  const Comp = asChild ? Slot : \"div\";\n  return <Comp data-slot=\"grid\" className={cn(\"grid\", gridColumnClasses(cols), flexGapClasses[gap], className)} {...props} />;\n}\n"
+    }
+  ]
+}

@@ -18,6 +18,7 @@ export function getSearchItems(): SearchItem[] {
     { title: "Docs", href: "/docs", group: "Pages", keywords: ["introduction"] },
     { title: "Showcase", href: "/showcase", group: "Pages", keywords: ["examples", "all components"] },
     { title: "Blocks", href: "/blocks", group: "Pages", keywords: ["templates", "screens"] },
+    { title: "Status pages", href: "/status", group: "Pages", keywords: ["404", "500", "error", "http"] },
     { title: "Theme builder", href: "/docs/theming#customizer", group: "Pages", keywords: ["colors", "customize"] },
     { title: "Installation", href: "/docs/installation", group: "Guides", keywords: ["setup", "install"] },
     { title: "CLI", href: "/docs/cli", group: "Guides", keywords: ["init", "add", "command line"] },

@@ -1,0 +1,19 @@
+{
+  "name": "flex",
+  "type": "ui",
+  "title": "Flex",
+  "description": "A flex container with typed direction, alignment and gap.",
+  "category": "Layout",
+  "dependencies": {
+    "@radix-ui/react-slot": "^1.2.0"
+  },
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "path": "ui/flex.tsx",
+      "content": "import * as React from \"react\";\nimport { Slot } from \"@radix-ui/react-slot\";\nimport { cn } from \"~lib/cn\";\n\n// Written out in full so Tailwind finds every class when it scans this file.\nconst directions = { row: \"flex-row\", column: \"flex-col\", \"row-reverse\": \"flex-row-reverse\", \"column-reverse\": \"flex-col-reverse\" } as const;\nconst aligns = { start: \"items-start\", center: \"items-center\", end: \"items-end\", stretch: \"items-stretch\", baseline: \"items-baseline\" } as const;\nconst justifies = { start: \"justify-start\", center: \"justify-center\", end: \"justify-end\", between: \"justify-between\", around: \"justify-around\", evenly: \"justify-evenly\" } as const;\nconst gaps = { 0: \"gap-0\", 1: \"gap-1\", 2: \"gap-2\", 3: \"gap-3\", 4: \"gap-4\", 5: \"gap-5\", 6: \"gap-6\", 8: \"gap-8\", 10: \"gap-10\", 12: \"gap-12\" } as const;\n\nexport type Gap = keyof typeof gaps;\n\nexport interface FlexProps extends React.ComponentProps<\"div\"> {\n  direction?: keyof typeof directions;\n  align?: keyof typeof aligns;\n  justify?: keyof typeof justifies;\n  /** Spacing between children, on the Tailwind scale (4 = 1rem). */\n  gap?: Gap;\n  wrap?: boolean;\n  /** inline-flex instead of flex. */\n  inline?: boolean;\n  /** Render the child element instead of a div, e.g. a <ul> or <section>. */\n  asChild?: boolean;\n}\n\n/** A flex container with typed props, for when a class string would be harder to read or vary. */\nexport function Flex({ direction = \"row\", align, justify, gap, wrap, inline, asChild, className, ...props }: FlexProps) {\n  const Comp = asChild ? Slot : \"div\";\n  return (\n    <Comp\n      data-slot=\"flex\"\n      className={cn(\n        inline ? \"inline-flex\" : \"flex\",\n        directions[direction],\n        align && aligns[align],\n        justify && justifies[justify],\n        gap !== undefined && gaps[gap],\n        wrap && \"flex-wrap\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport { gaps as flexGapClasses };\n"
+    }
+  ]
+}

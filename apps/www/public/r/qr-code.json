@@ -1,0 +1,19 @@
+{
+  "name": "qr-code",
+  "type": "ui",
+  "title": "QR Code",
+  "description": "Encodes text or a link as a crisp SVG QR code.",
+  "category": "Display",
+  "dependencies": {
+    "uqr": "^0.1.3"
+  },
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "path": "ui/qr-code.tsx",
+      "content": "import * as React from \"react\";\nimport { encode } from \"uqr\";\nimport { cn } from \"~lib/cn\";\n\nexport interface QRCodeProps extends Omit<React.ComponentProps<\"svg\">, \"children\"> {\n  /** The text or URL to encode. */\n  value: string;\n  /** Width and height in pixels. */\n  size?: number;\n  /** How much damage the code survives: L 7%, M 15%, Q 25%, H 30%. Use H with an icon. */\n  level?: \"L\" | \"M\" | \"Q\" | \"H\";\n  /** Quiet zone around the code, in modules. Scanners need at least 2. */\n  margin?: number;\n  /** Module colour; defaults to the text colour. Keep strong contrast with the background. */\n  color?: string;\n  background?: string;\n  /** A small logo drawn in the middle. Raise `level` to \"H\" so the code still scans. */\n  icon?: React.ReactNode;\n  /** Accessible name; defaults to \"QR code\" plus the value. */\n  label?: string;\n}\n\n/** Turns a value into a QR code drawn as one SVG path, so it stays sharp at any size and prints well. */\nexport function QRCode({\n  value,\n  size = 160,\n  level = \"M\",\n  margin = 2,\n  color = \"currentColor\",\n  background = \"transparent\",\n  icon,\n  label,\n  className,\n  ...props\n}: QRCodeProps) {\n  const { data, size: modules } = React.useMemo(() => encode(value, { ecc: level, border: 0 }), [value, level]);\n  const total = modules + margin * 2;\n\n  // One path of 1×1 squares is far lighter than an element per module.\n  const path = React.useMemo(() => {\n    let d = \"\";\n    data.forEach((row, y) => {\n      row.forEach((on, x) => {\n        if (on) d += `M${x + margin} ${y + margin}h1v1h-1z`;\n      });\n    });\n    return d;\n  }, [data, margin]);\n\n  const iconSize = total * 0.22;\n\n  return (\n    <svg\n      data-slot=\"qr-code\"\n      role=\"img\"\n      aria-label={label ?? `QR code: ${value}`}\n      width={size}\n      height={size}\n      viewBox={`0 0 ${total} ${total}`}\n      shapeRendering=\"crispEdges\"\n      className={cn(\"shrink-0\", className)}\n      {...props}\n    >\n      <rect width={total} height={total} fill={background} />\n      <path d={path} fill={color} />\n      {icon ? (\n        <foreignObject x={(total - iconSize) / 2} y={(total - iconSize) / 2} width={iconSize} height={iconSize}>\n          <div className=\"flex size-full items-center justify-center rounded-[20%] bg-white p-[8%] [&>*]:size-full\">{icon}</div>\n        </foreignObject>\n      ) : null}\n    </svg>\n  );\n}\n"
+    }
+  ]
+}

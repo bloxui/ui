@@ -1,0 +1,18 @@
+{
+  "name": "block-error-page",
+  "type": "block",
+  "title": "Error page",
+  "description": "An error page for any status code, with retry and a support reference.",
+  "category": "Blocks",
+  "dependencies": {},
+  "registryDependencies": [
+    "button",
+    "result"
+  ],
+  "files": [
+    {
+      "path": "blocks/error-page.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { Button } from \"~ui/button\";\nimport { Result } from \"~ui/result\";\n\nexport interface ErrorPageBlockProps {\n  /** HTTP status to show. 500 when it is an unexpected crash. */\n  status?: number;\n  /** The caught error. Its message is not shown (it may leak internals); its digest is, for support. */\n  error?: Error & { digest?: string };\n  /** Retry the failed render, e.g. the `reset` Next.js passes to error.tsx. */\n  reset?: () => void;\n  homeHref?: string;\n  supportHref?: string;\n}\n\n/** An error page for any status code: an explanation, a retry when it makes sense, and a reference for support. */\nexport function ErrorPageBlock({ status = 500, error, reset, homeHref = \"/\", supportHref }: ErrorPageBlockProps) {\n  // Retrying helps with server and network errors, not with missing or forbidden pages.\n  const retryable = status >= 500 || status === 408 || status === 429;\n  return (\n    <main className=\"flex min-h-dvh items-center justify-center p-4\">\n      <Result\n        status={status}\n        headingLevel={1}\n        actions={\n          <>\n            {retryable ? (\n              <Button onClick={() => (reset ? reset() : window.location.reload())}>Try again</Button>\n            ) : status === 401 ? (\n              <Button asChild>\n                <a href=\"/login\">Sign in</a>\n              </Button>\n            ) : null}\n            <Button asChild variant={retryable || status === 401 ? \"outline\" : \"solid\"} tone={retryable || status === 401 ? \"neutral\" : \"brand\"}>\n              <a href={homeHref}>Go home</a>\n            </Button>\n            {supportHref ? (\n              <Button asChild variant=\"ghost\" tone=\"neutral\">\n                <a href={supportHref}>Contact support</a>\n              </Button>\n            ) : null}\n          </>\n        }\n      >\n        {error?.digest ? (\n          <p className=\"text-xs text-muted\">\n            Reference: <code className=\"rounded bg-sunken px-1.5 py-0.5 font-mono\">{error.digest}</code>\n          </p>\n        ) : null}\n      </Result>\n    </main>\n  );\n}\n"
+    }
+  ]
+}

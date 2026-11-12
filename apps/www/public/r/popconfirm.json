@@ -1,0 +1,23 @@
+{
+  "name": "popconfirm",
+  "type": "ui",
+  "title": "Popconfirm",
+  "description": "A small confirmation next to the button that triggered it.",
+  "category": "Overlays",
+  "dependencies": {
+    "radix-ui": "^1.8.1"
+  },
+  "registryDependencies": [
+    "cn",
+    "icons",
+    "overlay",
+    "tone",
+    "button"
+  ],
+  "files": [
+    {
+      "path": "ui/popconfirm.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { Popover as PopoverPrimitive } from \"radix-ui\";\nimport { cn } from \"~lib/cn\";\nimport { TriangleAlertIcon } from \"~lib/icons\";\nimport { popupClass } from \"~lib/overlay\";\nimport type { Tone } from \"~lib/tone\";\nimport { Button } from \"~ui/button\";\n\nexport interface PopconfirmProps {\n  /** The element that opens the confirmation, usually a button. */\n  children: React.ReactElement;\n  title: React.ReactNode;\n  description?: React.ReactNode;\n  /** Runs on confirm. Return a promise to show a spinner and keep it open until it settles. */\n  onConfirm: () => void | Promise<void>;\n  onCancel?: () => void;\n  confirmLabel?: string;\n  cancelLabel?: string;\n  /** \"danger\" for destructive actions. */\n  tone?: Tone;\n  side?: \"top\" | \"right\" | \"bottom\" | \"left\";\n  align?: \"start\" | \"center\" | \"end\";\n}\n\n/**\n * A small confirmation next to the button that triggered it, for actions that need a\n * second look but not a full dialog. Focus starts on Cancel so Enter never confirms by accident.\n */\nexport function Popconfirm({\n  children,\n  title,\n  description,\n  onConfirm,\n  onCancel,\n  confirmLabel = \"Confirm\",\n  cancelLabel = \"Cancel\",\n  tone = \"danger\",\n  side = \"top\",\n  align = \"center\",\n}: PopconfirmProps) {\n  const [open, setOpen] = React.useState(false);\n  const [pending, setPending] = React.useState(false);\n  const titleId = React.useId();\n  const descriptionId = React.useId();\n  const cancelRef = React.useRef<HTMLButtonElement>(null);\n\n  return (\n    <PopoverPrimitive.Root\n      open={open}\n      onOpenChange={(next) => {\n        if (pending) return;\n        setOpen(next);\n        if (!next) onCancel?.();\n      }}\n    >\n      <PopoverPrimitive.Trigger asChild>{children}</PopoverPrimitive.Trigger>\n      <PopoverPrimitive.Portal>\n        <PopoverPrimitive.Content\n          data-slot=\"popconfirm\"\n          role=\"alertdialog\"\n          aria-labelledby={titleId}\n          aria-describedby={description ? descriptionId : undefined}\n          side={side}\n          align={align}\n          sideOffset={8}\n          collisionPadding={8}\n          onOpenAutoFocus={(event) => {\n            event.preventDefault();\n            cancelRef.current?.focus();\n          }}\n          className={cn(popupClass, \"grid w-72 gap-3 p-4 text-sm\")}\n        >\n          <div className=\"flex gap-2.5\">\n            <TriangleAlertIcon className={cn(\"mt-0.5 size-4 shrink-0\", tone === \"danger\" ? \"text-danger-text\" : \"text-warning-text\")} />\n            <div className=\"grid gap-1\">\n              <p id={titleId} className=\"font-medium\">\n                {title}\n              </p>\n              {description ? (\n                <p id={descriptionId} className=\"text-muted\">\n                  {description}\n                </p>\n              ) : null}\n            </div>\n          </div>\n          <div className=\"flex justify-end gap-2\">\n            <Button\n              ref={cancelRef}\n              variant=\"outline\"\n              tone=\"neutral\"\n              size=\"xs\"\n              disabled={pending}\n              onClick={() => {\n                setOpen(false);\n                onCancel?.();\n              }}\n            >\n              {cancelLabel}\n            </Button>\n            <Button\n              tone={tone}\n              size=\"xs\"\n              loading={pending}\n              onClick={async () => {\n                setPending(true);\n                try {\n                  await onConfirm();\n                  setOpen(false);\n                } finally {\n                  setPending(false);\n                }\n              }}\n            >\n              {confirmLabel}\n            </Button>\n          </div>\n          <PopoverPrimitive.Arrow className=\"fill-surface\" width={12} height={6} />\n        </PopoverPrimitive.Content>\n      </PopoverPrimitive.Portal>\n    </PopoverPrimitive.Root>\n  );\n}\n"
+    }
+  ]
+}

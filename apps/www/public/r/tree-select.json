@@ -1,0 +1,22 @@
+{
+  "name": "tree-select",
+  "type": "ui",
+  "title": "Tree Select",
+  "description": "A select whose options are a tree, such as teams or folders.",
+  "category": "Forms",
+  "dependencies": {},
+  "registryDependencies": [
+    "cn",
+    "control",
+    "field-context",
+    "icons",
+    "popover",
+    "tree-view"
+  ],
+  "files": [
+    {
+      "path": "ui/tree-select.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { cn } from \"~lib/cn\";\nimport { fieldTriggerClass, fieldTriggerSizes, type FieldTriggerSize } from \"~lib/control\";\nimport { useFieldControl } from \"~lib/field-context\";\nimport { ChevronsUpDownIcon } from \"~lib/icons\";\nimport { Popover, PopoverContent, PopoverTrigger } from \"~ui/popover\";\nimport { TreeView, type TreeNode } from \"~ui/tree-view\";\n\n/** The node with an id, and the ids of its ancestors (so they can start expanded). */\nexport function findTreeNode(nodes: TreeNode[], id: string, ancestors: string[] = []): { node: TreeNode; ancestors: string[] } | null {\n  for (const node of nodes) {\n    if (node.id === id) return { node, ancestors };\n    if (node.children) {\n      const found = findTreeNode(node.children, id, [...ancestors, node.id]);\n      if (found) return found;\n    }\n  }\n  return null;\n}\n\nexport interface TreeSelectProps {\n  items: TreeNode[];\n  value?: string | null;\n  defaultValue?: string | null;\n  onValueChange?: (id: string) => void;\n  /** Only allow choosing nodes without children. */\n  leavesOnly?: boolean;\n  placeholder?: string;\n  size?: FieldTriggerSize;\n  invalid?: boolean;\n  disabled?: boolean;\n  name?: string;\n  id?: string;\n  className?: string;\n  \"aria-label\"?: string;\n  \"aria-describedby\"?: string;\n}\n\n/** A select whose options are a tree, such as departments or folders. */\nexport function TreeSelect({\n  items,\n  value: valueProp,\n  defaultValue = null,\n  onValueChange,\n  leavesOnly = false,\n  placeholder = \"Select\",\n  size = \"md\",\n  invalid,\n  disabled,\n  name,\n  id,\n  className,\n  \"aria-label\": ariaLabel,\n  \"aria-describedby\": describedBy,\n}: TreeSelectProps) {\n  const control = useFieldControl({ id, invalid, \"aria-describedby\": describedBy });\n  const [open, setOpen] = React.useState(false);\n  const [internal, setInternal] = React.useState(defaultValue);\n  const value = valueProp === undefined ? internal : valueProp;\n  const found = value ? findTreeNode(items, value) : null;\n  const label = found ? (found.node.textValue ?? (typeof found.node.label === \"string\" ? found.node.label : found.node.id)) : null;\n\n  return (\n    <Popover open={open} onOpenChange={setOpen}>\n      <PopoverTrigger asChild>\n        <button\n          type=\"button\"\n          role=\"combobox\"\n          aria-haspopup=\"tree\"\n          aria-expanded={open}\n          id={control.id}\n          aria-label={ariaLabel}\n          aria-describedby={control[\"aria-describedby\"]}\n          aria-invalid={control.invalid || undefined}\n          disabled={disabled}\n          className={cn(fieldTriggerClass, fieldTriggerSizes[size], \"justify-between\", className)}\n        >\n          <span className={cn(\"truncate\", !label && \"text-muted/70\")}>{label ?? placeholder}</span>\n          <ChevronsUpDownIcon className=\"size-4 shrink-0 text-muted\" />\n        </button>\n      </PopoverTrigger>\n      {name ? <input type=\"hidden\" name={name} value={value ?? \"\"} /> : null}\n      <PopoverContent align=\"start\" className=\"max-h-80 w-(--radix-popover-trigger-width) min-w-56 overflow-y-auto p-1\">\n        <TreeView\n          items={items}\n          aria-label={ariaLabel ?? \"Options\"}\n          selectedId={value}\n          defaultExpandedIds={found?.ancestors}\n          onSelectedIdChange={(picked) => {\n            const node = findTreeNode(items, picked)?.node;\n            if (leavesOnly && node?.children?.length) return;\n            if (valueProp === undefined) setInternal(picked);\n            onValueChange?.(picked);\n            setOpen(false);\n          }}\n        />\n      </PopoverContent>\n    </Popover>\n  );\n}\n"
+    }
+  ]
+}

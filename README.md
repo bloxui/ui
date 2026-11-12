@@ -22,19 +22,19 @@ The CLI copies each component's source into your project, with everything it nee
 
 ## Components
 
-**Forms:** Button, Button Group, Input, Textarea, Field, Label, Checkbox, Radio Group, Switch, Slider, Select, Combobox, Multi Select, Input OTP, Phone Input, Calendar, Date Picker, Color Picker, File Upload, Rating, Toggle, Toggle Group
+**Forms:** Button, Button Group, Input, Textarea, Field, Label, Checkbox, Radio Group, Switch, Slider, Select, Combobox, Multi Select, Cascader, Tree Select, Transfer, Mentions, Input OTP, Phone Input, Input Number, Time Picker, Calendar, Date Picker, Color Picker, File Upload, Rating, Toggle, Toggle Group, Form
 
-**Display and feedback:** Card, Badge, Avatar, Alert, Toast, Progress, Skeleton, Spinner, Empty, Separator, Kbd, Carousel, Timeline
+**Display and feedback:** Card, Badge, Avatar, Alert, Toast, Progress, Skeleton, Spinner, Empty, Separator, Kbd, Carousel, Timeline, Typography, Descriptions, List, Statistic, Image, QR Code, Result, Watermark
 
-**Overlays:** Dialog, Alert Dialog, Sheet, Drawer, Popover, Tooltip, Hover Card, Dropdown Menu, Context Menu, Menubar, Command
+**Overlays:** Dialog, Alert Dialog, Sheet, Drawer, Popover, Tooltip, Hover Card, Dropdown Menu, Context Menu, Menubar, Command, Popconfirm, Tour
 
-**Navigation:** Tabs, Breadcrumb, Pagination, Navigation Menu, Sidebar, Accordion, Collapsible, Stepper, Tree View
+**Navigation:** Tabs, Breadcrumb, Pagination, Navigation Menu, Sidebar, Accordion, Collapsible, Stepper, Tree View, Anchor, Float Button
 
-**Data and layout:** Table, Data Table, Chart, Scroll Area, Aspect Ratio, Resizable, Kanban
+**Data and layout:** Table, Data Table, Chart, Scroll Area, Aspect Ratio, Resizable, Kanban, Flex, Grid, Space, Affix, Theme Provider
 
 **AI:** Chat (messages, typing indicator, suggestions, input)
 
-**Blocks:** Login, Signup, Settings, Dashboard
+**Blocks:** Login, Signup, Settings, Dashboard, 404 page, Error page (any status code)
 
 ## Highlights
 

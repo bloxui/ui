@@ -1,0 +1,17 @@
+{
+  "name": "descriptions",
+  "type": "ui",
+  "title": "Descriptions",
+  "description": "Label–value pairs such as order or profile details.",
+  "category": "Display",
+  "dependencies": {},
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "path": "ui/descriptions.tsx",
+      "content": "import * as React from \"react\";\nimport { cn } from \"~lib/cn\";\n\nexport interface DescriptionItem {\n  label: React.ReactNode;\n  value: React.ReactNode;\n  /** Columns this item takes, up to `columns`. */\n  span?: number;\n}\n\nexport interface DescriptionsProps extends Omit<React.ComponentProps<\"div\">, \"title\"> {\n  items: DescriptionItem[];\n  title?: React.ReactNode;\n  /** Extra content beside the title, e.g. an edit button. */\n  extra?: React.ReactNode;\n  /** Columns on wide screens; always one column on phones. */\n  columns?: 1 | 2 | 3 | 4;\n  /** Draw a grid of borders around every item. */\n  bordered?: boolean;\n  /** Put the label beside the value instead of above it. */\n  layout?: \"vertical\" | \"horizontal\";\n}\n\nconst columnClasses = { 1: \"sm:grid-cols-1\", 2: \"sm:grid-cols-2\", 3: \"sm:grid-cols-2 lg:grid-cols-3\", 4: \"sm:grid-cols-2 lg:grid-cols-4\" } as const;\nconst spanClasses = { 1: \"\", 2: \"sm:col-span-2\", 3: \"sm:col-span-2 lg:col-span-3\", 4: \"sm:col-span-2 lg:col-span-4\" } as const;\n\n/** Label–value pairs, such as the details of an order or a profile. Uses a description list. */\nexport function Descriptions({\n  items,\n  title,\n  extra,\n  columns = 3,\n  bordered = false,\n  layout = \"vertical\",\n  className,\n  ...props\n}: DescriptionsProps) {\n  return (\n    <div data-slot=\"descriptions\" className={cn(\"grid gap-3\", className)} {...props}>\n      {title || extra ? (\n        <div className=\"flex items-center justify-between gap-3\">\n          {title ? <h3 className=\"text-base font-semibold\">{title}</h3> : <span />}\n          {extra}\n        </div>\n      ) : null}\n      <dl\n        className={cn(\n          \"grid grid-cols-1\",\n          columnClasses[columns],\n          bordered ? \"overflow-hidden rounded-lg border border-border [&>div]:border-border\" : \"gap-x-6 gap-y-4\",\n        )}\n      >\n        {items.map((item, index) => {\n          const span = Math.min(item.span ?? 1, columns) as 1 | 2 | 3 | 4;\n          return (\n            <div\n              key={index}\n              className={cn(\n                spanClasses[span],\n                layout === \"horizontal\" ? \"flex gap-3\" : \"grid gap-1\",\n                // Inner borders only: each cell draws its top and left edge, and the outer frame hides the overflow.\n                bordered && \"-mt-px -ml-px border-t border-l p-3\",\n              )}\n            >\n              <dt className={cn(\"text-sm text-muted\", layout === \"horizontal\" && \"w-32 shrink-0\")}>{item.label}</dt>\n              <dd className=\"min-w-0 text-sm font-medium break-words text-fg\">{item.value}</dd>\n            </div>\n          );\n        })}\n      </dl>\n    </div>\n  );\n}\n"
+    }
+  ]
+}

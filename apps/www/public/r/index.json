@@ -28,6 +28,20 @@
       ]
     },
     {
+      "name": "affix",
+      "type": "ui",
+      "title": "Affix",
+      "description": "Keeps content in view once you scroll past it.",
+      "category": "Layout",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn"
+      ],
+      "files": [
+        "ui/affix.tsx"
+      ]
+    },
+    {
       "name": "alert-dialog",
       "type": "ui",
       "title": "Alert Dialog",
@@ -59,6 +73,20 @@
       ],
       "files": [
         "ui/alert.tsx"
+      ]
+    },
+    {
+      "name": "anchor",
+      "type": "ui",
+      "title": "Anchor",
+      "description": "On-this-page links that highlight the section in view.",
+      "category": "Navigation",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn"
+      ],
+      "files": [
+        "ui/anchor.tsx"
       ]
     },
     {
@@ -208,6 +236,24 @@
       ],
       "files": [
         "ui/carousel.tsx"
+      ]
+    },
+    {
+      "name": "cascader",
+      "type": "ui",
+      "title": "Cascader",
+      "description": "Picks one option from nested levels, such as country, state and city.",
+      "category": "Forms",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "control",
+        "field-context",
+        "icons",
+        "popover"
+      ],
+      "files": [
+        "ui/cascader.tsx"
       ]
     },
     {
@@ -391,6 +437,20 @@
       ]
     },
     {
+      "name": "descriptions",
+      "type": "ui",
+      "title": "Descriptions",
+      "description": "Label–value pairs such as order or profile details.",
+      "category": "Display",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn"
+      ],
+      "files": [
+        "ui/descriptions.tsx"
+      ]
+    },
+    {
       "name": "dialog",
       "type": "ui",
       "title": "Dialog",
@@ -490,6 +550,75 @@
       ]
     },
     {
+      "name": "flex",
+      "type": "ui",
+      "title": "Flex",
+      "description": "A flex container with typed direction, alignment and gap.",
+      "category": "Layout",
+      "dependencies": {
+        "@radix-ui/react-slot": "^1.2.0"
+      },
+      "registryDependencies": [
+        "cn"
+      ],
+      "files": [
+        "ui/flex.tsx"
+      ]
+    },
+    {
+      "name": "float-button",
+      "type": "ui",
+      "title": "Float Button",
+      "description": "Floating action buttons, a fan-out group and back to top.",
+      "category": "Navigation",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "icons",
+        "tone",
+        "tooltip"
+      ],
+      "files": [
+        "ui/float-button.tsx"
+      ]
+    },
+    {
+      "name": "form",
+      "type": "ui",
+      "title": "Form",
+      "description": "Connects react-hook-form to Field: labels, errors and ARIA wired for every field.",
+      "category": "Forms",
+      "dependencies": {
+        "react-hook-form": "^7.92.0"
+      },
+      "registryDependencies": [
+        "cn",
+        "alert",
+        "button",
+        "field"
+      ],
+      "files": [
+        "ui/form.tsx"
+      ]
+    },
+    {
+      "name": "grid",
+      "type": "ui",
+      "title": "Grid",
+      "description": "A responsive grid with columns per breakpoint.",
+      "category": "Layout",
+      "dependencies": {
+        "@radix-ui/react-slot": "^1.2.0"
+      },
+      "registryDependencies": [
+        "cn",
+        "flex"
+      ],
+      "files": [
+        "ui/grid.tsx"
+      ]
+    },
+    {
       "name": "hover-card",
       "type": "ui",
       "title": "Hover Card",
@@ -504,6 +633,40 @@
       ],
       "files": [
         "ui/hover-card.tsx"
+      ]
+    },
+    {
+      "name": "image",
+      "type": "ui",
+      "title": "Image",
+      "description": "An image with a loading placeholder, error fallback and zoomable preview.",
+      "category": "Display",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "icons",
+        "button",
+        "dialog",
+        "skeleton"
+      ],
+      "files": [
+        "ui/image.tsx"
+      ]
+    },
+    {
+      "name": "input-number",
+      "type": "ui",
+      "title": "Input Number",
+      "description": "A number field with steppers, limits, precision and formatting.",
+      "category": "Forms",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "field-context",
+        "icons"
+      ],
+      "files": [
+        "ui/input-number.tsx"
       ]
     },
     {
@@ -583,6 +746,39 @@
       ],
       "files": [
         "ui/label.tsx"
+      ]
+    },
+    {
+      "name": "list",
+      "type": "ui",
+      "title": "List",
+      "description": "Rows of people, files or settings, with loading and empty states.",
+      "category": "Display",
+      "dependencies": {
+        "@radix-ui/react-slot": "^1.2.0"
+      },
+      "registryDependencies": [
+        "cn",
+        "skeleton"
+      ],
+      "files": [
+        "ui/list.tsx"
+      ]
+    },
+    {
+      "name": "mentions",
+      "type": "ui",
+      "title": "Mentions",
+      "description": "A textarea that suggests people to @mention as you type.",
+      "category": "Forms",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "field-context",
+        "avatar"
+      ],
+      "files": [
+        "ui/mentions.tsx"
       ]
     },
     {
@@ -673,6 +869,26 @@
       ]
     },
     {
+      "name": "popconfirm",
+      "type": "ui",
+      "title": "Popconfirm",
+      "description": "A small confirmation next to the button that triggered it.",
+      "category": "Overlays",
+      "dependencies": {
+        "radix-ui": "^1.8.1"
+      },
+      "registryDependencies": [
+        "cn",
+        "icons",
+        "overlay",
+        "tone",
+        "button"
+      ],
+      "files": [
+        "ui/popconfirm.tsx"
+      ]
+    },
+    {
       "name": "popover",
       "type": "ui",
       "title": "Popover",
@@ -704,6 +920,22 @@
       ],
       "files": [
         "ui/progress.tsx"
+      ]
+    },
+    {
+      "name": "qr-code",
+      "type": "ui",
+      "title": "QR Code",
+      "description": "Encodes text or a link as a crisp SVG QR code.",
+      "category": "Display",
+      "dependencies": {
+        "uqr": "^0.1.3"
+      },
+      "registryDependencies": [
+        "cn"
+      ],
+      "files": [
+        "ui/qr-code.tsx"
       ]
     },
     {
@@ -754,6 +986,22 @@
       ],
       "files": [
         "ui/resizable.tsx"
+      ]
+    },
+    {
+      "name": "result",
+      "type": "ui",
+      "title": "Result",
+      "description": "A result screen for success, errors and any HTTP status code.",
+      "category": "Feedback",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "icons",
+        "tone"
+      ],
+      "files": [
+        "ui/result.tsx"
       ]
     },
     {
@@ -875,6 +1123,21 @@
       ]
     },
     {
+      "name": "space",
+      "type": "ui",
+      "title": "Space",
+      "description": "Evenly spaced inline items with an optional separator.",
+      "category": "Layout",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "flex"
+      ],
+      "files": [
+        "ui/space.tsx"
+      ]
+    },
+    {
       "name": "spinner",
       "type": "ui",
       "title": "Spinner",
@@ -886,6 +1149,21 @@
       ],
       "files": [
         "ui/spinner.tsx"
+      ]
+    },
+    {
+      "name": "statistic",
+      "type": "ui",
+      "title": "Statistic",
+      "description": "A labelled number with formatting, a trend and an optional count-up.",
+      "category": "Display",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "icons"
+      ],
+      "files": [
+        "ui/statistic.tsx"
       ]
     },
     {
@@ -967,6 +1245,36 @@
       ]
     },
     {
+      "name": "theme-provider",
+      "type": "ui",
+      "title": "Theme Provider",
+      "description": "Light, dark and system themes with token overrides and no flash.",
+      "category": "Layout",
+      "dependencies": {},
+      "registryDependencies": [],
+      "files": [
+        "ui/theme-provider.tsx"
+      ]
+    },
+    {
+      "name": "time-picker",
+      "type": "ui",
+      "title": "Time Picker",
+      "description": "Picks a time from columns of hours and minutes, 12- or 24-hour.",
+      "category": "Forms",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "control",
+        "field-context",
+        "icons",
+        "popover"
+      ],
+      "files": [
+        "ui/time-picker.tsx"
+      ]
+    },
+    {
       "name": "timeline",
       "type": "ui",
       "title": "Timeline",
@@ -1030,6 +1338,58 @@
       ]
     },
     {
+      "name": "tour",
+      "type": "ui",
+      "title": "Tour",
+      "description": "Walks new users through the interface one highlighted element at a time.",
+      "category": "Overlays",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "icons",
+        "button"
+      ],
+      "files": [
+        "ui/tour.tsx"
+      ]
+    },
+    {
+      "name": "transfer",
+      "type": "ui",
+      "title": "Transfer",
+      "description": "Two lists side by side; tick items and move them across.",
+      "category": "Forms",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "icons",
+        "button",
+        "checkbox"
+      ],
+      "files": [
+        "ui/transfer.tsx"
+      ]
+    },
+    {
+      "name": "tree-select",
+      "type": "ui",
+      "title": "Tree Select",
+      "description": "A select whose options are a tree, such as teams or folders.",
+      "category": "Forms",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "control",
+        "field-context",
+        "icons",
+        "popover",
+        "tree-view"
+      ],
+      "files": [
+        "ui/tree-select.tsx"
+      ]
+    },
+    {
       "name": "tree-view",
       "type": "ui",
       "title": "Tree View",
@@ -1042,6 +1402,36 @@
       ],
       "files": [
         "ui/tree-view.tsx"
+      ]
+    },
+    {
+      "name": "typography",
+      "type": "ui",
+      "title": "Typography",
+      "description": "Headings, text styles, quotes, lists and a Prose wrapper for rich content.",
+      "category": "Display",
+      "dependencies": {
+        "class-variance-authority": "^0.7.1"
+      },
+      "registryDependencies": [
+        "cn"
+      ],
+      "files": [
+        "ui/typography.tsx"
+      ]
+    },
+    {
+      "name": "watermark",
+      "type": "ui",
+      "title": "Watermark",
+      "description": "Repeats text over content, such as Confidential or a user's email.",
+      "category": "Feedback",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn"
+      ],
+      "files": [
+        "ui/watermark.tsx"
       ]
     },
     {
@@ -1069,6 +1459,21 @@
       ]
     },
     {
+      "name": "block-error-page",
+      "type": "block",
+      "title": "Error page",
+      "description": "An error page for any status code, with retry and a support reference.",
+      "category": "Blocks",
+      "dependencies": {},
+      "registryDependencies": [
+        "button",
+        "result"
+      ],
+      "files": [
+        "blocks/error-page.tsx"
+      ]
+    },
+    {
       "name": "block-login",
       "type": "block",
       "title": "Login",
@@ -1086,6 +1491,21 @@
       ],
       "files": [
         "blocks/login.tsx"
+      ]
+    },
+    {
+      "name": "block-not-found",
+      "type": "block",
+      "title": "404 page",
+      "description": "A not-found page with a way back and a few useful links.",
+      "category": "Blocks",
+      "dependencies": {},
+      "registryDependencies": [
+        "button",
+        "result"
+      ],
+      "files": [
+        "blocks/not-found.tsx"
       ]
     },
     {

@@ -1,0 +1,17 @@
+{
+  "name": "watermark",
+  "type": "ui",
+  "title": "Watermark",
+  "description": "Repeats text over content, such as Confidential or a user's email.",
+  "category": "Feedback",
+  "dependencies": {},
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "path": "ui/watermark.tsx",
+      "content": "import * as React from \"react\";\nimport { cn } from \"~lib/cn\";\n\nexport interface WatermarkProps extends React.ComponentProps<\"div\"> {\n  /** One or more lines of text repeated across the content. */\n  text: string | string[];\n  /** Degrees; negative tilts up to the right. */\n  rotate?: number;\n  /** Space between repeats, in pixels. */\n  gap?: [number, number];\n  fontSize?: number;\n  /** 0–1. */\n  opacity?: number;\n  /** Any CSS colour; defaults to the text colour. */\n  color?: string;\n}\n\n/**\n * Repeats text over its content, e.g. \"Confidential\" or the viewer's email on a document.\n * It is a visual deterrent only: anyone can remove it in the browser's developer tools.\n */\nexport function Watermark({\n  text,\n  rotate = -22,\n  gap = [100, 80],\n  fontSize = 14,\n  opacity = 0.12,\n  color = \"currentColor\",\n  className,\n  children,\n  ...props\n}: WatermarkProps) {\n  const lines = Array.isArray(text) ? text : [text];\n  const lineHeight = fontSize * 1.4;\n  const longest = Math.max(...lines.map((line) => line.length));\n  const width = Math.ceil(longest * fontSize * 0.62) + gap[0];\n  const height = Math.ceil(lines.length * lineHeight) + gap[1];\n\n  const escape = (value: string) => value.replace(/[<>&\"']/g, (c) => `&#${c.charCodeAt(0)};`);\n  // A mask lets the watermark take its colour from CSS (currentColor or a token), which an <img> could not.\n  const svg = `<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"${width}\" height=\"${height}\"><g transform=\"rotate(${rotate} ${width / 2} ${height / 2})\" font-family=\"system-ui, sans-serif\" font-size=\"${fontSize}\" text-anchor=\"middle\" fill=\"#000\">${lines\n    .map((line, index) => `<text x=\"${width / 2}\" y=\"${height / 2 + (index - (lines.length - 1) / 2) * lineHeight}\">${escape(line)}</text>`)\n    .join(\"\")}</g></svg>`;\n  const mask = `url(\"data:image/svg+xml;utf8,${encodeURIComponent(svg)}\")`;\n\n  return (\n    <div data-slot=\"watermark\" className={cn(\"relative\", className)} {...props}>\n      {children}\n      <div\n        aria-hidden\n        className=\"pointer-events-none absolute inset-0 z-10 select-none\"\n        style={{\n          backgroundColor: color,\n          opacity,\n          maskImage: mask,\n          WebkitMaskImage: mask,\n          maskSize: `${width}px ${height}px`,\n          WebkitMaskSize: `${width}px ${height}px`,\n          maskRepeat: \"repeat\",\n          WebkitMaskRepeat: \"repeat\",\n        }}\n      />\n    </div>\n  );\n}\n"
+    }
+  ]
+}

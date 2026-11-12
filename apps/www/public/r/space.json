@@ -1,0 +1,18 @@
+{
+  "name": "space",
+  "type": "ui",
+  "title": "Space",
+  "description": "Evenly spaced inline items with an optional separator.",
+  "category": "Layout",
+  "dependencies": {},
+  "registryDependencies": [
+    "cn",
+    "flex"
+  ],
+  "files": [
+    {
+      "path": "ui/space.tsx",
+      "content": "import * as React from \"react\";\nimport { cn } from \"~lib/cn\";\nimport { flexGapClasses, type Gap } from \"~ui/flex\";\n\nexport interface SpaceProps extends React.ComponentProps<\"div\"> {\n  gap?: Gap;\n  direction?: \"horizontal\" | \"vertical\";\n  /** Put this between every pair of children, e.g. a \"·\" or a vertical Separator. */\n  separator?: React.ReactNode;\n  wrap?: boolean;\n  align?: \"start\" | \"center\" | \"end\" | \"baseline\";\n}\n\nconst aligns = { start: \"items-start\", center: \"items-center\", end: \"items-end\", baseline: \"items-baseline\" } as const;\n\n/** Evenly spaced inline items, optionally with a separator between them; empty children are skipped. */\nexport function Space({\n  gap = 2,\n  direction = \"horizontal\",\n  separator,\n  wrap = true,\n  align = \"center\",\n  className,\n  children,\n  ...props\n}: SpaceProps) {\n  // toArray already drops null, undefined and booleans; also skip empty strings.\n  const items = React.Children.toArray(children).filter((child) => child !== \"\");\n  return (\n    <div\n      data-slot=\"space\"\n      className={cn(\n        \"flex\",\n        direction === \"vertical\" ? \"flex-col\" : cn(\"flex-row\", wrap && \"flex-wrap\"),\n        aligns[align],\n        flexGapClasses[gap],\n        className,\n      )}\n      {...props}\n    >\n      {items.map((child, index) => (\n        <React.Fragment key={React.isValidElement(child) && child.key !== null ? child.key : index}>\n          {index > 0 && separator ? (\n            <span aria-hidden className=\"flex items-center text-muted\">\n              {separator}\n            </span>\n          ) : null}\n          {child}\n        </React.Fragment>\n      ))}\n    </div>\n  );\n}\n"
+    }
+  ]
+}

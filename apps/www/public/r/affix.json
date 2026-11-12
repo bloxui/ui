@@ -1,0 +1,17 @@
+{
+  "name": "affix",
+  "type": "ui",
+  "title": "Affix",
+  "description": "Keeps content in view once you scroll past it.",
+  "category": "Layout",
+  "dependencies": {},
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "path": "ui/affix.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { cn } from \"~lib/cn\";\n\nexport interface AffixProps extends React.ComponentProps<\"div\"> {\n  /** Distance from the top of the viewport (or scroll container) where it sticks. */\n  offsetTop?: number;\n  /** Called when it starts or stops sticking. */\n  onStuckChange?: (stuck: boolean) => void;\n}\n\n/**\n * Keeps its content in view once you scroll past it, such as a toolbar or a buy button.\n * Uses CSS sticky positioning; while stuck it gets data-stuck so you can add a shadow.\n */\nexport function Affix({ offsetTop = 0, onStuckChange, className, style, children, ...props }: AffixProps) {\n  const sentinel = React.useRef<HTMLSpanElement>(null);\n  const [stuck, setStuck] = React.useState(false);\n  const callback = React.useRef(onStuckChange);\n  callback.current = onStuckChange;\n\n  React.useEffect(() => {\n    const element = sentinel.current;\n    if (!element) return;\n    // An invisible marker just above the content: once it leaves the top band, the content is stuck.\n    const observer = new IntersectionObserver(\n      ([entry]) => {\n        const next = entry ? !entry.isIntersecting && entry.boundingClientRect.top < offsetTop + 1 : false;\n        setStuck(next);\n        callback.current?.(next);\n      },\n      { rootMargin: `-${offsetTop + 1}px 0px 0px 0px`, threshold: 0 },\n    );\n    observer.observe(element);\n    return () => observer.disconnect();\n  }, [offsetTop]);\n\n  return (\n    <>\n      <span ref={sentinel} aria-hidden className=\"block h-px\" />\n      <div\n        data-slot=\"affix\"\n        data-stuck={stuck ? \"\" : undefined}\n        className={cn(\"sticky z-30\", className)}\n        style={{ top: offsetTop, ...style }}\n        {...props}\n      >\n        {children}\n      </div>\n    </>\n  );\n}\n"
+    }
+  ]
+}

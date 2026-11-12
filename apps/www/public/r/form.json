@@ -1,0 +1,22 @@
+{
+  "name": "form",
+  "type": "ui",
+  "title": "Form",
+  "description": "Connects react-hook-form to Field: labels, errors and ARIA wired for every field.",
+  "category": "Forms",
+  "dependencies": {
+    "react-hook-form": "^7.92.0"
+  },
+  "registryDependencies": [
+    "cn",
+    "alert",
+    "button",
+    "field"
+  ],
+  "files": [
+    {
+      "path": "ui/form.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport {\n  Controller,\n  FormProvider,\n  useFormContext,\n  type ControllerFieldState,\n  type ControllerRenderProps,\n  type FieldPath,\n  type FieldValues,\n  type RegisterOptions,\n  type SubmitErrorHandler,\n  type SubmitHandler,\n  type UseFormReturn,\n} from \"react-hook-form\";\nimport { cn } from \"~lib/cn\";\nimport { Alert } from \"~ui/alert\";\nimport { Button, type ButtonProps } from \"~ui/button\";\nimport { Field, type FieldProps } from \"~ui/field\";\n\nexport interface FormProps<TValues extends FieldValues>\n  extends Omit<React.ComponentProps<\"form\">, \"onSubmit\" | \"onInvalid\"> {\n  /** The object returned by react-hook-form's useForm(). */\n  form: UseFormReturn<TValues>;\n  /** Called with valid values. Return a promise to keep the submit button loading until it settles. */\n  onSubmit: SubmitHandler<TValues>;\n  onInvalid?: SubmitErrorHandler<TValues>;\n}\n\n/**\n * Connects react-hook-form to Blox UI. Validation is up to you: pass `rules` to each\n * FormField, or a schema resolver (zod, valibot…) to useForm.\n */\nexport function Form<TValues extends FieldValues>({\n  form,\n  onSubmit,\n  onInvalid,\n  className,\n  children,\n  ...props\n}: FormProps<TValues>) {\n  return (\n    <FormProvider {...form}>\n      <form\n        data-slot=\"form\"\n        noValidate\n        onSubmit={form.handleSubmit(onSubmit, onInvalid)}\n        className={cn(\"grid gap-5\", className)}\n        {...props}\n      >\n        {children}\n      </form>\n    </FormProvider>\n  );\n}\n\nexport interface FormFieldProps<TValues extends FieldValues, TName extends FieldPath<TValues>>\n  extends Omit<FieldProps, \"children\" | \"error\"> {\n  name: TName;\n  rules?: Omit<RegisterOptions<TValues, TName>, \"valueAsNumber\" | \"valueAsDate\" | \"setValueAs\" | \"disabled\">;\n  /**\n   * Renders the control. Spread `field` onto inputs; map it for others,\n   * e.g. <Checkbox checked={field.value} onCheckedChange={field.onChange} />.\n   */\n  render: (props: {\n    field: ControllerRenderProps<TValues, TName>;\n    fieldState: ControllerFieldState;\n  }) => React.ReactElement;\n}\n\n/**\n * One form field: a Field (label, hint, error, ARIA wiring) around a react-hook-form\n * Controller. The error message comes from validation automatically.\n */\nexport function FormField<TValues extends FieldValues, TName extends FieldPath<TValues>>({\n  name,\n  rules,\n  render,\n  ...fieldProps\n}: FormFieldProps<TValues, TName>) {\n  const { control } = useFormContext<TValues>();\n  return (\n    <Controller\n      name={name}\n      control={control}\n      rules={rules}\n      render={({ field, fieldState }) => (\n        <Field {...fieldProps} error={fieldState.error?.message}>\n          {render({ field, fieldState })}\n        </Field>\n      )}\n    />\n  );\n}\n\n/** A submit button that shows a spinner while the form is submitting. */\nexport function FormSubmit({ children = \"Submit\", ...props }: ButtonProps) {\n  const { formState } = useFormContext();\n  return (\n    <Button type=\"submit\" loading={formState.isSubmitting} {...props}>\n      {children}\n    </Button>\n  );\n}\n\n/**\n * Shows an error that belongs to the whole form, e.g. from the server. Set it with\n * form.setError(\"root\", { message: \"…\" }).\n */\nexport function FormRootError({ title = \"Something went wrong\", className }: { title?: string; className?: string }) {\n  const { formState } = useFormContext();\n  const message = formState.errors.root?.message;\n  if (!message) return null;\n  return (\n    <Alert tone=\"danger\" title={title} className={className}>\n      {message}\n    </Alert>\n  );\n}\n"
+    }
+  ]
+}

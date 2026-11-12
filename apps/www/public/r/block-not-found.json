@@ -1,0 +1,18 @@
+{
+  "name": "block-not-found",
+  "type": "block",
+  "title": "404 page",
+  "description": "A not-found page with a way back and a few useful links.",
+  "category": "Blocks",
+  "dependencies": {},
+  "registryDependencies": [
+    "button",
+    "result"
+  ],
+  "files": [
+    {
+      "path": "blocks/not-found.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { Button } from \"~ui/button\";\nimport { Result } from \"~ui/result\";\n\nexport interface NotFoundBlockProps {\n  homeHref?: string;\n  /** Useful pages to offer instead, e.g. docs, pricing, support. */\n  links?: { href: string; label: string }[];\n}\n\n/** A 404 page: what happened, a way back, and a few useful places to go instead. */\nexport function NotFoundBlock({ homeHref = \"/\", links = [] }: NotFoundBlockProps) {\n  return (\n    <main className=\"flex min-h-dvh items-center justify-center p-4\">\n      <Result\n        status={404}\n        headingLevel={1}\n        actions={\n          <>\n            <Button asChild>\n              <a href={homeHref}>Go home</a>\n            </Button>\n            <Button variant=\"outline\" tone=\"neutral\" onClick={() => window.history.back()}>\n              Go back\n            </Button>\n          </>\n        }\n      >\n        {links.length > 0 ? (\n          <nav aria-label=\"Popular pages\" className=\"grid gap-2 pt-2 text-sm\">\n            <p className=\"text-muted\">Or try one of these:</p>\n            <ul className=\"flex flex-wrap justify-center gap-x-4 gap-y-1\">\n              {links.map((link) => (\n                <li key={link.href}>\n                  <a\n                    href={link.href}\n                    className=\"rounded-sm font-medium text-brand-text underline-offset-4 outline-none hover:underline focus-visible:ring-2 focus-visible:ring-ring\"\n                  >\n                    {link.label}\n                  </a>\n                </li>\n              ))}\n            </ul>\n          </nav>\n        ) : null}\n      </Result>\n    </main>\n  );\n}\n"
+    }
+  ]
+}

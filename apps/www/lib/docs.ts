@@ -147,6 +147,7 @@ function heritageText(node: ts.TypeNode | undefined, sourceFile: ts.SourceFile):
 
 /** Turns "React.ComponentProps<typeof DialogPrimitive.Content>" into a short, readable phrase. */
 function describeBase(text: string) {
+  if (/^Omit<.*,s*"[^"]+"(s*|s*"[^"]+")*>$/.test(text)) text = text.replace(/^Omit<(.+?),s*"[^>]+>$/, "$1");
   const primitive = text.match(/typeof\s+(\w+?)(?:Primitive)?\.(\w+)/);
   if (primitive) return `${primitive[1]} ${primitive[2]} props from Radix`;
   const element = text.match(/ComponentProps<"(\w+)">/);
