@@ -3,3 +3,15 @@
 
 /* Scan the UI package so its classes are generated. */
 @source "../../../packages/ui/src";
+
+/* Shiki writes both themes as variables; pick one with the site theme. */
+.code-block pre {
+  padding: 1rem;
+  background: transparent !important;
+}
+.code-block .shiki span {
+  color: var(--shiki-light);
+}
+.dark .code-block .shiki span {
+  color: var(--shiki-dark);
+}
