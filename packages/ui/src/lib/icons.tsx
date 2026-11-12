@@ -191,3 +191,42 @@ export const PipetteIcon = (p: IconProps) => (
     <path d="M14.5 4.5l5 5M17 2.5a2.1 2.1 0 0 1 3 3L16.5 9l-2-2zM14.5 7L5 16.5V19h2.5L17 9.5" />
   </Svg>
 );
+export const PlusIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M12 5v14M5 12h14" />
+  </Svg>
+);
+export const ClockIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M12 7v5l3 2" />
+  </Svg>
+);
+export const ArrowUpToLineIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M5 4h14M12 20V9M7 13l5-5 5 5" />
+  </Svg>
+);
+export const ZoomInIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <circle cx="11" cy="11" r="7" />
+    <path d="M20 20l-3.5-3.5M11 8v6M8 11h6" />
+  </Svg>
+);
+export const ZoomOutIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <circle cx="11" cy="11" r="7" />
+    <path d="M20 20l-3.5-3.5M8 11h6" />
+  </Svg>
+);
+export const RotateIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M20 12a8 8 0 1 1-2.3-5.6M20 4v5h-5" />
+  </Svg>
+);
+export const ImageOffIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M3 3l18 18M10.5 5H19a2 2 0 0 1 2 2v8.5M21 19H5a2 2 0 0 1-2-2V7" />
+    <path d="M3 15l4-4 3 3" />
+  </Svg>
+);
