@@ -126,3 +126,32 @@ export function addThemeImport(css, importPath) {
   const end = tailwind.index + tailwind[0].length;
   return { css: `${css.slice(0, end)}\n${line}${css.slice(end)}`, changed: true };
 }
+
+/**
+ * create-next-app's starter stylesheet sets the page background and text colour from its
+ * own variables, after the theme import, and flips them with the operating system rather
+ * than the dark class. That hides the Blox theme. When those exact starter rules are still
+ * untouched, point the variables at the theme instead and drop the overriding rules.
+ * Anything the user has edited is left alone.
+ */
+export function adaptStarterStyles(css) {
+  const rootBlock = /:root\s*\{\s*--background:\s*#ffffff;\s*--foreground:\s*#171717;\s*\}/;
+  const darkBlock =
+    /@media\s*\(prefers-color-scheme:\s*dark\)\s*\{\s*:root\s*\{\s*--background:\s*#0a0a0a;\s*--foreground:\s*#ededed;\s*\}\s*\}\s*/;
+  const bodyBlock =
+    /body\s*\{\s*background:\s*var\(--background\);\s*color:\s*var\(--foreground\);\s*font-family:\s*Arial,\s*Helvetica,\s*sans-serif;\s*\}\s*/;
+  const normalized = css.replace(/\r\n/g, "\n");
+  if (!rootBlock.test(normalized) || !darkBlock.test(normalized) || !bodyBlock.test(normalized)) {
+    return { css, changed: false };
+  }
+  const next = normalized
+    .replace(
+      rootBlock,
+      ":root {\n  /* Follows the Blox theme, including dark mode. */\n  --background: var(--bx-bg);\n  --foreground: var(--bx-fg);\n}",
+    )
+    .replace(darkBlock, "")
+    .replace(bodyBlock, "")
+    .replace(/\n{3,}/g, "\n\n")
+    .replace(/\s*$/, "\n");
+  return { css: next, changed: true };
+}

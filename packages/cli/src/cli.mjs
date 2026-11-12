@@ -12,6 +12,7 @@ import { existsSync } from "node:fs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join, posix } from "node:path";
 import {
+  adaptStarterStyles,
   addThemeImport,
   CONFIG_FILE,
   DEFAULT_REGISTRY,
@@ -246,10 +247,14 @@ async function init(options, cwd) {
     const cssPath = join(cwd, config.css);
     const importPath = relativeImport(posix.dirname(config.css), config.dirs.styles) + "/blox.css";
     const updated = addThemeImport(await readFile(cssPath, "utf8"), importPath);
-    if (updated.changed) {
-      if (!options.dryRun) await writeFile(cssPath, updated.css);
-      log.step(`${options.dryRun ? "would update" : "updated"}      ${config.css} (imports the theme)`);
-    } else if (updated.reason !== "already imported") {
+    // create-next-app's starter colours would otherwise hide the theme.
+    const adapted = adaptStarterStyles(updated.css);
+    if (updated.changed || adapted.changed) {
+      if (!options.dryRun) await writeFile(cssPath, adapted.css);
+      const notes = [updated.changed && "imports the theme", adapted.changed && "starter colours now follow the theme"];
+      log.step(`${options.dryRun ? "would update" : "updated"}      ${config.css} (${notes.filter(Boolean).join("; ")})`);
+    }
+    if (!updated.changed && updated.reason !== "already imported") {
       log.out(`\nAdd the theme to ${config.css} after Tailwind (${updated.reason}):\n  @import "${importPath}";`);
     }
   } else {

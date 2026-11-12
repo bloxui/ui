@@ -10,7 +10,7 @@ import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { after, before, describe, test } from "node:test";
 import { fileURLToPath } from "node:url";
-import { addThemeImport, detectPackageManager, parseLooseJson, relativeImport } from "../src/project.mjs";
+import { adaptStarterStyles, addThemeImport, detectPackageManager, parseLooseJson, relativeImport } from "../src/project.mjs";
 import { parseArgs } from "../src/cli.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -185,7 +185,38 @@ describe("blox in a project without src/ or an alias", () => {
   });
 });
 
+const nextStarterCss = "@import \"tailwindcss\";\n\n:root {\n  --background: #ffffff;\n  --foreground: #171717;\n}\n\n@theme inline {\n  --color-background: var(--background);\n  --color-foreground: var(--foreground);\n}\n\n@media (prefers-color-scheme: dark) {\n  :root {\n    --background: #0a0a0a;\n    --foreground: #ededed;\n  }\n}\n\nbody {\n  background: var(--background);\n  color: var(--foreground);\n  font-family: Arial, Helvetica, sans-serif;\n}\n";
+
+describe("blox in a fresh create-next-app project", () => {
+  test("init adapts the starter colours so the theme shows", async () => {
+    const cwd = await createProject("next-starter", { src: true, alias: true });
+    await writeFile(join(cwd, "src/app/globals.css"), nextStarterCss);
+
+    const { code, output } = blox(cwd, "init");
+    assert.equal(code, 0, output);
+    assert.match(output, /starter colours now follow the theme/);
+
+    const css = await readFile(join(cwd, "src/app/globals.css"), "utf8");
+    assert.ok(css.includes('@import "tailwindcss";\n@import "../styles/blox.css";'), css);
+    assert.ok(css.includes("--background: var(--bx-bg);"), css);
+    assert.doesNotMatch(css, /prefers-color-scheme/);
+    assert.doesNotMatch(css, /font-family: Arial/);
+    // The starter's own utilities keep working.
+    assert.ok(css.includes("--color-background: var(--background);"), css);
+  });
+});
+
 describe("helpers", () => {
+  test("adaptStarterStyles changes only the untouched starter, and only once", () => {
+    assert.equal(adaptStarterStyles(nextStarterCss.replace("#ffffff", "#fafafa")).changed, false);
+    assert.equal(adaptStarterStyles('@import "tailwindcss";\nbody { margin: 0; }\n').changed, false);
+    const once = adaptStarterStyles(nextStarterCss);
+    assert.equal(once.changed, true);
+    assert.equal(adaptStarterStyles(once.css).changed, false);
+    // Windows line endings are handled too.
+    assert.equal(adaptStarterStyles(nextStarterCss.replace(/\n/g, "\r\n")).changed, true);
+  });
+
   test("parseArgs reads commands, names and flags", () => {
     assert.deepEqual(parseArgs(["add", "button", "dialog", "--overwrite", "--no-install", "--registry", "./r"]), {
       _: ["add", "button", "dialog"],
