@@ -84,17 +84,9 @@ import {
   Tooltip,
   TooltipProvider,
 } from "@blox-ui/ui";
+import { Section } from "@/components/demo-section";
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <section className="space-y-4">
-      <h2 className="text-sm font-semibold tracking-wide text-muted uppercase">{title}</h2>
-      {children}
-    </section>
-  );
-}
-
-export function Week3Demo() {
+export function OverlaysDemo() {
   const [paletteOpen, setPaletteOpen] = React.useState(false);
   const [bookmarks, setBookmarks] = React.useState(true);
   const [density, setDensity] = React.useState("comfortable");

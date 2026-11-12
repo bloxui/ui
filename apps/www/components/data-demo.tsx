@@ -44,15 +44,7 @@ import {
   type ChartConfig,
   type DataTableColumn,
 } from "@blox-ui/ui";
-
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <section className="space-y-4">
-      <h2 className="text-sm font-semibold tracking-wide text-muted uppercase">{title}</h2>
-      {children}
-    </section>
-  );
-}
+import { Section } from "@/components/demo-section";
 
 interface Invoice {
   id: string;
@@ -120,7 +112,7 @@ const visitsConfig = {
   mobile: { label: "Mobile" },
 } satisfies ChartConfig;
 
-export function Week4bDemo() {
+export function DataDemo() {
   const [date, setDate] = React.useState<Date | undefined>(new Date(2026, 0, 15));
   const [selected, setSelected] = React.useState<string[]>([]);
 

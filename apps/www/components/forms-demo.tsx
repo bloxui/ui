@@ -30,19 +30,11 @@ import {
   Switch,
   Textarea,
 } from "@blox-ui/ui";
-
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <section className="space-y-4">
-      <h2 className="text-sm font-semibold tracking-wide text-muted uppercase">{title}</h2>
-      {children}
-    </section>
-  );
-}
+import { Section } from "@/components/demo-section";
 
 const tones = ["brand", "neutral", "success", "warning", "danger"] as const;
 
-export function Week2Demo() {
+export function FormsDemo() {
   const [email, setEmail] = React.useState("not-an-email");
   const [items, setItems] = React.useState([true, false, false]);
   const [volume, setVolume] = React.useState([60]);

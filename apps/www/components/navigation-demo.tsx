@@ -40,15 +40,7 @@ import {
   ToggleGroup,
   ToggleGroupItem,
 } from "@blox-ui/ui";
-
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <section className="space-y-4">
-      <h2 className="text-sm font-semibold tracking-wide text-muted uppercase">{title}</h2>
-      {children}
-    </section>
-  );
-}
+import { Section } from "@/components/demo-section";
 
 const faqs = [
   ["What is Blox UI?", "A set of React components you copy into your project and own."],
@@ -73,7 +65,7 @@ const frameworks = [
   { value: "laravel", label: "Laravel (soon)", disabled: true },
 ];
 
-export function Week4Demo() {
+export function NavigationDemo() {
   const [page, setPage] = React.useState(6);
   const [framework, setFramework] = React.useState("");
   const [code, setCode] = React.useState("");
