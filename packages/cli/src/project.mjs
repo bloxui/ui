@@ -9,7 +9,7 @@ import { join, relative, sep } from "node:path";
 export const CONFIG_FILE = "blox.json";
 
 /** Where the registry lives unless the project or a flag says otherwise. */
-export const DEFAULT_REGISTRY = "https://raw.githubusercontent.com/bloxui/ui/main/apps/www/public/r";
+export const DEFAULT_REGISTRY = "https://bloxui-kit.vercel.app/r";
 
 /**
  * @typedef {object} BloxConfig

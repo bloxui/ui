@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "description": "Add Blox UI components to your project.",
   "license": "MIT",
+  "homepage": "https://bloxui-kit.vercel.app",
+  "bugs": {
+    "url": "https://github.com/bloxui/ui/issues"
+  },
   "type": "module",
   "bin": {
     "blox": "./bin/blox.mjs"

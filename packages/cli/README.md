@@ -1,6 +1,6 @@
 # @bloxui/cli
 
-Adds [Blox UI](https://github.com/bloxui/ui) components to your project. The CLI copies each component's source into your codebase, so you own it and can change it freely.
+Adds [Blox UI](https://bloxui-kit.vercel.app) components to your project. The CLI copies each component's source into your codebase, so you own it and can change it freely.
 
 Requires Node 18.17 or later, React 18 or 19, and Tailwind CSS v4.
 
@@ -32,6 +32,8 @@ npx @bloxui/cli add --all           # every component
 
 Each component brings the other components and helpers it uses. A file you have changed is never overwritten unless you pass `--overwrite`.
 
+Browse every component with live examples at [bloxui-kit.vercel.app](https://bloxui-kit.vercel.app/docs/components/button).
+
 ## See what is available
 
 ```bash
@@ -53,7 +55,7 @@ npx @bloxui/cli list
 
 ```json
 {
-  "registry": "https://raw.githubusercontent.com/bloxui/ui/main/apps/www/public/r",
+  "registry": "https://bloxui-kit.vercel.app/r",
   "aliases": { "ui": "@/components/ui", "lib": "@/lib", "blocks": "@/components/blocks" },
   "dirs": { "ui": "src/components/ui", "lib": "src/lib", "blocks": "src/components/blocks", "styles": "src/styles" },
   "css": "src/app/globals.css"

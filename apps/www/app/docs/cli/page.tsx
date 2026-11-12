@@ -15,7 +15,7 @@ npx @bloxui/cli add block-login
 npx @bloxui/cli add --all`,
   list: "npx @bloxui/cli list",
   config: `{
-  "registry": "https://raw.githubusercontent.com/bloxui/ui/main/apps/www/public/r",
+  "registry": "https://bloxui-kit.vercel.app/r",
   "aliases": { "ui": "@/components/ui", "lib": "@/lib", "blocks": "@/components/blocks" },
   "dirs": { "ui": "src/components/ui", "lib": "src/lib", "blocks": "src/components/blocks", "styles": "src/styles" },
   "css": "src/app/globals.css"

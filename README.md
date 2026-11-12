@@ -2,6 +2,8 @@
 
 Crafted React components you own. Built with Tailwind CSS v4 and Radix UI.
 
+**Docs and live examples: [bloxui-kit.vercel.app](https://bloxui-kit.vercel.app)**
+
 > Early development. APIs can change until the first release.
 
 ## Use it in your project
@@ -11,7 +13,7 @@ npx @bloxui/cli init
 npx @bloxui/cli add button dialog
 ```
 
-The CLI copies each component's source into your project, with everything it needs. See [packages/cli](packages/cli/README.md) for options. (Not on npm yet; until then run `node packages/cli/bin/blox.mjs` from a clone.)
+The CLI copies each component's source into your project, with everything it needs. See [packages/cli](packages/cli/README.md) for options.
 
 ## What is inside
 
