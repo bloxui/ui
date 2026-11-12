@@ -1,0 +1,18 @@
+{
+  "name": "timeline",
+  "type": "ui",
+  "title": "Timeline",
+  "description": "A vertical list of events, each with a marker on a connecting line.",
+  "category": "Display",
+  "dependencies": {},
+  "registryDependencies": [
+    "cn",
+    "tone"
+  ],
+  "files": [
+    {
+      "path": "ui/timeline.tsx",
+      "content": "import * as React from \"react\";\nimport { cn } from \"~lib/cn\";\nimport { toneClasses, type Tone } from \"~lib/tone\";\n\nexport interface TimelineItem {\n  /** Stable id; falls back to the index. */\n  id?: string;\n  title: React.ReactNode;\n  description?: React.ReactNode;\n  /** When it happened. A Date is shown with the `formatTime` prop; strings are shown as they are. */\n  time?: Date | string;\n  /** Icon inside the marker; a plain dot is drawn without one. */\n  icon?: React.ReactNode;\n  tone?: Tone;\n  /** Extra content under the description, e.g. a quote or attachments. */\n  content?: React.ReactNode;\n}\n\nexport interface TimelineProps extends React.ComponentProps<\"ol\"> {\n  items: TimelineItem[];\n  /** How Date values are shown. Fixed locale by default so server and client render the same text. */\n  formatTime?: (time: Date) => string;\n}\n\nconst defaultFormat = new Intl.DateTimeFormat(\"en-US\", { dateStyle: \"medium\", timeStyle: \"short\" });\n\n/** A vertical list of events in order, each with a marker on a connecting line. */\nexport function Timeline({ items, formatTime = (time) => defaultFormat.format(time), className, ...props }: TimelineProps) {\n  return (\n    <ol data-slot=\"timeline\" className={cn(\"grid\", className)} {...props}>\n      {items.map((item, index) => {\n        const last = index === items.length - 1;\n        const tone = item.tone ?? \"neutral\";\n        return (\n          <li key={item.id ?? index} className={cn(toneClasses[tone], \"relative flex gap-4\", !last && \"pb-6\")}>\n            {!last ? <span aria-hidden className=\"absolute top-8 bottom-0 left-[15px] w-0.5 bg-border\" /> : null}\n            <span\n              aria-hidden\n              className={cn(\n                \"relative z-[1] flex size-8 shrink-0 items-center justify-center rounded-full\",\n                item.icon ? \"bg-(--t-soft) text-(color:--t-text) [&_svg]:size-4\" : \"bg-transparent\",\n              )}\n            >\n              {item.icon ?? <span className=\"size-2.5 rounded-full bg-(--t) ring-4 ring-bg\" />}\n            </span>\n            <div className=\"grid min-w-0 flex-1 gap-1 pt-1\">\n              <div className=\"flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5\">\n                <p className=\"text-sm font-medium\">{item.title}</p>\n                {item.time ? (\n                  <time\n                    dateTime={item.time instanceof Date ? item.time.toISOString() : undefined}\n                    className=\"text-xs text-muted tabular-nums\"\n                  >\n                    {item.time instanceof Date ? formatTime(item.time) : item.time}\n                  </time>\n                ) : null}\n              </div>\n              {item.description ? <p className=\"text-sm text-muted\">{item.description}</p> : null}\n              {item.content ? <div className=\"pt-1\">{item.content}</div> : null}\n            </div>\n          </li>\n        );\n      })}\n    </ol>\n  );\n}\n"
+    }
+  ]
+}

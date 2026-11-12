@@ -227,6 +227,23 @@
       ]
     },
     {
+      "name": "chat",
+      "type": "ui",
+      "title": "Chat",
+      "description": "Messages, typing indicator, suggestions and an input for AI chat interfaces.",
+      "category": "AI",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "icons",
+        "avatar",
+        "button"
+      ],
+      "files": [
+        "ui/chat.tsx"
+      ]
+    },
+    {
       "name": "checkbox",
       "type": "ui",
       "title": "Checkbox",
@@ -260,6 +277,22 @@
       ],
       "files": [
         "ui/collapsible.tsx"
+      ]
+    },
+    {
+      "name": "color-picker",
+      "type": "ui",
+      "title": "Color Picker",
+      "description": "Picks a colour with an area, a hue slider, a hex field and swatches.",
+      "category": "Forms",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "field-context",
+        "popover"
+      ],
+      "files": [
+        "ui/color-picker.tsx"
       ]
     },
     {
@@ -440,6 +473,23 @@
       ]
     },
     {
+      "name": "file-upload",
+      "type": "ui",
+      "title": "File Upload",
+      "description": "A drop zone with type, size and count checks and a file list with progress.",
+      "category": "Forms",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "field-context",
+        "icons",
+        "progress"
+      ],
+      "files": [
+        "ui/file-upload.tsx"
+      ]
+    },
+    {
       "name": "hover-card",
       "type": "ui",
       "title": "Hover Card",
@@ -491,6 +541,21 @@
       ]
     },
     {
+      "name": "kanban",
+      "type": "ui",
+      "title": "Kanban",
+      "description": "A board whose cards move between columns by drag and drop or the keyboard.",
+      "category": "Data",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "tone"
+      ],
+      "files": [
+        "ui/kanban.tsx"
+      ]
+    },
+    {
       "name": "kbd",
       "type": "ui",
       "title": "Kbd",
@@ -539,6 +604,24 @@
       ]
     },
     {
+      "name": "multi-select",
+      "type": "ui",
+      "title": "Multi Select",
+      "description": "Picks several options from a searchable list, shown as removable chips.",
+      "category": "Forms",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "field-context",
+        "icons",
+        "command",
+        "popover"
+      ],
+      "files": [
+        "ui/multi-select.tsx"
+      ]
+    },
+    {
       "name": "navigation-menu",
       "type": "ui",
       "title": "Navigation Menu",
@@ -569,6 +652,24 @@
       ],
       "files": [
         "ui/pagination.tsx"
+      ]
+    },
+    {
+      "name": "phone-input",
+      "type": "ui",
+      "title": "Phone Input",
+      "description": "A phone field with a country picker that outputs one E.164 number.",
+      "category": "Forms",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "field-context",
+        "icons",
+        "command",
+        "popover"
+      ],
+      "files": [
+        "ui/phone-input.tsx"
       ]
     },
     {
@@ -620,6 +721,22 @@
       ],
       "files": [
         "ui/radio-group.tsx"
+      ]
+    },
+    {
+      "name": "rating",
+      "type": "ui",
+      "title": "Rating",
+      "description": "A star rating that works from the keyboard, with a read-only mode.",
+      "category": "Forms",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "field-context",
+        "icons"
+      ],
+      "files": [
+        "ui/rating.tsx"
       ]
     },
     {
@@ -772,6 +889,21 @@
       ]
     },
     {
+      "name": "stepper",
+      "type": "ui",
+      "title": "Stepper",
+      "description": "Shows progress through a multi-step flow.",
+      "category": "Navigation",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "icons"
+      ],
+      "files": [
+        "ui/stepper.tsx"
+      ]
+    },
+    {
       "name": "switch",
       "type": "ui",
       "title": "Switch",
@@ -835,6 +967,21 @@
       ]
     },
     {
+      "name": "timeline",
+      "type": "ui",
+      "title": "Timeline",
+      "description": "A vertical list of events, each with a marker on a connecting line.",
+      "category": "Display",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "tone"
+      ],
+      "files": [
+        "ui/timeline.tsx"
+      ]
+    },
+    {
       "name": "toast",
       "type": "ui",
       "title": "Toast",
@@ -880,6 +1027,21 @@
       ],
       "files": [
         "ui/tooltip.tsx"
+      ]
+    },
+    {
+      "name": "tree-view",
+      "type": "ui",
+      "title": "Tree View",
+      "description": "A hierarchical list such as a file tree, with full keyboard support.",
+      "category": "Navigation",
+      "dependencies": {},
+      "registryDependencies": [
+        "cn",
+        "icons"
+      ],
+      "files": [
+        "ui/tree-view.tsx"
       ]
     },
     {

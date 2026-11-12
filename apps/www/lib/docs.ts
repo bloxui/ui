@@ -29,7 +29,7 @@ function readIndex(): RegistryIndex {
 }
 
 /** Order categories appear in the navigation. Anything else follows alphabetically. */
-const categoryOrder = ["Forms", "Display", "Feedback", "Overlays", "Navigation", "Disclosure", "Data", "Layout"];
+const categoryOrder = ["Forms", "Display", "Feedback", "Overlays", "Navigation", "Disclosure", "Data", "Layout", "AI"];
 
 export interface NavGroup {
   title: string;

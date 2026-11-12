@@ -10,6 +10,16 @@
 
 /** @type {Record<string, ItemMeta>} */
 export const components = {
+  chat: { title: "Chat", description: "Messages, typing indicator, suggestions and an input for AI chat interfaces.", category: "AI" },
+  "color-picker": { title: "Color Picker", description: "Picks a colour with an area, a hue slider, a hex field and swatches.", category: "Forms" },
+  "file-upload": { title: "File Upload", description: "A drop zone with type, size and count checks and a file list with progress.", category: "Forms" },
+  kanban: { title: "Kanban", description: "A board whose cards move between columns by drag and drop or the keyboard.", category: "Data" },
+  "multi-select": { title: "Multi Select", description: "Picks several options from a searchable list, shown as removable chips.", category: "Forms" },
+  "phone-input": { title: "Phone Input", description: "A phone field with a country picker that outputs one E.164 number.", category: "Forms" },
+  rating: { title: "Rating", description: "A star rating that works from the keyboard, with a read-only mode.", category: "Forms" },
+  stepper: { title: "Stepper", description: "Shows progress through a multi-step flow.", category: "Navigation" },
+  timeline: { title: "Timeline", description: "A vertical list of events, each with a marker on a connecting line.", category: "Display" },
+  "tree-view": { title: "Tree View", description: "A hierarchical list such as a file tree, with full keyboard support.", category: "Navigation" },
   accordion: { title: "Accordion", description: "Stacked headings that expand to show their content.", category: "Disclosure" },
   alert: { title: "Alert", description: "An inline message with a tone, icon, actions and optional dismiss.", category: "Feedback" },
   "alert-dialog": { title: "Alert Dialog", description: "A dialog that interrupts the user and requires a decision.", category: "Overlays" },

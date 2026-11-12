@@ -22,15 +22,17 @@ The CLI copies each component's source into your project, with everything it nee
 
 ## Components
 
-**Forms:** Button, Button Group, Input, Textarea, Field, Label, Checkbox, Radio Group, Switch, Slider, Select, Combobox, Input OTP, Calendar, Date Picker, Toggle, Toggle Group
+**Forms:** Button, Button Group, Input, Textarea, Field, Label, Checkbox, Radio Group, Switch, Slider, Select, Combobox, Multi Select, Input OTP, Phone Input, Calendar, Date Picker, Color Picker, File Upload, Rating, Toggle, Toggle Group
 
-**Display and feedback:** Card, Badge, Avatar, Alert, Toast, Progress, Skeleton, Spinner, Empty, Separator, Kbd, Carousel
+**Display and feedback:** Card, Badge, Avatar, Alert, Toast, Progress, Skeleton, Spinner, Empty, Separator, Kbd, Carousel, Timeline
 
 **Overlays:** Dialog, Alert Dialog, Sheet, Drawer, Popover, Tooltip, Hover Card, Dropdown Menu, Context Menu, Menubar, Command
 
-**Navigation:** Tabs, Breadcrumb, Pagination, Navigation Menu, Sidebar, Accordion, Collapsible
+**Navigation:** Tabs, Breadcrumb, Pagination, Navigation Menu, Sidebar, Accordion, Collapsible, Stepper, Tree View
 
-**Data and layout:** Table, Data Table, Chart, Scroll Area, Aspect Ratio, Resizable
+**Data and layout:** Table, Data Table, Chart, Scroll Area, Aspect Ratio, Resizable, Kanban
+
+**AI:** Chat (messages, typing indicator, suggestions, input)
 
 **Blocks:** Login, Signup, Settings, Dashboard
 
