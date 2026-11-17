@@ -3,22 +3,28 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@blox-ui/ui";
 import { examples } from "@/examples";
 import { CodeBlock } from "./code-block";
+import { OpenIn } from "./open-in";
 
 interface ComponentPreviewProps {
   name: string;
+  /** Display name, e.g. "Date Picker". */
+  title: string;
   html: string;
   code: string;
 }
 
 /** The live example and its code, which are the same file. */
-export function ComponentPreview({ name, html, code }: ComponentPreviewProps) {
+export function ComponentPreview({ name, title, html, code }: ComponentPreviewProps) {
   const Example = examples[name];
   return (
     <Tabs defaultValue="preview" variant="pills" size="sm">
-      <TabsList aria-label="Example">
-        <TabsTrigger value="preview">Preview</TabsTrigger>
-        <TabsTrigger value="code">Code</TabsTrigger>
-      </TabsList>
+      <div className="flex items-center justify-between gap-2">
+        <TabsList aria-label="Example">
+          <TabsTrigger value="preview">Preview</TabsTrigger>
+          <TabsTrigger value="code">Code</TabsTrigger>
+        </TabsList>
+        <OpenIn name={name} title={title} />
+      </div>
       <TabsContent value="preview">
         <div className="flex min-h-72 items-center justify-center overflow-x-auto rounded-lg border border-border bg-bg p-6 sm:p-10">
           {Example ? <Example /> : <p className="text-sm text-muted">No example yet.</p>}

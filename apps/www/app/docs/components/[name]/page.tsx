@@ -44,7 +44,7 @@ export default async function ComponentPage({ params }: PageProps) {
 
       <Section>
         <H2 id="usage">Usage</H2>
-        <ComponentPreview name={item.name} html={doc.exampleHtml} code={doc.exampleCode} />
+        <ComponentPreview name={item.name} title={item.title} html={doc.exampleHtml} code={doc.exampleCode} />
       </Section>
 
       <Section>
