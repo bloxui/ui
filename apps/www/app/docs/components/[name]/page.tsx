@@ -6,6 +6,7 @@ import { Badge, Collapsible, CollapsibleContent, CollapsibleTrigger, Button } fr
 import { CodeBlock } from "@/components/docs/code-block";
 import { ComponentPreview } from "@/components/docs/component-preview";
 import { Code, DocsHeader, H2, P, Section } from "@/components/docs/prose";
+import { PageActions } from "@/components/docs/page-actions";
 import { PropsTable } from "@/components/docs/props-table";
 import { getComponentDoc, getComponentList } from "@/lib/docs";
 import { highlight } from "@/lib/highlight";
@@ -38,7 +39,7 @@ export default async function ComponentPage({ params }: PageProps) {
 
   return (
     <article className="space-y-10">
-      <DocsHeader title={item.title} description={item.description}>
+      <DocsHeader title={item.title} description={item.description} actions={<PageActions name={item.name} previous={doc.previous} next={doc.next} />}>
         <Badge size="sm">{item.category}</Badge>
       </DocsHeader>
 

@@ -3,10 +3,24 @@ import { cn } from "@blox-ui/ui";
 
 /** Building blocks for hand-written docs pages, so every page has the same rhythm. */
 
-export function DocsHeader({ title, description, children }: { title: string; description: string; children?: React.ReactNode }) {
+export function DocsHeader({
+  title,
+  description,
+  actions,
+  children,
+}: {
+  title: string;
+  description: string;
+  /** Shown beside the title, e.g. "Copy page". */
+  actions?: React.ReactNode;
+  children?: React.ReactNode;
+}) {
   return (
     <header className="space-y-3 border-b border-border pb-8">
-      <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{title}</h1>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{title}</h1>
+        {actions ? <div className="flex items-center gap-2 pt-1">{actions}</div> : null}
+      </div>
       <p className="max-w-2xl text-lg text-muted">{description}</p>
       {children}
     </header>
